@@ -21,6 +21,13 @@ LESS=-MM
 PS1='\u@\h:\w# '
 PS2='> '
 
+# Display manpages correctly:
+export MANPAGER="less -r"
+
+# Suppress the "informal messages" in the first line of the lesspipe output.
+# If you like these, comment this line out.
+export LESSQUIET=true
+
 ignoreeof=10
 export HOME PATH DISPLAY LESS TERM PS1 PS2 ignoreeof
 umask 022

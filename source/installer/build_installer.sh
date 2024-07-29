@@ -751,6 +751,9 @@ make $SILENTMAKE $NUMJOBS PROGRAMS="$PROGS" MULTI="1" SCPPROGRESS="1" || exit 1
 # Install into installer's filesystem:
 make $SILENTMAKE DESTDIR=$PKG/$ARCH-installer-filesystem/ MULTI="1" install || exit 1
 
+# Compress manpage:
+gzip -9 $PKG/$ARCH-installer-filesystem/usr/man/man8/dropbear.8
+
 # Link binaries to dropbearmulti since the 'make install' does not do that
 # if we build a multicall binary
 ( cd $PKG/$ARCH-installer-filesystem/bin
@@ -966,6 +969,7 @@ a/inih \
 a/jfsutils \
 a/kbd \
 a/kmod \
+a/less \
 a/lvm2 \
 a/lzip \
 a/lzlib \
@@ -1091,6 +1095,7 @@ cp --remove-destination -fa${VERBOSE1} ${EXTRA_PKGS_USRBIN} \
         bash \
         ddrescue \
         ldd \
+        less \
         loadkeys \
         lzip \
         neofetch \
@@ -2281,6 +2286,7 @@ if [ -d usr/man ]; then
     for manpage in \
       man8/bcachefs.8.bz2 \
       man8/cfdisk.8.bz2 \
+      man8/dropbear.8.bz2 \
       man8/fdisk.8.bz2 \
       man8/gdisk.8.bz2 \
       man8/partprobe.8.bz2 \

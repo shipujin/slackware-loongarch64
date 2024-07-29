@@ -1,3 +1,11 @@
+Sun Jul 28 20:52:21 UTC 2024
+  /etc/profile: export MANPAGER="less -r" to display pages correctly.
+  Also export LESSQUIET=true.
+  Use real "less".
+  Thanks to Brent Earl.
+  module-blacklist: don't blacklist modules that wouldn't be installed anyway.
+  compress dropbear.8 so that it's converted properly to catman format.
++--------------------------+
 Thu Jul 25 20:06:25 UTC 2024
   Updated compiler flags for i686 and x86_64.
 +--------------------------+

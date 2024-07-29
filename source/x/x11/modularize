@@ -234,6 +234,7 @@ xhost
 xineramaproto
 xinit
 xinput
+xinput_calibrator
 xisxwayland
 xkbcomp
 xkbevd

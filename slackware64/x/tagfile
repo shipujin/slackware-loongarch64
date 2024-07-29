@@ -247,6 +247,7 @@ xgc:REC
 xhost:REC
 xinit:REC
 xinput:REC
+xinput_calibrator:REC
 xisxwayland:REC
 xkbcomp:REC
 xkbevd:REC
