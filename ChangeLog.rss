@@ -11,9 +11,32 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Mon, 29 Jul 2024 18:32:35 GMT</pubDate>
-      <lastBuildDate>Mon, 29 Jul 2024 18:58:44 GMT</lastBuildDate>
+      <pubDate>Tue, 30 Jul 2024 18:39:31 GMT</pubDate>
+      <lastBuildDate>Tue, 30 Jul 2024 19:03:50 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Tue, 30 Jul 2024 18:39:31 GMT</title>
+         <pubDate>Tue, 30 Jul 2024 18:39:31 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240730183931</link>
+         <guid isPermaLink="false">20240730183931</guid>
+         <description>
+           <![CDATA[<pre>
+a/btrfs-progs-6.10-x86_64-1.txz:  Upgraded.
+a/cryptsetup-2.7.4-x86_64-1.txz:  Upgraded.
+a/sysvinit-3.10-x86_64-1.txz:  Upgraded.
+d/git-2.46.0-x86_64-1.txz:  Upgraded.
+l/gst-plugins-bad-free-1.24.6-x86_64-1.txz:  Upgraded.
+l/gst-plugins-base-1.24.6-x86_64-1.txz:  Upgraded.
+l/gst-plugins-good-1.24.6-x86_64-1.txz:  Upgraded.
+l/gst-plugins-libav-1.24.6-x86_64-1.txz:  Upgraded.
+l/gstreamer-1.24.6-x86_64-1.txz:  Upgraded.
+l/python-sphinx-8.0.2-x86_64-1.txz:  Upgraded.
+l/tdb-1.4.11-x86_64-1.txz:  Upgraded.
+extra/tigervnc/tigervnc-1.14.0-x86_64-1.txz:  Upgraded.
+  Thanks to marav for the build script help.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Mon, 29 Jul 2024 18:32:35 GMT</title>
          <pubDate>Mon, 29 Jul 2024 18:32:35 GMT</pubDate>

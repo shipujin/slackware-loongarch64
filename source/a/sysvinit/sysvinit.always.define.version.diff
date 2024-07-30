@@ -1,11 +1,11 @@
---- ./src/init.c.orig	2021-12-13 13:21:26.000000000 -0600
-+++ ./src/init.c	2021-12-14 15:04:45.163064496 -0600
+--- ./src/init.c.orig	2024-07-28 19:08:45.000000000 -0500
++++ ./src/init.c	2024-07-30 12:30:58.602177873 -0500
 @@ -12,9 +12,7 @@
  /*
  Version information is not placed in the top-level Makefile by default
  */
 -#ifndef VERSION
- #define VERSION "3.01"
+ #define VERSION "3.10"
 -#endif
  /*
   *		This file is part of the sysvinit suite,

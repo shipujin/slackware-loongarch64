@@ -26,7 +26,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 PKGNAM=tigervnc
 VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 XORGVER=${XORGVER:-$(echo xorg-server-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-BUILD=${BUILD:-6}
+BUILD=${BUILD:-1}
 
 # Do we build the java applet (needs jdk)?
 JAVA_APPLET=${JAVA_APPLET:-"OFF"}
@@ -83,7 +83,7 @@ cd $PKGNAM-$VERSION || exit 1
 tar xvf $CWD/xorg-server-$XORGVER.tar.?z --strip-components=1 -C unix/xserver || exit 1
 # Patch the X server sources:
 ( cd unix/xserver
-  zcat $CWD/patches/xserver211.patch.gz | patch -p1 --verbose || exit 1
+  zcat $CWD/patches/xserver21.patch.gz | patch -p1 --verbose || exit 1
   zcat $CWD/patches/xorg-server/0001-xfree86-use-modesetting-driver-by-default-on-GeForce.patch.gz | patch -p1 --verbose || exit 1
   zcat $CWD/patches/xorg-server/06_use-intel-only-on-pre-gen4.diff.gz | patch -p1 --verbose || exit 1
   zcat $CWD/patches/xorg-server/fix-nouveau-segfault.diff.gz | patch -p1 --verbose || exit 1
@@ -129,43 +129,38 @@ make DESTDIR=$PKG install || exit 1
 
 # Build and install the VNC server:
 ( cd unix/xserver
+  mkdir meson-build
+  cd meson-build
   # Default font paths to be used by the X server
   DEF_FONTPATH="/usr/share/fonts/local,/usr/share/fonts/TTF,/usr/share/fonts/OTF,/usr/share/fonts/Type1,/usr/share/fonts/misc,/usr/share/fonts/CID,/usr/share/fonts/75dpi/:unscaled,/usr/share/fonts/100dpi/:unscaled,/usr/share/fonts/75dpi,/usr/share/fonts/100dpi,/usr/share/fonts/cyrillic"
-  ./configure \
-    --prefix=/usr \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --sysconfdir=/etc \
+meson setup \
     --localstatedir=/var \
-    --disable-dri --enable-dri2 --disable-dri3 \
-    --disable-static \
-    --disable-xorg --disable-xnest --disable-xvfb --disable-dmx \
-    --disable-xwin --disable-xephyr --disable-kdrive --disable-xwayland \
-    --enable-composite \
-    --enable-glx --enable-glx-tls \
-    --enable-install-libxf86config \
-    --enable-xcsecurity \
-    --enable-xinerama \
-    --with-int10=x86emu \
-    --with-default-font-path="${DEF_FONTPATH}" \
-    --with-dri-driver-path=/usr/lib${LIBDIRSUFFIX}/xorg/modules/dri \
-    --with-module-dir=/usr/lib${LIBDIRSUFFIX}/xorg/modules \
-    --with-pic \
-    --with-xkb-path=/etc/X11/xkb \
-    --with-xkb-output=/var/lib/xkb \
-    --disable-config-dbus \
-    --disable-config-hal \
-    --disable-config-udev \
-    --disable-docs --disable-devel-docs \
-    --disable-selective-werror \
-    --disable-unit-tests \
-    --without-dtrace \
-    --with-os-name="$(head -1 /etc/slackware-version)" \
-    --with-os-vendor="Slackware Linux Project" \
-    --with-builderstring="Built by Slackware for xorg-server-$XORGVER" \
-    --build=$TARGET || exit 1
-  make V=1 TIGERVNC_SRCDIR="$TMP/${PKGNAM}-${VERSION}" $NUMJOBS || make V=1 TIGERVNC_SRCDIR="$TMP/${PKGNAM}-${VERSION}" || exit 1
-  make TIGERVNC_SRCDIR="$TMP/${PKGNAM}-${VERSION}" -C hw/vnc \
-    DESTDIR=$PKG install || exit 1
+    --sysconfdir=/etc \
+    -Ddri1=false \
+    -Ddri2=true \
+    -Ddri3=false \
+    -Dglamor=false \
+    -Dxorg=false \
+    -Dglx=true \
+    -Dxnest=false \
+    -Dxvfb=false \
+    -Dxwin=false \
+    -Dxephyr=false \
+    -Dxcsecurity=true \
+    -Dxinerama=true \
+    -Dxkb_dir=/etc/X11/xkb \
+    -Dxkb_output_dir=/var/lib/xkb \
+    -Dhal=false \
+    -Dudev=false \
+    -Dudev_kms=false \
+    -Ddtrace=false \
+    -Dint10=x86emu \
+    -Ddocs=false \
+    -Ddevel-docs=false \
+    -Dvendor_name="Slackware Linux Project" \
+    .. || exit 1
+  "${NINJA:=ninja}" $NUMJOBS || exit 1
+  DESTDIR=$PKG $NINJA install || exit 1
 ) || exit 1
 
 # Relocate the man pages:

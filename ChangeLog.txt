@@ -1,3 +1,18 @@
+Tue Jul 30 18:39:31 UTC 2024
+a/btrfs-progs-6.10-x86_64-1.txz:  Upgraded.
+a/cryptsetup-2.7.4-x86_64-1.txz:  Upgraded.
+a/sysvinit-3.10-x86_64-1.txz:  Upgraded.
+d/git-2.46.0-x86_64-1.txz:  Upgraded.
+l/gst-plugins-bad-free-1.24.6-x86_64-1.txz:  Upgraded.
+l/gst-plugins-base-1.24.6-x86_64-1.txz:  Upgraded.
+l/gst-plugins-good-1.24.6-x86_64-1.txz:  Upgraded.
+l/gst-plugins-libav-1.24.6-x86_64-1.txz:  Upgraded.
+l/gstreamer-1.24.6-x86_64-1.txz:  Upgraded.
+l/python-sphinx-8.0.2-x86_64-1.txz:  Upgraded.
+l/tdb-1.4.11-x86_64-1.txz:  Upgraded.
+extra/tigervnc/tigervnc-1.14.0-x86_64-1.txz:  Upgraded.
+  Thanks to marav for the build script help.
++--------------------------+
 Mon Jul 29 18:32:35 UTC 2024
 a/sysklogd-2.6.1-x86_64-1.txz:  Upgraded.
 d/python-pip-24.2-x86_64-1.txz:  Upgraded.

@@ -13,8 +13,8 @@ gzip ./extra/source/tigervnc/patches/xorg-server/0001-xfree86-use-modesetting-dr
 gzip ./extra/source/tigervnc/patches/xorg-server/fix-nouveau-segfault.diff
 gzip ./extra/source/tigervnc/patches/xorg-server/x11.startwithblackscreen.diff
 gzip ./extra/source/tigervnc/patches/xorg-server/06_use-intel-only-on-pre-gen4.diff
-gzip ./extra/source/tigervnc/patches/xserver211.patch
 gzip ./extra/source/tigervnc/patches/vncserver.xinitrc.diff
+gzip ./extra/source/tigervnc/patches/xserver21.patch
 gzip ./extra/source/tigervnc/doinst.sh
 gzip ./extra/source/bash-completion/fixup-sh-script-completions.diff
 gzip ./source/d/clisp/clisp.link.libgnu.whole-archive.diff
