@@ -28,7 +28,7 @@ PKGNAM=grub
 VERSION=${VERSION:-$(echo $PKGNAM-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 # Better to use _ than ~ in the package filenames version:
 PKGVER=$(echo $VERSION | tr '~' '_')
-BUILD=${BUILD:-14}
+BUILD=${BUILD:-15}
 
 # If you use stack-protector, then grub will not work with legacy BIOS:
 STACKPROTECT=${STACKPROTECT:---enable-stack-protector=no}
@@ -89,9 +89,6 @@ find . \
   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \+
 
-# Accept /boot/initrd.gz as a valid initrd name (obsolete?):
-cat $CWD/initrd_naming.patch | patch -p1 --verbose || exit 1
-
 # Support DejaVuSansMono font (dejavusansmono.pf2) by default:
 cat $CWD/grub.dejavusansmono.gfxterm.font.diff | patch -p1 --verbose || exit 1
 
@@ -107,18 +104,21 @@ cat $CWD/0001-00_header-add-GRUB_COLOR_-variables.patch | patch -p1 --verbose ||
 # Also from Arch, support drop-in config bits in /etc/default/grub.d/:
 cat $CWD/0003-support-dropins-for-default-configuration.patch | patch -p1 --verbose || exit 1
 
-# Support GRUB_DISABLE_KERNEL_SYMLINKS variable in /etc/default/grub.
-# If this is not defined, it is assumed to be false.
-cat $CWD/0004-add-GRUB_DISABLE_KERNEL_SYMLINKS-variable.patch | patch -p1 --verbose || exit 1
-
 # Fix 2.12 release with upstream commit (won't compile otherwise):
 cat $CWD/b835601c7639ed1890f2d3db91900a8506011a8e.patch | patch -p1 --verbose || exit 1
 
 # For Slackware, opt-out of having our operating system renamed:
 cat $CWD/10_linux.osname.patch | patch -p1 --verbose || exit 1
 
-# Skip symlinks to kernels according to GRUB_DISABLE_KERNEL_SYMLINKS:
-cat $CWD/10_linux.disable_kernel_symlinks.patch | patch -p1 --verbose || exit 1
+# Allow defining an initrd fallback name with the
+# GRUB_INITRD_FALLBACK_NAME variable in /etc/default/grub.
+# Commented out by default.
+cat $CWD/0004-initrd_fallback_name.patch | patch -p1 --verbose || exit 1
+
+# Support displaying only kernels that are files, only kernels that are
+# symlinks, or both. This is set with the GRUB_DISPLAY_KERNEL_FILETYPES
+# variable in /etc/default/grub:
+cat $CWD/0005-GRUB_DISPLAY_KERNEL_FILETYPES.patch | patch -p1 --verbose || exit 1
 
 # Still won't compile. Someday they'll remember how to cut a new release.
 touch grub-core/extra_deps.lst

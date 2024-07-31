@@ -11,9 +11,46 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Tue, 30 Jul 2024 18:39:31 GMT</pubDate>
-      <lastBuildDate>Tue, 30 Jul 2024 19:03:50 GMT</lastBuildDate>
+      <pubDate>Wed, 31 Jul 2024 18:35:06 GMT</pubDate>
+      <lastBuildDate>Wed, 31 Jul 2024 19:14:19 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Wed, 31 Jul 2024 18:35:06 GMT</title>
+         <pubDate>Wed, 31 Jul 2024 18:35:06 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240731183506</link>
+         <guid isPermaLink="false">20240731183506</guid>
+         <description>
+           <![CDATA[<pre>
+a/grub-2.12-x86_64-15.txz:  Rebuilt.
+  In /etc/default/grub, eliminate the GRUB_DISABLE_KERNEL_SYMLINKS="true"
+  option, replacing it with GRUB_DISPLAY_KERNEL_FILETYPES=both. This may
+  be set to "symlinks" (only show kernel symlinks in the menu), "files"
+  (only show kernel files in the menu), or "both" to show both.
+  Thanks to 0XBF.
+  In /etc/default/grub, add a new option GRUB_INITRD_FALLBACK_NAME=initrd.gz.
+  This defines the name of an initrd that will match to any kernel if a
+  better match wasn't found first. This option will be commented out by
+  default.
+  When the defaults in /etc/default/grub are left alone, the behavior of the
+  10_linux script is identical to the unmodified one.
+ap/vim-9.1.0645-x86_64-1.txz:  Upgraded.
+l/protobuf-27.3-x86_64-1.txz:  Upgraded.
+n/curl-8.9.1-x86_64-1.txz:  Upgraded.
+  This update fixes a security issue:
+  ASN.1 date parser overread.
+  For more information, see:
+    https://curl.se/docs/CVE-2024-7264.html
+    https://www.cve.org/CVERecord?id=CVE-2024-7264
+  (* Security fix *)
+x/mesa-24.1.5-x86_64-1.txz:  Upgraded.
+xap/vim-gvim-9.1.0645-x86_64-1.txz:  Upgraded.
+xfce/thunar-4.18.11-x86_64-1.txz:  Upgraded.
+extra/tigervnc/tigervnc-1.14.0-x86_64-2.txz:  Rebuilt.
+  Use the old build script, which worked with a couple of added slashes.
+  Xvnc restored, and /usr/local directories gone.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Tue, 30 Jul 2024 18:39:31 GMT</title>
          <pubDate>Tue, 30 Jul 2024 18:39:31 GMT</pubDate>

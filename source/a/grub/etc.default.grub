@@ -37,8 +37,11 @@ GRUB_DISABLE_OS_PROBER="false"
 # Disable the submenus:
 GRUB_DISABLE_SUBMENU="true"
 
-# This option skips making menu entries for the symbolic links to kernels.
-# Some folks don't like the extra (redundant) menu entries, while others
-# like having an unversioned menu entry that doesn't require "update-grub"
-# after installing new kernels. Your call.
-#GRUB_DISABLE_KERNEL_SYMLINKS="true"
+# What kernel filetypes to display in the menu. This may be set to "files"
+# (only display kernels that are files), "symlinks" (only display kernels
+# that are symbolic links), or "both".
+GRUB_DISPLAY_KERNEL_FILETYPES=both
+
+# This option allows defining an initrd name that will match any kernel as a
+# fallback if no other matching initrd is found. You may use any name you like.
+#GRUB_INITRD_FALLBACK_NAME=initrd.gz

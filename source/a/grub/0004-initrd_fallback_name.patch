@@ -1,0 +1,24 @@
+--- ./util/grub.d/10_linux.in.orig	2024-07-30 15:28:52.790956089 -0500
++++ ./util/grub.d/10_linux.in	2024-07-30 15:33:20.145303738 -0500
+@@ -235,7 +235,8 @@
+ 	   "initramfs-genkernel-${version}" \
+ 	   "initramfs-genkernel-${alt_version}" \
+ 	   "initramfs-genkernel-${GENKERNEL_ARCH}-${version}" \
+-	   "initramfs-genkernel-${GENKERNEL_ARCH}-${alt_version}"; do
++	   "initramfs-genkernel-${GENKERNEL_ARCH}-${alt_version}" \
++	   "$GRUB_INITRD_FALLBACK_NAME" ; do
+     if test -e "${dirname}/${i}" ; then
+       initrd_real="${i}"
+       break
+--- ./util/grub-mkconfig.in.orig	2024-07-30 15:28:52.787956085 -0500
++++ ./util/grub-mkconfig.in	2024-07-30 15:35:55.115501711 -0500
+@@ -262,7 +262,8 @@
+   GRUB_ENABLE_CRYPTODISK \
+   GRUB_BADRAM \
+   GRUB_OS_PROBER_SKIP_LIST \
+-  GRUB_DISABLE_SUBMENU
++  GRUB_DISABLE_SUBMENU \
++  GRUB_INITRD_FALLBACK_NAME
+ 
+ if test "x${grub_cfg}" != "x"; then
+   rm -f "${grub_cfg}.new"
