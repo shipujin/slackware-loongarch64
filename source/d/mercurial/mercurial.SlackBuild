@@ -29,7 +29,7 @@ BUILD=${BUILD:-1}
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
-    i?86) export ARCH=i586 ;;
+    i?86) export ARCH=i686 ;;
     arm*) export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
        *) export ARCH=$( uname -m ) ;;
@@ -108,7 +108,7 @@ find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
 
 mkdir -p $PKG/usr/doc/mercurial-$VERSION
 cp -a \
-  CONTRIBUTORS COPYING* PKG-INFO README* \
+  CONTRIBUTORS* COPYING* PKG-INFO README* \
   $PKG/usr/doc/mercurial-$VERSION
 
 mkdir -p $PKG/install
@@ -117,4 +117,3 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 
 cd $PKG
 /sbin/makepkg -l y -c n $TMP/mercurial-$VERSION-$ARCH-$BUILD.txz
-
