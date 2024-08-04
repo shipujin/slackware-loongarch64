@@ -25,6 +25,7 @@ gcc-gm2:OPT
 gcc-gnat:OPT
 gcc-go:OPT
 gcc-objc:OPT
+gcc-rust:OPT
 gdb:REC
 gettext-tools:REC
 git:REC

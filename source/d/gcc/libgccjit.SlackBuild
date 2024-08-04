@@ -34,7 +34,7 @@ PKGNAM=libgccjit
 SRCNAM=gcc
 SRCVER=${VERSION:-$(echo $SRCNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 VERSION=$(echo $SRCVER | cut -f 1 -d _)
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-1}
 
 # How many jobs to run in parallel:
 NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
