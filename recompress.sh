@@ -38,7 +38,6 @@ gzip ./source/d/gyp/gyp-python39.patch
 gzip ./source/d/gyp/gyp-python3.patch
 gzip ./source/d/mercurial/doinst.sh
 gzip ./source/d/gcc/patches/gcc-no_fixincludes.diff
-gzip ./source/d/binutils/patches/binutils-special-sections-in-groups.patch
 gzip ./source/d/binutils/patches/binutils-gold-i386-gnu-property-notes.patch
 gzip ./source/d/binutils/patches/binutils-gold-warn-unsupported.patch
 gzip ./source/d/binutils/patches/binutils-readelf-other-sym-info.patch
@@ -702,7 +701,6 @@ gzip ./source/l/mozjs115/patches/0001-Skip-failing-tests-on-ppc64-and-s390x.patc
 gzip ./source/l/mozjs115/patches/icu_sources_data-Write-command-output-to-our-stderr.patch
 gzip ./source/l/mozjs115/patches/init_patch.patch
 gzip ./source/l/mozjs115/patches/spidermonkey_checks_disable.patch
-gzip ./source/l/mozjs115/double_t.x86.diff
 gzip ./source/l/djvulibre/doinst.sh
 gzip ./source/l/icon-naming-utils/icon-naming-utils.pkgconfigdir.diff
 gzip ./source/l/libcap/libcap.pkgconfig.path.diff
@@ -792,12 +790,10 @@ gzip ./source/l/sdl/SDL_ttf.shaded.text.diff
 gzip ./source/l/sdl/SDL_mixer.usrlocal.diff
 gzip ./source/l/sdl/libsdl-1.2.15-resizing.patch
 gzip ./source/l/adwaita-icon-theme/doinst.sh
-gzip ./source/l/ffmpeg/0004-support-nv-codec-headers-12.2.patch
 gzip ./source/l/ffmpeg/FFmpeg-devel-v2-2-2-lavc-vaapi_av1-Avoid-sending-the-same-slice-buffer-multiple-times.patch
 gzip ./source/l/ffmpeg/ffmpeg.vulkan.diff
 gzip ./source/l/ffmpeg/add-av_stream_get_first_dts-for-chromium.patch
 gzip ./source/l/ffmpeg/FFmpeg-devel-v2-1-2-lavc-vaapi_decode-Make-it-possible-to-send-multiple-slice-params-buffers.patch
-gzip ./source/l/ffmpeg/250471ea1745fc703eb346a2a662304536a311b1.patch
 gzip ./source/l/svgalib/svgalib-1.9.25-kernel-2.6.26.diff
 gzip ./source/l/svgalib/svgalib-1.9.25-round_gtf_gtfcalc_c.patch
 gzip ./source/l/svgalib/svgalib.nohelper.diff

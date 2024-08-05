@@ -54,10 +54,7 @@ NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
 TMP=${TMP:-/tmp}
 PKG=$TMP/package-$PKGNAM
 
-if [ "$ARCH" = "i586" ]; then
-  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "i686" ]; then
+if [ "$ARCH" = "i686" ]; then
   SLKCFLAGS="-O2 -march=pentium4 -mtune=generic"
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
@@ -104,11 +101,6 @@ zcat $CWD/patches/init_patch.patch.gz | patch -p1 --verbose || exit 1
 zcat $CWD/patches/0001-Skip-failing-tests-on-ppc64-and-s390x.patch.gz | patch -p1 --verbose || exit 1
 zcat $CWD/patches/remove-sloppy-m4-detection-from-bundled-autoconf.patch.gz | patch -p1 --verbose || exit 1
 zcat $CWD/patches/spidermonkey_checks_disable.patch.gz | patch -p1 --verbose || exit 1
-
-# Fix header mismatch on x86 with GCC:
-if [ "$ARCH" = "i686" ]; then
-  zcat $CWD/double_t.x86.diff.gz | patch -p1 --verbose || exit 1
-fi
 
 # Remove bundled zlib directory and use system version:
 rm -rf modules/zlib

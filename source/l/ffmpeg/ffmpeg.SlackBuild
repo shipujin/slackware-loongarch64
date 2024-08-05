@@ -30,7 +30,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=ffmpeg
 VERSION=${VERSION:-$(echo $PKGNAM-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-BUILD=${BUILD:-5}
+BUILD=${BUILD:-1}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -209,12 +209,6 @@ zcat $CWD/add-av_stream_get_first_dts-for-chromium.patch.gz | patch -p1 --verbos
 
 # Build against recent Vulkan:
 zcat $CWD/ffmpeg.vulkan.diff.gz | patch -p1 --verbose || exit 1
-
-# Fix ctx memory leak:
-zcat $CWD/250471ea1745fc703eb346a2a662304536a311b1.patch | patch -p1 --verbose || exit 1
-
-# Patch for recent nv-codec-headers:
-zcat $CWD/0004-support-nv-codec-headers-12.2.patch.gz | patch -p1 --verbose || exit 1
 
 # Work with recent Mesa:
 zcat $CWD/FFmpeg-devel-v2-1-2-lavc-vaapi_decode-Make-it-possible-to-send-multiple-slice-params-buffers.patch.gz | patch -p1 --verbose || exit 1
