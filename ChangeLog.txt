@@ -1,3 +1,10 @@
+Wed Aug  7 18:19:56 UTC 2024
+a/hwdata-0.385-noarch-1.txz:  Upgraded.
+l/python-PyYAML-6.0.2-x86_64-1.txz:  Upgraded.
+l/python-cffi-1.17.0-x86_64-1.txz:  Upgraded.
+l/tdb-1.4.12-x86_64-1.txz:  Upgraded.
+x/xorg-server-xwayland-24.1.2-x86_64-1.txz:  Upgraded.
++--------------------------+
 Wed Aug  7 04:03:09 UTC 2024
 a/bash-5.2.032-x86_64-2.txz:  Rebuilt.
   Patched a C compatibility error with GCC 14 in the configure.ac script that
