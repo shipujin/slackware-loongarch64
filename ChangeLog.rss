@@ -11,9 +11,52 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Mon,  5 Aug 2024 21:58:24 GMT</pubDate>
-      <lastBuildDate>Mon,  5 Aug 2024 23:03:48 GMT</lastBuildDate>
+      <pubDate>Wed,  7 Aug 2024 04:03:09 GMT</pubDate>
+      <lastBuildDate>Wed,  7 Aug 2024 05:21:56 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Wed,  7 Aug 2024 04:03:09 GMT</title>
+         <pubDate>Wed,  7 Aug 2024 04:03:09 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240807040309</link>
+         <guid isPermaLink="false">20240807040309</guid>
+         <description>
+           <![CDATA[<pre>
+a/bash-5.2.032-x86_64-2.txz:  Rebuilt.
+  Patched a C compatibility error with GCC 14 in the configure.ac script that
+  was causing the printf builtin to malfunction.
+  Thanks to elMoco for the bug report.
+l/qt6-6.7.2_20240610_3f005f1e-x86_64-4.txz:  Rebuilt.
+  Recompiled against abseil-cpp-20240722.0.
+n/curl-8.9.1-x86_64-2.txz:  Rebuilt.
+  This is a bugfix release.
+  [PATCH] sigpipe: init the struct so that first apply ignores.
+  Thanks to ponce.
+n/samba-4.20.4-x86_64-1.txz:  Upgraded.
+xap/mozilla-firefox-128.1.0esr-x86_64-1.txz:  Upgraded.
+  This update contains security fixes and improvements.
+  For more information, see:
+    https://www.mozilla.org/en-US/firefox/128.1.0/releasenotes/
+    https://www.mozilla.org/security/advisories/mfsa2024-35/
+    https://www.cve.org/CVERecord?id=CVE-2024-7518
+    https://www.cve.org/CVERecord?id=CVE-2024-7519
+    https://www.cve.org/CVERecord?id=CVE-2024-7520
+    https://www.cve.org/CVERecord?id=CVE-2024-7521
+    https://www.cve.org/CVERecord?id=CVE-2024-7522
+    https://www.cve.org/CVERecord?id=CVE-2024-7524
+    https://www.cve.org/CVERecord?id=CVE-2024-7525
+    https://www.cve.org/CVERecord?id=CVE-2024-7526
+    https://www.cve.org/CVERecord?id=CVE-2024-7527
+    https://www.cve.org/CVERecord?id=CVE-2024-7528
+    https://www.cve.org/CVERecord?id=CVE-2024-7529
+    https://www.cve.org/CVERecord?id=CVE-2024-7531
+  (* Security fix *)
+xap/mozilla-thunderbird-128.1.0esr-x86_64-1.txz:  Upgraded.
+  This is a bugfix release.
+  For more information, see:
+    https://www.mozilla.org/en-US/thunderbird/128.1.0esr/releasenotes/
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Mon,  5 Aug 2024 21:58:24 GMT</title>
          <pubDate>Mon,  5 Aug 2024 21:58:24 GMT</pubDate>

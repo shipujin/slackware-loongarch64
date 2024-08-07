@@ -134,13 +134,7 @@ export RUSTFLAGS="-Cdebuginfo=0"
 # PGO is disabled by default:
 PGO=${PGO:-no}
 
-if [ "$ARCH" = "i586" ]; then
-  SLKCFLAGS="-g0"
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "i686" ]; then
-  SLKCFLAGS="-g0"
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "s390" ]; then
+if [ "$ARCH" = "i686" ]; then
   SLKCFLAGS="-g0"
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
@@ -148,9 +142,6 @@ elif [ "$ARCH" = "x86_64" ]; then
   LIBDIRSUFFIX="64"
 elif [ "$ARCH" = "arm" ]; then
   SLKCFLAGS="-g0 -march=armv4 -mtune=xscale"
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "armel" ]; then
-  SLKCFLAGS="-g0 -march=armv4t"
   LIBDIRSUFFIX=""
 else
   SLKCFLAGS="-g0"

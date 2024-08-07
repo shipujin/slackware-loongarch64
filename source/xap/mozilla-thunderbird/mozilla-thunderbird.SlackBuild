@@ -54,7 +54,6 @@ MOZ_ALLOW_DOWNGRADE=${MOZ_ALLOW_DOWNGRADE:-YES}
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
     i?86) export ARCH=i686 ;;
-    armv7hl) export ARCH=armv7hl ;;
     arm*) export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
        *) export ARCH=$( uname -m ) ;;
@@ -83,23 +82,14 @@ if [ "$(uname -m)" = "x86_64" -a "$(file -L /usr/bin/gcc | grep 80386 | grep 32-
   ARCH=i686
 fi
 
-if [ "$ARCH" = "i586" ]; then
-  SLKCFLAGS="-g0"
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "i686" ]; then
+if [ "$ARCH" = "i686" ]; then
   SLKCFLAGS="-g0 -march=pentium4 -mtune=generic"
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "s390" ]; then
-  SLKCFLAGS="-g0"
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-g0 -march=x86-64 -mtune=generic -fPIC"
   LIBDIRSUFFIX="64"
 elif [ "$ARCH" = "arm" ]; then
   SLKCFLAGS="-g0 -march=armv4 -mtune=xscale"
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "armel" ]; then
-  SLKCFLAGS="-g0 -march=armv4t"
   LIBDIRSUFFIX=""
 else
   SLKCFLAGS="-g0"
