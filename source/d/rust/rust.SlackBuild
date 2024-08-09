@@ -27,7 +27,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 PKGNAM=rust
 SRCNAM="${PKGNAM}c"
 VERSION=${VERSION:-1.80.0}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 
 # Set this to YES to build with the system LLVM, or NO to use the bundled LLVM.
 SYSTEM_LLVM=${SYSTEM_LLVM:-NO}
@@ -169,6 +169,10 @@ tools = ["analysis", "cargo", "clippy", "rls", "rustfmt", "src", "rust-analyzer"
 submodules = false
 vendor = true
 extended = true
+profiler = true
+sanitizers = true
+# Do not query new versions of dependencies online.
+locked-deps = true
 
 [install]
 prefix = "/usr"

@@ -11,9 +11,28 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Wed,  7 Aug 2024 18:19:56 GMT</pubDate>
-      <lastBuildDate>Wed,  7 Aug 2024 18:58:36 GMT</lastBuildDate>
+      <pubDate>Fri,  9 Aug 2024 03:39:11 GMT</pubDate>
+      <lastBuildDate>Fri,  9 Aug 2024 04:05:35 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Fri,  9 Aug 2024 03:39:11 GMT</title>
+         <pubDate>Fri,  9 Aug 2024 03:39:11 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240809033911</link>
+         <guid isPermaLink="false">20240809033911</guid>
+         <description>
+           <![CDATA[<pre>
+a/exfatprogs-1.2.5-x86_64-1.txz:  Upgraded.
+ap/mpg123-1.32.7-x86_64-1.txz:  Upgraded.
+d/doxygen-1.12.0-x86_64-1.txz:  Upgraded.
+d/rust-1.80.0-x86_64-2.txz:  Rebuilt.
+  profiler = true
+  sanitizers = true
+  Needed to compile Chromium. Thanks to alienBOB.
+  locked-deps = true
+  Don't try to download updated dependencies.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Wed,  7 Aug 2024 18:19:56 GMT</title>
          <pubDate>Wed,  7 Aug 2024 18:19:56 GMT</pubDate>

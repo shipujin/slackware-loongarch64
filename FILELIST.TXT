@@ -1,20 +1,20 @@
-Wed Aug  7 18:23:33 UTC 2024
+Fri Aug  9 03:43:00 UTC 2024
 
 Here is the file list for this directory.  If you are using a 
 mirror site and find missing or extra files in the disk 
 subdirectories, please have the archive administrator refresh
 the mirror.
 
-drwxr-xr-x 12 root root      4096 2024-08-07 18:19 .
+drwxr-xr-x 12 root root      4096 2024-08-09 03:39 .
 -rw-r--r--  1 root root      5767 2022-02-02 22:44 ./ANNOUNCE.15.0
 -rw-r--r--  1 root root     16617 2022-02-02 23:27 ./CHANGES_AND_HINTS.TXT
--rw-r--r--  1 root root   1157633 2024-08-07 04:09 ./CHECKSUMS.md5
--rw-r--r--  1 root root       195 2024-08-07 04:09 ./CHECKSUMS.md5.asc
+-rw-r--r--  1 root root   1157465 2024-08-07 18:23 ./CHECKSUMS.md5
+-rw-r--r--  1 root root       195 2024-08-07 18:23 ./CHECKSUMS.md5.asc
 -rw-r--r--  1 root root     17976 1994-06-10 02:28 ./COPYING
 -rw-r--r--  1 root root     35147 2007-06-30 04:21 ./COPYING3
 -rw-r--r--  1 root root     19573 2016-06-23 20:08 ./COPYRIGHT.TXT
 -rw-r--r--  1 root root       616 2006-10-02 04:37 ./CRYPTO_NOTICE.TXT
--rw-r--r--  1 root root   1146154 2024-08-07 18:19 ./ChangeLog.txt
+-rw-r--r--  1 root root   1146533 2024-08-09 03:39 ./ChangeLog.txt
 drwxr-xr-x  3 root root      4096 2013-03-20 22:17 ./EFI
 drwxr-xr-x  2 root root      4096 2024-08-04 14:29 ./EFI/BOOT
 -rw-r--r--  1 root root   1200128 2024-06-23 18:50 ./EFI/BOOT/bootx64.efi
@@ -25,9 +25,9 @@ drwxr-xr-x  2 root root      4096 2024-08-04 14:29 ./EFI/BOOT
 -rwxr-xr-x  1 root root      2504 2019-07-05 18:54 ./EFI/BOOT/make-grub.sh
 -rw-r--r--  1 root root     10722 2013-09-21 19:02 ./EFI/BOOT/osdetect.cfg
 -rw-r--r--  1 root root      1273 2013-08-12 21:08 ./EFI/BOOT/tools.cfg
--rw-r--r--  1 root root   1514946 2024-08-07 04:09 ./FILELIST.TXT
+-rw-r--r--  1 root root   1514744 2024-08-07 18:23 ./FILELIST.TXT
 -rw-r--r--  1 root root      1572 2012-08-29 18:27 ./GPG-KEY
--rw-r--r--  1 root root    914784 2024-08-07 18:23 ./PACKAGES.TXT
+-rw-r--r--  1 root root    914784 2024-08-09 03:42 ./PACKAGES.TXT
 -rw-r--r--  1 root root      8034 2022-02-02 03:36 ./README.TXT
 -rw-r--r--  1 root root      3629 2024-08-04 14:17 ./README.initrd
 -rw-r--r--  1 root root     34114 2023-12-11 20:35 ./README_CRYPT.TXT
@@ -662,13 +662,13 @@ drwxr-xr-x  2 root root      4096 2022-02-03 07:02 ./patches
 -rw-r--r--  1 root root       575 2022-02-03 07:02 ./patches/FILE_LIST
 -rw-r--r--  1 root root        14 2022-02-03 07:02 ./patches/MANIFEST.bz2
 -rw-r--r--  1 root root       224 2022-02-03 07:02 ./patches/PACKAGES.TXT
-drwxr-xr-x 17 root root      4096 2024-08-07 18:23 ./slackware64
--rw-r--r--  1 root root    356752 2024-08-07 18:23 ./slackware64/CHECKSUMS.md5
--rw-r--r--  1 root root       195 2024-08-07 18:23 ./slackware64/CHECKSUMS.md5.asc
--rw-r--r--  1 root root    441769 2024-08-07 18:22 ./slackware64/FILE_LIST
--rw-r--r--  1 root root   4722421 2024-08-07 18:22 ./slackware64/MANIFEST.bz2
+drwxr-xr-x 17 root root      4096 2024-08-09 03:42 ./slackware64
+-rw-r--r--  1 root root    356752 2024-08-09 03:42 ./slackware64/CHECKSUMS.md5
+-rw-r--r--  1 root root       195 2024-08-09 03:42 ./slackware64/CHECKSUMS.md5.asc
+-rw-r--r--  1 root root    441769 2024-08-09 03:41 ./slackware64/FILE_LIST
+-rw-r--r--  1 root root   4724644 2024-08-09 03:41 ./slackware64/MANIFEST.bz2
 lrwxrwxrwx  1 root root        15 2009-08-23 23:34 ./slackware64/PACKAGES.TXT -> ../PACKAGES.TXT
-drwxr-xr-x  2 root root     32768 2024-08-07 18:22 ./slackware64/a
+drwxr-xr-x  2 root root     32768 2024-08-09 03:41 ./slackware64/a
 -rw-r--r--  1 root root       327 2022-02-15 18:16 ./slackware64/a/aaa_base-15.1-x86_64-2.txt
 -rw-r--r--  1 root root     10720 2022-02-15 18:16 ./slackware64/a/aaa_base-15.1-x86_64-2.txz
 -rw-r--r--  1 root root       163 2022-02-15 18:16 ./slackware64/a/aaa_base-15.1-x86_64-2.txz.asc
@@ -762,9 +762,9 @@ drwxr-xr-x  2 root root     32768 2024-08-07 18:22 ./slackware64/a
 -rw-r--r--  1 root root       510 2023-10-06 19:30 ./slackware64/a/eudev-3.2.14-x86_64-1.txt
 -rw-r--r--  1 root root   1225420 2023-10-06 19:30 ./slackware64/a/eudev-3.2.14-x86_64-1.txz
 -rw-r--r--  1 root root       163 2023-10-06 19:30 ./slackware64/a/eudev-3.2.14-x86_64-1.txz.asc
--rw-r--r--  1 root root       456 2024-06-17 17:02 ./slackware64/a/exfatprogs-1.2.4-x86_64-1.txt
--rw-r--r--  1 root root     63712 2024-06-17 17:02 ./slackware64/a/exfatprogs-1.2.4-x86_64-1.txz
--rw-r--r--  1 root root       195 2024-06-17 17:02 ./slackware64/a/exfatprogs-1.2.4-x86_64-1.txz.asc
+-rw-r--r--  1 root root       456 2024-08-09 00:21 ./slackware64/a/exfatprogs-1.2.5-x86_64-1.txt
+-rw-r--r--  1 root root     63976 2024-08-09 00:21 ./slackware64/a/exfatprogs-1.2.5-x86_64-1.txz
+-rw-r--r--  1 root root       195 2024-08-09 00:21 ./slackware64/a/exfatprogs-1.2.5-x86_64-1.txz.asc
 -rw-r--r--  1 root root       541 2023-09-14 17:34 ./slackware64/a/f2fs-tools-1.16.0-x86_64-2.txt
 -rw-r--r--  1 root root    207736 2023-09-14 17:34 ./slackware64/a/f2fs-tools-1.16.0-x86_64-2.txz
 -rw-r--r--  1 root root       163 2023-09-14 17:34 ./slackware64/a/f2fs-tools-1.16.0-x86_64-2.txz.asc
@@ -1058,7 +1058,7 @@ drwxr-xr-x  2 root root     32768 2024-08-07 18:22 ./slackware64/a
 -rw-r--r--  1 root root       540 2024-01-15 21:54 ./slackware64/a/zoo-2.10_28-x86_64-1.txt
 -rw-r--r--  1 root root     55448 2024-01-15 21:54 ./slackware64/a/zoo-2.10_28-x86_64-1.txz
 -rw-r--r--  1 root root       163 2024-01-15 21:54 ./slackware64/a/zoo-2.10_28-x86_64-1.txz.asc
-drwxr-xr-x  2 root root     20480 2024-08-05 21:33 ./slackware64/ap
+drwxr-xr-x  2 root root     20480 2024-08-09 03:41 ./slackware64/ap
 -rw-r--r--  1 root root       291 2024-03-14 19:01 ./slackware64/ap/a2ps-4.15.6-x86_64-1.txt
 -rw-r--r--  1 root root    675492 2024-03-14 19:01 ./slackware64/ap/a2ps-4.15.6-x86_64-1.txz
 -rw-r--r--  1 root root       195 2024-03-14 19:01 ./slackware64/ap/a2ps-4.15.6-x86_64-1.txz.asc
@@ -1213,9 +1213,9 @@ drwxr-xr-x  2 root root     20480 2024-08-05 21:33 ./slackware64/ap
 -rw-r--r--  1 root root       376 2022-08-05 17:52 ./slackware64/ap/most-5.2.0-x86_64-1.txt
 -rw-r--r--  1 root root     50452 2022-08-05 17:52 ./slackware64/ap/most-5.2.0-x86_64-1.txz
 -rw-r--r--  1 root root       163 2022-08-05 17:52 ./slackware64/ap/most-5.2.0-x86_64-1.txz.asc
--rw-r--r--  1 root root       331 2024-07-24 18:16 ./slackware64/ap/mpg123-1.32.6-x86_64-2.txt
--rw-r--r--  1 root root    497972 2024-07-24 18:16 ./slackware64/ap/mpg123-1.32.6-x86_64-2.txz
--rw-r--r--  1 root root       195 2024-07-24 18:16 ./slackware64/ap/mpg123-1.32.6-x86_64-2.txz.asc
+-rw-r--r--  1 root root       331 2024-08-09 00:24 ./slackware64/ap/mpg123-1.32.7-x86_64-1.txt
+-rw-r--r--  1 root root    497988 2024-08-09 00:24 ./slackware64/ap/mpg123-1.32.7-x86_64-1.txz
+-rw-r--r--  1 root root       195 2024-08-09 00:24 ./slackware64/ap/mpg123-1.32.7-x86_64-1.txz.asc
 -rw-r--r--  1 root root       430 2024-07-12 17:11 ./slackware64/ap/nano-8.1-x86_64-1.txt
 -rw-r--r--  1 root root    623588 2024-07-12 17:11 ./slackware64/ap/nano-8.1-x86_64-1.txz
 -rw-r--r--  1 root root       195 2024-07-12 17:11 ./slackware64/ap/nano-8.1-x86_64-1.txz.asc
@@ -1325,7 +1325,7 @@ drwxr-xr-x  2 root root     20480 2024-08-05 21:33 ./slackware64/ap
 -rw-r--r--  1 root root       506 2022-05-15 17:09 ./slackware64/ap/zsh-5.9-x86_64-1.txt
 -rw-r--r--  1 root root   3156392 2022-05-15 17:09 ./slackware64/ap/zsh-5.9-x86_64-1.txz
 -rw-r--r--  1 root root       163 2022-05-15 17:09 ./slackware64/ap/zsh-5.9-x86_64-1.txz.asc
-drwxr-xr-x  2 root root     20480 2024-08-05 21:33 ./slackware64/d
+drwxr-xr-x  2 root root     20480 2024-08-09 03:41 ./slackware64/d
 -rw-r--r--  1 root root       360 2024-08-05 18:02 ./slackware64/d/Cython-3.0.11-x86_64-1.txt
 -rw-r--r--  1 root root   4374784 2024-08-05 18:02 ./slackware64/d/Cython-3.0.11-x86_64-1.txz
 -rw-r--r--  1 root root       195 2024-08-05 18:02 ./slackware64/d/Cython-3.0.11-x86_64-1.txz.asc
@@ -1377,9 +1377,9 @@ drwxr-xr-x  2 root root     20480 2024-08-05 21:33 ./slackware64/d
 -rw-r--r--  1 root root       481 2024-03-29 04:33 ./slackware64/d/distcc-3.4-x86_64-5.txt
 -rw-r--r--  1 root root    351876 2024-03-29 04:33 ./slackware64/d/distcc-3.4-x86_64-5.txz
 -rw-r--r--  1 root root       195 2024-03-29 04:33 ./slackware64/d/distcc-3.4-x86_64-5.txz.asc
--rw-r--r--  1 root root       543 2024-05-20 17:22 ./slackware64/d/doxygen-1.11.0-x86_64-1.txt
--rw-r--r--  1 root root  10526796 2024-05-20 17:22 ./slackware64/d/doxygen-1.11.0-x86_64-1.txz
--rw-r--r--  1 root root       195 2024-05-20 17:22 ./slackware64/d/doxygen-1.11.0-x86_64-1.txz.asc
+-rw-r--r--  1 root root       543 2024-08-09 00:19 ./slackware64/d/doxygen-1.12.0-x86_64-1.txt
+-rw-r--r--  1 root root  10453088 2024-08-09 00:19 ./slackware64/d/doxygen-1.12.0-x86_64-1.txz
+-rw-r--r--  1 root root       195 2024-08-09 00:19 ./slackware64/d/doxygen-1.12.0-x86_64-1.txz.asc
 -rw-r--r--  1 root root       371 2021-02-13 09:16 ./slackware64/d/flex-2.6.4-x86_64-5.txt
 -rw-r--r--  1 root root    282436 2021-02-13 09:16 ./slackware64/d/flex-2.6.4-x86_64-5.txz
 -rw-r--r--  1 root root       163 2021-02-13 09:16 ./slackware64/d/flex-2.6.4-x86_64-5.txz.asc
@@ -1540,9 +1540,9 @@ drwxr-xr-x  2 root root     20480 2024-08-05 21:33 ./slackware64/d
 -rw-r--r--  1 root root       386 2024-07-22 03:05 ./slackware64/d/ruby-3.3.4-x86_64-2.txt
 -rw-r--r--  1 root root   9386540 2024-07-22 03:05 ./slackware64/d/ruby-3.3.4-x86_64-2.txz
 -rw-r--r--  1 root root       195 2024-07-22 03:05 ./slackware64/d/ruby-3.3.4-x86_64-2.txz.asc
--rw-r--r--  1 root root       426 2024-07-25 18:49 ./slackware64/d/rust-1.80.0-x86_64-1.txt
--rw-r--r--  1 root root 112531916 2024-07-25 18:49 ./slackware64/d/rust-1.80.0-x86_64-1.txz
--rw-r--r--  1 root root       195 2024-07-25 18:49 ./slackware64/d/rust-1.80.0-x86_64-1.txz.asc
+-rw-r--r--  1 root root       426 2024-08-09 01:17 ./slackware64/d/rust-1.80.0-x86_64-2.txt
+-rw-r--r--  1 root root 119602800 2024-08-09 01:17 ./slackware64/d/rust-1.80.0-x86_64-2.txz
+-rw-r--r--  1 root root       195 2024-08-09 01:17 ./slackware64/d/rust-1.80.0-x86_64-2.txz.asc
 -rw-r--r--  1 root root       352 2024-07-22 18:15 ./slackware64/d/rust-bindgen-0.69.4-x86_64-2.txt
 -rw-r--r--  1 root root   1699788 2024-07-22 18:15 ./slackware64/d/rust-bindgen-0.69.4-x86_64-2.txz
 -rw-r--r--  1 root root       195 2024-07-22 18:15 ./slackware64/d/rust-bindgen-0.69.4-x86_64-2.txz.asc
@@ -5798,11 +5798,11 @@ drwxr-xr-x   2 root root      4096 2024-05-05 18:37 ./slackware64/y
 -rw-r--r--   1 root root   1488844 2024-05-05 17:22 ./slackware64/y/nethack-3.6.7-x86_64-2.txz
 -rw-r--r--   1 root root       195 2024-05-05 17:22 ./slackware64/y/nethack-3.6.7-x86_64-2.txz.asc
 -rw-r--r--   1 root root        26 2020-12-30 21:55 ./slackware64/y/tagfile
-drwxr-xr-x  18 root root      4096 2024-08-07 18:23 ./source
--rw-r--r--   1 root root    624480 2024-08-07 18:23 ./source/CHECKSUMS.md5
--rw-r--r--   1 root root       195 2024-08-07 18:23 ./source/CHECKSUMS.md5.asc
--rw-r--r--   1 root root    870353 2024-08-07 18:23 ./source/FILE_LIST
--rw-r--r--   1 root root  29983559 2024-08-07 18:23 ./source/MANIFEST.bz2
+drwxr-xr-x  18 root root      4096 2024-08-09 03:43 ./source
+-rw-r--r--   1 root root    624480 2024-08-09 03:43 ./source/CHECKSUMS.md5
+-rw-r--r--   1 root root       195 2024-08-09 03:43 ./source/CHECKSUMS.md5.asc
+-rw-r--r--   1 root root    870353 2024-08-09 03:42 ./source/FILE_LIST
+-rw-r--r--   1 root root  29969457 2024-08-09 03:42 ./source/MANIFEST.bz2
 -rw-r--r--   1 root root       828 2022-02-02 04:43 ./source/README.TXT
 drwxr-xr-x 124 root root      4096 2024-08-06 17:35 ./source/a
 -rw-r--r--   1 root root       339 2023-09-28 19:06 ./source/a/FTBFSlog
@@ -6131,9 +6131,9 @@ drwxr-xr-x   2 root root      4096 2015-11-17 02:56 ./source/a/eudev/config/rule
 -rw-r--r--   1 root root       269 2023-05-16 18:19 ./source/a/eudev/eudev.no.renderD.diff.gz
 -rw-r--r--   1 root root       367 2023-05-17 17:46 ./source/a/eudev/eudev.no.sgx.diff.gz
 -rw-r--r--   1 root root       965 2018-02-27 06:13 ./source/a/eudev/slack-desc
-drwxr-xr-x   2 root root      4096 2024-06-17 17:02 ./source/a/exfatprogs
--rw-r--r--   1 root root    140101 2024-06-17 06:36 ./source/a/exfatprogs/exfatprogs-1.2.4.tar.lz
--rwxr-xr-x   1 root root      4105 2022-09-06 18:27 ./source/a/exfatprogs/exfatprogs.SlackBuild
+drwxr-xr-x   2 root root      4096 2024-08-09 00:21 ./source/a/exfatprogs
+-rw-r--r--   1 root root    143764 2024-08-06 14:34 ./source/a/exfatprogs/exfatprogs-1.2.5.tar.lz
+-rwxr-xr-x   1 root root      3891 2024-08-09 00:21 ./source/a/exfatprogs/exfatprogs.SlackBuild
 -rw-r--r--   1 root root        41 2024-05-23 17:28 ./source/a/exfatprogs/exfatprogs.url
 -rw-r--r--   1 root root       914 2021-01-01 20:39 ./source/a/exfatprogs/slack-desc
 drwxr-xr-x   2 root root      4096 2023-04-12 18:58 ./source/a/f2fs-tools
@@ -6640,13 +6640,13 @@ drwxr-xr-x   2 root root      4096 2019-10-04 06:20 ./source/a/pkgtools/manpages
 -rw-r--r--   1 root root      4140 2023-05-14 16:45 ./source/a/pkgtools/manpages/removepkg.8
 -rw-r--r--   1 root root      3048 2023-05-14 16:46 ./source/a/pkgtools/manpages/upgradepkg.8
 -rwxr-xr-x   1 root root      3754 2024-02-24 18:03 ./source/a/pkgtools/pkgtools.SlackBuild
-drwxr-xr-x   2 root root      4096 2024-02-23 01:13 ./source/a/pkgtools/scripts
+drwxr-xr-x   2 root root      4096 2024-08-09 02:48 ./source/a/pkgtools/scripts
 -rw-r--r--   1 root root      3610 2021-04-24 18:44 ./source/a/pkgtools/scripts/explodepkg
--rw-r--r--   1 root root     28925 2023-05-14 16:41 ./source/a/pkgtools/scripts/installpkg
+-rw-r--r--   1 root root     28449 2024-08-09 02:48 ./source/a/pkgtools/scripts/installpkg
 -rw-r--r--   1 root root     13674 2021-04-24 18:44 ./source/a/pkgtools/scripts/makebootdisk
 -rw-r--r--   1 root root     16119 2023-07-26 18:43 ./source/a/pkgtools/scripts/makepkg
 -rw-r--r--   1 root root      4714 2021-04-24 18:44 ./source/a/pkgtools/scripts/pkgdiff
--rw-r--r--   1 root root     21938 2023-09-02 17:01 ./source/a/pkgtools/scripts/pkgtool
+-rw-r--r--   1 root root     21899 2024-08-09 02:48 ./source/a/pkgtools/scripts/pkgtool
 -rw-r--r--   1 root root     17145 2023-05-14 16:42 ./source/a/pkgtools/scripts/removepkg
 -rw-r--r--   1 root root       170 2003-02-16 00:56 ./source/a/pkgtools/scripts/setup.70.install-kernel
 -rw-r--r--   1 root root      9168 2022-09-07 18:19 ./source/a/pkgtools/scripts/setup.80.make-bootdisk
@@ -7312,9 +7312,9 @@ drwxr-xr-x   2 root root      4096 2022-08-05 17:52 ./source/ap/most
 -rwxr-xr-x   1 root root      3334 2022-08-05 17:52 ./source/ap/most/most.SlackBuild
 -rw-r--r--   1 root root        39 2019-03-06 19:02 ./source/ap/most/most.url
 -rw-r--r--   1 root root       828 2018-02-27 06:12 ./source/ap/most/slack-desc
-drwxr-xr-x   2 root root      4096 2024-07-24 18:11 ./source/ap/mpg123
--rw-r--r--   1 root root    920065 2024-04-04 17:54 ./source/ap/mpg123/mpg123-1.32.6.tar.lz
--rwxr-xr-x   1 root root      6269 2024-07-24 18:14 ./source/ap/mpg123/mpg123.SlackBuild
+drwxr-xr-x   2 root root      4096 2024-08-09 00:24 ./source/ap/mpg123
+-rw-r--r--   1 root root    920543 2024-08-08 06:45 ./source/ap/mpg123/mpg123-1.32.7.tar.lz
+-rwxr-xr-x   1 root root      6269 2024-08-09 00:24 ./source/ap/mpg123/mpg123.SlackBuild
 -rw-r--r--   1 root root       250 2021-09-18 19:47 ./source/ap/mpg123/mpg123.lib64.diff.gz
 -rw-r--r--   1 root root        27 2019-08-26 18:16 ./source/ap/mpg123/mpg123.url
 -rw-r--r--   1 root root       785 2018-02-27 06:12 ./source/ap/mpg123/slack-desc
@@ -7701,10 +7701,10 @@ drwxr-xr-x   2 root root      4096 2024-03-29 03:06 ./source/d/distcc
 -rw-r--r--   1 root root        33 2018-03-10 19:45 ./source/d/distcc/distcc.url
 -rw-r--r--   1 root root       295 2013-03-31 22:26 ./source/d/distcc/doinst.sh.gz
 -rw-r--r--   1 root root       935 2018-02-27 06:13 ./source/d/distcc/slack-desc
-drwxr-xr-x   2 root root      4096 2024-05-20 17:19 ./source/d/doxygen
--rw-r--r--   1 root root   5133984 2024-05-20 09:23 ./source/d/doxygen/doxygen-1.11.0.src.tar.lz
--rwxr-xr-x   1 root root      4517 2022-08-27 00:56 ./source/d/doxygen/doxygen.SlackBuild
--rw-r--r--   1 root root        92 2024-05-20 17:19 ./source/d/doxygen/doxygen.url
+drwxr-xr-x   2 root root      4096 2024-08-08 19:17 ./source/d/doxygen
+-rw-r--r--   1 root root   5158781 2024-08-07 08:31 ./source/d/doxygen/doxygen-1.12.0.src.tar.lz
+-rwxr-xr-x   1 root root      4461 2024-08-08 19:17 ./source/d/doxygen/doxygen.SlackBuild
+-rw-r--r--   1 root root        92 2024-08-08 19:16 ./source/d/doxygen/doxygen.url
 -rw-r--r--   1 root root       998 2021-03-12 19:59 ./source/d/doxygen/slack-desc
 drwxr-xr-x   2 root root      4096 2021-02-13 05:31 ./source/d/flex
 -rw-r--r--   1 root root    843138 2017-05-06 20:50 ./source/d/flex/flex-2.6.4.tar.lz
@@ -7983,7 +7983,7 @@ drwxr-xr-x   2 root root      4096 2024-07-09 17:32 ./source/d/ruby
 -rw-r--r--   1 root root  15906058 2024-07-09 00:27 ./source/d/ruby/ruby-3.3.4.tar.lz
 -rwxr-xr-x   1 root root      4550 2024-07-21 22:50 ./source/d/ruby/ruby.SlackBuild
 -rw-r--r--   1 root root       838 2024-01-31 01:32 ./source/d/ruby/slack-desc
-drwxr-xr-x   2 root root      4096 2024-07-25 17:45 ./source/d/rust
+drwxr-xr-x   2 root root      4096 2024-08-09 00:27 ./source/d/rust
 drwxr-xr-x   2 root root      4096 2024-02-04 19:06 ./source/d/rust-bindgen
 -rw-r--r--   1 root root   2417095 2024-02-04 19:05 ./source/d/rust-bindgen/cargo-rust-bindgen-0.69.4.tar.lz
 -rwxr-xr-x   1 root root       898 2024-02-04 19:05 ./source/d/rust-bindgen/fetch-sources.sh
@@ -7992,7 +7992,7 @@ drwxr-xr-x   2 root root      4096 2024-02-04 19:06 ./source/d/rust-bindgen
 -rw-r--r--   1 root root       844 2022-12-07 17:56 ./source/d/rust-bindgen/slack-desc
 -rw-r--r--   1 root root       944 2024-04-03 16:29 ./source/d/rust/0004-compiler-Use-wasm-ld-for-wasm-targets.patch
 -rw-r--r--   1 root root       261 2020-11-19 19:46 ./source/d/rust/link_libffi.diff.gz
--rwxr-xr-x   1 root root     10619 2024-07-25 17:40 ./source/d/rust/rust.SlackBuild
+-rwxr-xr-x   1 root root     10724 2024-08-09 00:27 ./source/d/rust/rust.SlackBuild
 -rw-r--r--   1 root root      1665 2024-07-25 17:45 ./source/d/rust/rust.url
 -rw-r--r--   1 root root 206030821 2024-07-25 12:01 ./source/d/rust/rustc-1.80.0-src.tar.lz
 -rw-r--r--   1 root root       910 2018-02-27 06:49 ./source/d/rust/slack-desc

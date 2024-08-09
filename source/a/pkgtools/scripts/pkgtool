@@ -165,7 +165,7 @@ tail -f $TMP/PKGTOOL.REMOVED\n" 13 60
 
 create_list_of_installed_packages()
 {
-    	FILES=$(ls $ADM_DIR/packages)
+	FILES=$(ls $ADM_DIR/packages)
       if [ -n "$FILES" ]; then
       cd $ADM_DIR/packages
       { grep '^PACKAGE DESCRIPTION:$' -Z -H -m1 -A1 $FILES; echo; } \
@@ -182,7 +182,7 @@ FILES=$(ls $ADM_DIR/packages)
        cd $ADM_DIR/packages
        { grep '^PACKAGE DESCRIPTION:$' -Z -H -m1 -A1 $FILES; echo; } \
        | sed -n 'h;n;/\x00/{h;n;};x;s/  */ /g;s/ $//;s/[\"`$]/\\&/g
-           s/\(.*\)\x00\([^:]*:\)\? *\(.*\)/ "\1" "\3" off "Select\/Unselect removing package \1" \\/;p' > $TMP/temporary_list \
+	   s/\(.*\)\x00\([^:]*:\)\? *\(.*\)/ "\1" "\3" off "Select\/Unselect removing package \1" \\/;p' > $TMP/temporary_list \
      
    fi
 }
@@ -241,7 +241,7 @@ are done selecting to run the scripts." 0 0 9 \' > $TMP/setupscr
     for script in $ADM_DIR/setup/setup.* ; do
       BLURB=$(grep '#BLURB' $script | cut -b8-)
       if [ "$BLURB" = "" ]; then
-        BLURB="\"\""
+	BLURB="\"\""
       fi
       echo " \"$(basename $script | cut -f2- -d .)\" $BLURB \"no\" $BLURB \\" >> $TMP/setupscr 
     done
@@ -250,8 +250,8 @@ are done selecting to run the scripts." 0 0 9 \' > $TMP/setupscr
     if [ ! "$(cat $TMP/return)" = "" ]; then
       # Run each script:
       for script in $(cat $TMP/return) ; do
-        scrpath=$ADM_DIR/setup/setup.$(echo $script | tr -d \")
-        ( COLOR=on ; cd $TARGET_DIR ; . $scrpath $TARGET_DIR $rootdevice )
+	scrpath=$ADM_DIR/setup/setup.$(echo $script | tr -d \")
+	( COLOR=on ; cd $TARGET_DIR ; . $scrpath $TARGET_DIR $rootdevice )
       done
     fi
     rm -f $TMP/return $TMP/setupscr
@@ -640,7 +640,7 @@ install_disk_set() { # accepts one argument: the series name in lowercase.
   fi
   install_disk $DISKTOINSTALL
   if [ ! $? = 0 ]; then # install.end was found, or the user chose
-        # to quit installing packages.
+	# to quit installing packages.
    return 0;
   fi
   CURRENT_DISK_NUMBER=$(expr $CURRENT_DISK_NUMBER + 1)

@@ -1,3 +1,14 @@
+Fri Aug  9 03:39:11 UTC 2024
+a/exfatprogs-1.2.5-x86_64-1.txz:  Upgraded.
+ap/mpg123-1.32.7-x86_64-1.txz:  Upgraded.
+d/doxygen-1.12.0-x86_64-1.txz:  Upgraded.
+d/rust-1.80.0-x86_64-2.txz:  Rebuilt.
+  profiler = true
+  sanitizers = true
+  Needed to compile Chromium. Thanks to alienBOB.
+  locked-deps = true
+  Don't try to download updated dependencies.
++--------------------------+
 Wed Aug  7 18:19:56 UTC 2024
 a/hwdata-0.385-noarch-1.txz:  Upgraded.
 l/python-PyYAML-6.0.2-x86_64-1.txz:  Upgraded.
