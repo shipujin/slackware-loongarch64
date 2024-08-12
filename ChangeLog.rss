@@ -11,9 +11,36 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Sun, 11 Aug 2024 19:00:08 GMT</pubDate>
-      <lastBuildDate>Sun, 11 Aug 2024 20:16:47 GMT</lastBuildDate>
+      <pubDate>Mon, 12 Aug 2024 18:41:11 GMT</pubDate>
+      <lastBuildDate>Mon, 12 Aug 2024 19:02:15 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Mon, 12 Aug 2024 18:41:11 GMT</title>
+         <pubDate>Mon, 12 Aug 2024 18:41:11 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240812184111</link>
+         <guid isPermaLink="false">20240812184111</guid>
+         <description>
+           <![CDATA[<pre>
+d/cbindgen-0.26.0-x86_64-3.txz:  Rebuilt.
+  Revert this until FF/TB are patched. Thanks to Lenard Spencer.
+l/M2Crypto-0.42.0-x86_64-1.txz:  Upgraded.
+l/libedit-20240808_3.1-x86_64-1.txz:  Upgraded.
+l/python-lxml-5.3.0-x86_64-1.txz:  Upgraded.
+l/python-zipp-3.20.0-x86_64-1.txz:  Upgraded.
+xap/ddd-3.4.1-x86_64-1.txz:  Upgraded.
+xap/pan-0.160-x86_64-1.txz:  Upgraded.
+testing/packages/aaa_glibc-solibs-2.40-x86_64-2.txz:  Added.
+testing/packages/glibc-2.40-x86_64-2.txz:  Added.
+  Let's test building with -fno-omit-frame-pointer and
+  -mno-omit-leaf-frame-pointer added to the CFLAGS (thanks alienBOB),
+  and --enable-multi-arch added to the configure options as suggested
+  by iive. Hopefully they will test and report if these changes fix
+  the reported stability issues when running Steam.
+testing/packages/glibc-i18n-2.40-x86_64-2.txz:  Added.
+testing/packages/glibc-profile-2.40-x86_64-2.txz:  Added.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Sun, 11 Aug 2024 19:00:08 GMT</title>
          <pubDate>Sun, 11 Aug 2024 19:00:08 GMT</pubDate>

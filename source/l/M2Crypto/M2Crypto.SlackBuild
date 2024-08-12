@@ -24,13 +24,14 @@
 cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=M2Crypto
-VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-BUILD=${BUILD:-2}
+SRCNAM=m2crypto
+VERSION=${VERSION:-$(echo $SRCNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
-    i?86) export ARCH=i586 ;;
+    i?86) export ARCH=i686 ;;
     arm*) export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
        *) export ARCH=$( uname -m ) ;;
@@ -51,9 +52,9 @@ PKG=${PKG:-$TMP/package-M2Crypto}
 rm -rf $PKG 
 mkdir -p $TMP $PKG
 cd $TMP
-rm -rf M2Crypto-$VERSION
-tar xvf $CWD/M2Crypto-$VERSION.tar.?z || exit 1
-cd M2Crypto-$VERSION || exit 1
+rm -rf $SRCNAM-$VERSION
+tar xvf $CWD/$SRCNAM-$VERSION.tar.?z || exit 1
+cd $SRCNAM-$VERSION || exit 1
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \

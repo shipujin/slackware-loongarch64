@@ -71,6 +71,21 @@ setzone()
 # value is stored.
 writeconf()
 {
+   # First, we need to make sure that /etc/adjtime won't override this choice:
+   if [ "$1" = "localtime" ]; then
+cat > $T_PX/etc/adjtime << "EOF"
+0.0 0 0.0
+0
+LOCAL
+EOF
+   else
+cat > $T_PX/etc/adjtime << "EOF"
+0.0 0 0.0
+0
+UTC
+EOF
+   fi
+   # Next write out the $HWCLOCK_CONF file:
    echo "# /etc/hardwareclock" > $HWCLOCK_CONF
    echo "#" >> $HWCLOCK_CONF
    echo "# Tells how the hardware clock time is stored." >> $HWCLOCK_CONF

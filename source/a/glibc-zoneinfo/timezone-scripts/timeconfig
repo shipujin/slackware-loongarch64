@@ -6,6 +6,7 @@
 # Modified by:  David Cantrell <david@slackware.com>, 06-Oct-2000
 #
 # ChangeLog:
+# 2024-08-11:   Updated timezones from tzdata2024a. <pjv>
 # 2019-09-11:   Updated timezones from tzdata2019c. <pjv>
 # 2014-10-22:   Updated timezones from tzdata2014i. <pjv>
 # 2012-12-12:   Updated timezones from tzdata2012j. <pjv>
@@ -71,6 +72,21 @@ setzone()
 # value is stored.
 writeconf()
 {
+   # First, we need to make sure that /etc/adjtime won't override this choice:
+   if [ "$1" = "localtime" ]; then
+cat > $T_PX/etc/adjtime << "EOF"
+0.0 0 0.0
+0
+LOCAL
+EOF
+   else
+cat > $T_PX/etc/adjtime << "EOF"
+0.0 0 0.0
+0
+UTC
+EOF
+   fi
+   # Next write out the $HWCLOCK_CONF file:
    echo "# /etc/hardwareclock" > $HWCLOCK_CONF
    echo "#" >> $HWCLOCK_CONF
    echo "# Tells how the hardware clock time is stored." >> $HWCLOCK_CONF
@@ -237,6 +253,7 @@ if [ "$COLOR" = "on" -o -r $TMP/SeTcolor -o "$T_PX" = "/" ]; then
 "America/Cayman" " " \
 "America/Chicago" " " \
 "America/Chihuahua" " " \
+"America/Ciudad_Juarez" " " \
 "America/Coral_Harbour" " " \
 "America/Cordoba" " " \
 "America/Costa_Rica" " " \
@@ -591,6 +608,7 @@ if [ "$COLOR" = "on" -o -r $TMP/SeTcolor -o "$T_PX" = "/" ]; then
 "Europe/Kaliningrad" " " \
 "Europe/Kiev" " " \
 "Europe/Kirov" " " \
+"Europe/Kyiv" " " \
 "Europe/Lisbon" " " \
 "Europe/Ljubljana" " " \
 "Europe/London" " " \
@@ -686,6 +704,7 @@ if [ "$COLOR" = "on" -o -r $TMP/SeTcolor -o "$T_PX" = "/" ]; then
 "Pacific/Guam" " " \
 "Pacific/Honolulu" " " \
 "Pacific/Johnston" " " \
+"Pacific/Kanton" " " \
 "Pacific/Kiritimati" " " \
 "Pacific/Kosrae" " " \
 "Pacific/Kwajalein" " " \
@@ -859,6 +878,7 @@ America/Cayenne
 America/Cayman
 America/Chicago
 America/Chihuahua
+America/Ciudad_Juarez
 America/Coral_Harbour
 America/Cordoba
 America/Costa_Rica
@@ -1213,6 +1233,7 @@ Europe/Jersey
 Europe/Kaliningrad
 Europe/Kiev
 Europe/Kirov
+Europe/Kyiv
 Europe/Lisbon
 Europe/Ljubljana
 Europe/London
@@ -1308,6 +1329,7 @@ Pacific/Guadalcanal
 Pacific/Guam
 Pacific/Honolulu
 Pacific/Johnston
+Pacific/Kanton
 Pacific/Kiritimati
 Pacific/Kosrae
 Pacific/Kwajalein

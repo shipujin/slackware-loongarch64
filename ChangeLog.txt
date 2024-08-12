@@ -1,3 +1,22 @@
+Mon Aug 12 18:41:11 UTC 2024
+d/cbindgen-0.26.0-x86_64-3.txz:  Rebuilt.
+  Revert this until FF/TB are patched. Thanks to Lenard Spencer.
+l/M2Crypto-0.42.0-x86_64-1.txz:  Upgraded.
+l/libedit-20240808_3.1-x86_64-1.txz:  Upgraded.
+l/python-lxml-5.3.0-x86_64-1.txz:  Upgraded.
+l/python-zipp-3.20.0-x86_64-1.txz:  Upgraded.
+xap/ddd-3.4.1-x86_64-1.txz:  Upgraded.
+xap/pan-0.160-x86_64-1.txz:  Upgraded.
+testing/packages/aaa_glibc-solibs-2.40-x86_64-2.txz:  Added.
+testing/packages/glibc-2.40-x86_64-2.txz:  Added.
+  Let's test building with -fno-omit-frame-pointer and
+  -mno-omit-leaf-frame-pointer added to the CFLAGS (thanks alienBOB),
+  and --enable-multi-arch added to the configure options as suggested
+  by iive. Hopefully they will test and report if these changes fix
+  the reported stability issues when running Steam.
+testing/packages/glibc-i18n-2.40-x86_64-2.txz:  Added.
+testing/packages/glibc-profile-2.40-x86_64-2.txz:  Added.
++--------------------------+
 Sun Aug 11 19:00:08 UTC 2024
 a/kernel-firmware-20240809_5946007-noarch-1.txz:  Upgraded.
 a/kernel-generic-6.10.4-x86_64-1.txz:  Upgraded.
