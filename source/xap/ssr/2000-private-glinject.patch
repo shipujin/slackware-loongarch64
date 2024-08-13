@@ -1,0 +1,40 @@
+From: James Cowgill <jcowgill@debian.org>
+Date: Fri, 14 Aug 2020 13:34:36 +0100
+Subject: Load libssr-glinject.so from private libdir
+
+The libssr-glinject.so library is not a public library. debian/rules sets the
+libdir to a private path, while this patch adjusts the uses of LD_PRELOAD to
+load from the correct directory.
+Author: James Cowgill <jcowgill@debian.org>
+---
+ scripts/ssr-glinject           | 5 +++--
+ src/AV/Input/GLInjectInput.cpp | 2 +-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/scripts/ssr-glinject b/scripts/ssr-glinject
+index 2320690..cca58f3 100755
+--- a/scripts/ssr-glinject
++++ b/scripts/ssr-glinject
+@@ -59,6 +59,7 @@ do
+ 	fi
+ done
+ 
+-echo "ssr-glinject: LD_PRELOAD = $LD_PRELOAD:libssr-glinject.so" >& 2 || true
++SSR_GLINJECT="/usr/\$LIB/simplescreenrecorder/libssr-glinject.so"
++echo "ssr-glinject: LD_PRELOAD = $LD_PRELOAD:$SSR_GLINJECT" >& 2 || true
+ echo "ssr-glinject: command = $@" >& 2 || true
+-LD_PRELOAD="$LD_PRELOAD:libssr-glinject.so" exec "$@"
++LD_PRELOAD="$LD_PRELOAD:$SSR_GLINJECT" exec "$@"
+diff --git a/src/AV/Input/GLInjectInput.cpp b/src/AV/Input/GLInjectInput.cpp
+index fc98f31..1aee8ad 100644
+--- a/src/AV/Input/GLInjectInput.cpp
++++ b/src/AV/Input/GLInjectInput.cpp
+@@ -207,7 +207,7 @@ void GLInjectInput::SetCapturing(bool capturing) {
+ bool GLInjectInput::LaunchApplication(const QString& channel, bool relax_permissions, const QString& command, const QString& working_directory) {
+ 
+ 	// prepare command
+-	QString full_command = "LD_PRELOAD=\"libssr-glinject.so\" ";
++	QString full_command = "LD_PRELOAD=\"/usr/" + ShellEscape("$LIB") + "/simplescreenrecorder/libssr-glinject.so\" ";
+ 	full_command += "SSR_CHANNEL=\"" + ShellEscape(channel) + "\" ";
+ 	if(relax_permissions)
+ 		full_command += "SSR_STREAM_RELAX_PERMISSIONS=1 ";

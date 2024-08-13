@@ -32,7 +32,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=qt6
 VERSION=$(ls qt-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
-BUILD=${BUILD:-4}
+BUILD=${BUILD:-5}
 PKGSRC=$(echo $VERSION | cut -d - -f 1)
 PKGVER=$(echo $VERSION | tr - _)
 
@@ -148,6 +148,11 @@ cat $CWD/patches/nodejs-allow-32bit.patch | patch -p1 --verbose || exit 1
 # Patch header issue that causes the compile to fail with "x11 not defined"
 pushd qtwebengine
   cat $CWD/patches/qtwebengine-6.7.0-displaykey-header.patch | patch -p1 --verbose || exit 1
+popd
+
+# Fix build with ffmpeg-7:
+pushd qtwebengine/src/3rdparty/chromium
+  cat $CWD/patches/qtwebengine-ffmpeg-7.patch | patch -p1 --verbose || exit 1
 popd
 
 # Fix for building with recent ninja:

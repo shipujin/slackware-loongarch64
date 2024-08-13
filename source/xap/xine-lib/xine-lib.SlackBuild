@@ -32,12 +32,12 @@ DIRVER=1.2.13
 # Version used for the Slackware package
 PKGVER=1.2.13
 
-BUILD=${BUILD:-7}
+BUILD=${BUILD:-8}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
-    i?86) export ARCH=i586 ;;
+    i?86) export ARCH=i686 ;;
     arm*) export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
        *) export ARCH=$( uname -m ) ;;
@@ -51,7 +51,7 @@ NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
 if [ "$ARCH" = "x86_64" ]; then
   LIBDIRSUFFIX="64"
   FFARCHOPTS="--arch=x86_64 --enable-pic"
-elif [ "$ARCH" = "i586" ]; then
+elif [ "$ARCH" = "i686" ]; then
   LIBDIRSUFFIX=""
   # 32bit x86 fails without this... let me know if you have a fix
   FFARCHOPTS="--disable-asm"
@@ -92,6 +92,13 @@ find . \
 
 # Fix build with binutils 2.39:
 sed '/xine_set_flags/s/XINE_PROTECTED//' -i include/xine.h
+
+cat $CWD/xine-lib-1.2.13-ffmpeg6-compatibility.patch | patch -p1 --verbose || exit 1
+cat $CWD/xine-lib-1.2.13-ffmpeg6-compatibility_2.patch | patch -p1 --verbose || exit 1
+cat $CWD/xine-lib-1.2.13-ffmpeg7-compatibility.patch | patch -p1 --verbose || exit 1
+cat $CWD/xine-lib-configure-c99.patch | patch -p1 --verbose || exit 1
+
+autoreconf -vif || exit 1
 
 XINE_BUILD=$TARGET \
 ./configure \

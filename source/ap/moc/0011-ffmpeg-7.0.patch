@@ -1,0 +1,37 @@
+--- ./decoder_plugins/ffmpeg/ffmpeg.m4.orig	2022-10-09 12:44:06.000000000 -0500
++++ ./decoder_plugins/ffmpeg/ffmpeg.m4	2024-08-07 21:13:42.693200094 -0500
+@@ -44,7 +44,7 @@
+ 		LIBS="$LIBS $ffmpeg_LIBS"
+ 		AC_CHECK_MEMBERS([struct AVProbeData.mime_type], [], [],
+ 	                     [#include <libavformat/avformat.h>])
+-		AC_CHECK_HEADERS([libavutil/channel_layout.h])
++		AC_CHECK_HEADERS([libavutil/ch_layout.h])
+ 		AC_SEARCH_LIBS(av_packet_alloc, avcodec,
+ 			[AC_DEFINE([HAVE_AV_PACKET_FNS], 1,
+ 				[Define to 1 if you have the `av_packet_*' functions.])])
+--- ./decoder_plugins/ffmpeg/ffmpeg.c.orig	2022-10-09 12:44:06.000000000 -0500
++++ ./decoder_plugins/ffmpeg/ffmpeg.c	2024-08-07 21:14:12.958229068 -0500
+@@ -35,9 +35,7 @@
+ #include <libavformat/avformat.h>
+ #include <libavutil/mathematics.h>
+ #if HAVE_LIBAVUTIL_CHANNEL_LAYOUT_H
+-# include <libavutil/channel_layout.h>
+-#else
+-# include <libavutil/audioconvert.h>
++# include <libavutil/ch_layout.h>
+ #endif
+ 
+ /* FFmpeg also likes common names, without that, our common.h and log.h
+@@ -561,10 +559,10 @@
+ /* Downmix multi-channel audios to stereo. */
+ static void set_downmixing (struct ffmpeg_data *data)
+ {
+-	if (av_get_channel_layout_nb_channels (data->enc->channel_layout) <= 2)
++	if (av_get_ch_layout_nb_channels (data->enc->ch_layout) <= 2)
+ 		return;
+ 
+-	data->enc->request_channel_layout = AV_CH_LAYOUT_STEREO;
++	data->enc->request_ch_layout = AV_CH_LAYOUT_STEREO;
+ }
+ 
+ static int ffmpeg_io_read_cb (void *s, uint8_t *buf, int count)

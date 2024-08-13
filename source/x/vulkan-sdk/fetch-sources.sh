@@ -164,8 +164,8 @@ rm -f *.fetched
 # recent one.
 if [ "$(tar tf shaderc-*.tar.lz | wc -l)" -lt "7" ]; then
   rm shaderc-*.tar.*
-  lftpget https://github.com/google/shaderc/archive/refs/tags/v2023.8.tar.gz  
-  mv v2023.8.tar.gz shaderc-2023.8.tar.gz
-  gzip -d shaderc-2023.8.tar.gz
-  plzip -9 shaderc-2023.8.tar
+  lftpget https://github.com/google/shaderc/archive/refs/tags/v2024.1.tar.gz  
+  mv v2024.1.tar.gz shaderc-2024.1.tar.gz
+  gzip -d shaderc-2024.1.tar.gz
+  plzip -9 shaderc-2024.1.tar
 fi

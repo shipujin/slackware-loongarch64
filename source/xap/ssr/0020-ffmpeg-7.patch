@@ -1,0 +1,54 @@
+Description: Fixes for ffmpeg 7.0
+ The FF_API_OLD_CHANNEL_LAYOUT api was removed in ffmpeg-7.0 so
+ src/AV/Output/AudioEncoder.cpp and src/AV/Output/Synchronizer.cpp fail to
+ compile. Fix this while remaining compatible with older ffmpeg versions.
+Forwarded: https://github.com/MaartenBaert/ssr/pull/1031
+Origin: https://github.com/MaartenBaert/ssr/pull/1031
+Last-Updated: 2024-05-08
+---
+Index: simplescreenrecorder-salsa/src/AV/Output/AudioEncoder.cpp
+===================================================================
+--- simplescreenrecorder-salsa.orig/src/AV/Output/AudioEncoder.cpp	2024-05-08 08:58:55.973284904 +0200
++++ simplescreenrecorder-salsa/src/AV/Output/AudioEncoder.cpp	2024-05-08 08:58:55.969284862 +0200
+@@ -69,7 +69,11 @@
+ }
+ 
+ unsigned int AudioEncoder::GetChannels() {
++#if LIBAVCODEC_VERSION_MAJOR < 61
+ 	return GetCodecContext()->channels;
++#else
++	return GetCodecContext()->ch_layout.nb_channels;
++#endif
+ }
+ 
+ unsigned int AudioEncoder::GetSampleRate() {
+@@ -106,8 +110,13 @@
+ 	}
+ 
+ 	codec_context->bit_rate = bit_rate;
++#if LIBAVCODEC_VERSION_MAJOR < 61
+ 	codec_context->channels = channels;
+ 	codec_context->channel_layout = (channels == 1)? AV_CH_LAYOUT_MONO : AV_CH_LAYOUT_STEREO;
++#else
++	codec_context->ch_layout.nb_channels = channels;
++	codec_context->ch_layout.u.mask = (channels == 1)? AV_CH_LAYOUT_MONO : AV_CH_LAYOUT_STEREO;
++#endif
+ 	codec_context->sample_rate = sample_rate;
+ 	codec_context->time_base.num = 1;
+ 	codec_context->time_base.den = sample_rate;
+Index: simplescreenrecorder-salsa/src/AV/Output/Synchronizer.cpp
+===================================================================
+--- simplescreenrecorder-salsa.orig/src/AV/Output/Synchronizer.cpp	2024-05-08 08:58:55.973284904 +0200
++++ simplescreenrecorder-salsa/src/AV/Output/Synchronizer.cpp	2024-05-08 08:58:55.969284862 +0200
+@@ -180,7 +180,11 @@
+ 	frame->GetFrame()->nb_samples = samples;
+ #endif
+ #if SSR_USE_AVFRAME_CHANNELS
++#if LIBAVCODEC_VERSION_MAJOR < 61
+ 	frame->GetFrame()->channels = channels;
++#else
++	frame->GetFrame()->ch_layout.nb_channels = channels;
++#endif
+ #endif
+ #if SSR_USE_AVFRAME_SAMPLE_RATE
+ 	frame->GetFrame()->sample_rate = sample_rate;

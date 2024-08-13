@@ -1,0 +1,2 @@
+cat $CWD/patch/k3b/712ef4adc992fd848dfd769f346f87216029c285.patch | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+cat $CWD/patch/k3b/071535a79c3d2b074163cbb0881117a995ed17cd.patch | patch -p1 --verbose || { touch ${SLACK_KDE_BUILD_DIR}/${PKGNAME}.failed ; continue ; }

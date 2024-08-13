@@ -207,13 +207,6 @@ find -L . \
 # Restore missing function needed by Chromium and qt-webengine:
 zcat $CWD/add-av_stream_get_first_dts-for-chromium.patch.gz | patch -p1 --verbose || exit 1
 
-# Build against recent Vulkan:
-zcat $CWD/ffmpeg.vulkan.diff.gz | patch -p1 --verbose || exit 1
-
-# Work with recent Mesa:
-zcat $CWD/FFmpeg-devel-v2-1-2-lavc-vaapi_decode-Make-it-possible-to-send-multiple-slice-params-buffers.patch.gz | patch -p1 --verbose || exit 1
-zcat $CWD/FFmpeg-devel-v2-2-2-lavc-vaapi_av1-Avoid-sending-the-same-slice-buffer-multiple-times.patch.gz | patch -p1 --verbose || exit 1
-
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \

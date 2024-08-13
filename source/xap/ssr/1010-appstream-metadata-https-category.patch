@@ -1,0 +1,87 @@
+Description: Corrected and renamed XDG desktop entry and Appstream metainfo XML.
+    Adjusted based on feedback from the Appstream validator (appstreamcli
+    validate-tree).  Changed metainfo ID and file names to use reverse DNS
+    notation.  Added categories, homepage URL and icon reference to the
+    metainfo file.  Changed URLs to SSL secured variants.
+Author: Petter Reinholdtsen <pere@hungry.com>
+Forwarded: https://github.com/MaartenBaert/ssr/pull/1032
+Reviewed-By: Petter Reinholdtsen <pere@hungry.com>
+Last-Updated: 2024-05-08
+---
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d2b2937..ec41ef9 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -88,11 +88,11 @@ if(WITH_SIMPLESCREENRECORDER)
+ 		DESTINATION ${CMAKE_INSTALL_FULL_MANDIR}/man1
+ 	)
+ 	install(
+-		FILES data/simplescreenrecorder.desktop
++		FILES data/be.maartenbaert.simplescreenrecorder.desktop
+ 		DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/applications
+ 	)
+ 	install(
+-		FILES data/simplescreenrecorder.metainfo.xml
++		FILES data/be.maartenbaert.simplescreenrecorder.metainfo.xml
+ 		DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/metainfo
+ 	)
+ 
+diff --git a/data/simplescreenrecorder.desktop b/data/be.maartenbaert.simplescreenrecorder.desktop
+similarity index 100%
+rename from data/simplescreenrecorder.desktop
+rename to data/be.maartenbaert.simplescreenrecorder.desktop
+diff --git a/data/simplescreenrecorder.metainfo.xml b/data/be.maartenbaert.simplescreenrecorder.metainfo.xml
+similarity index 60%
+rename from data/simplescreenrecorder.metainfo.xml
+rename to data/be.maartenbaert.simplescreenrecorder.metainfo.xml
+index 03d38a2..bbbbc2d 100644
+--- a/data/simplescreenrecorder.metainfo.xml
++++ b/data/be.maartenbaert.simplescreenrecorder.metainfo.xml
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <component type="desktop">
+-	<id>simplescreenrecorder.desktop</id>
++	<id>be.maartenbaert.simplescreenrecorder</id>
+ 	<metadata_license>CC0-1.0</metadata_license>
+ 	<project_license>GPL-3.0+</project_license>
+ 	<name>SimpleScreenRecorder</name>
+@@ -15,19 +15,33 @@
+ 			<li>Can also do live streaming (experimental).</li>
+ 		</ul>
+ 	</description>
++
++	<categories>
++		<category>AudioVideo</category>
++		<category>Video</category>
++		<category>Recorder</category>
++		<category>Qt</category>
++	</categories>
++
++	<launchable type="desktop-id">be.maartenbaert.simplescreenrecorder.desktop</launchable>
++	<icon type="stock">simplescreenrecorder</icon>
+ 	<screenshots>
+ 		<screenshot type="default">
+-			<image>http://files.maartenbaert.be/simplescreenrecorder/screenshot01.png</image>
++			<image>https://files.maartenbaert.be/simplescreenrecorder/screenshot01.png</image>
+ 			<caption>The input settings page</caption>
+ 		</screenshot>
+ 		<screenshot type="default">
+-			<image>http://files.maartenbaert.be/simplescreenrecorder/screenshot02.png</image>
++			<image>https://files.maartenbaert.be/simplescreenrecorder/screenshot02.png</image>
+ 			<caption>The output settings page</caption>
+ 		</screenshot>
+ 		<screenshot type="default">
+-			<image>http://files.maartenbaert.be/simplescreenrecorder/screenshot03.png</image>
++			<image>https://files.maartenbaert.be/simplescreenrecorder/screenshot03.png</image>
+ 			<caption>The recording page</caption>
+ 		</screenshot>
+ 	</screenshots>
+-	<url type="homepage">http://www.maartenbaert.be/simplescreenrecorder/</url>
+-</component>
+\ No newline at end of file
++	<url type="homepage">https://www.maartenbaert.be/simplescreenrecorder/</url>
++	<content_rating type="oars-1.0">
++	  <content_attribute id="social-audio">intense</content_attribute>
++	  <content_attribute id="social-contacts">intense</content_attribute>
++	</content_rating>
++</component>

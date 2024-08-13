@@ -11,9 +11,85 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Mon, 12 Aug 2024 18:41:11 GMT</pubDate>
-      <lastBuildDate>Mon, 12 Aug 2024 19:02:15 GMT</lastBuildDate>
+      <pubDate>Tue, 13 Aug 2024 20:33:27 GMT</pubDate>
+      <lastBuildDate>Tue, 13 Aug 2024 21:09:14 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Tue, 13 Aug 2024 20:33:27 GMT</title>
+         <pubDate>Tue, 13 Aug 2024 20:33:27 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240813203327</link>
+         <guid isPermaLink="false">20240813203327</guid>
+         <description>
+           <![CDATA[<pre>
+ap/moc-2.6_alpha3-x86_64-4.txz:  Rebuilt.
+  The ffmpeg7 patch isn't 100% there, so rebuild without the ffmpeg plugin.
+ap/sqlite-3.46.1-x86_64-1.txz:  Upgraded.
+kde/digikam-8.4.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+kde/ffmpegthumbs-23.08.5-x86_64-2.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+kde/k3b-23.08.5-x86_64-2.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+kde/kfilemetadata-5.116.0-x86_64-6.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+kde/kpipewire-5.27.11-x86_64-2.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+l/alsa-plugins-1.2.12-x86_64-2.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+l/ffmpeg-7.0.2-x86_64-1.txz:  Upgraded.
+  Shared library .so-version bump.
+  Compiled against vulkan-sdk-1.3.290.0.
+l/freetype-2.13.3-x86_64-1.txz:  Upgraded.
+l/gegl-0.4.48-x86_64-2.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+l/gst-plugins-bad-free-1.24.6-x86_64-2.txz:  Rebuilt.
+  Recompiled against vulkan-sdk-1.3.290.0.
+l/gst-plugins-libav-1.24.6-x86_64-2.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+l/gtk4-4.14.4-x86_64-2.txz:  Rebuilt.
+  Recompiled against vulkan-sdk-1.3.290.0.
+l/libplacebo-7.349.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against vulkan-sdk-1.3.290.0.
+l/mlt-7.24.0-x86_64-3.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+l/opencv-4.10.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+l/pipewire-1.2.2-x86_64-2.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+  Recompiled against vulkan-sdk-1.3.290.0.
+l/qt5-5.15.14_20240716_ae0c8451-x86_64-2.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+l/qt6-6.7.2_20240610_3f005f1e-x86_64-5.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+l/spirv-llvm-translator-18.1.3-x86_64-2.txz:  Rebuilt.
+  Recompiled against vulkan-sdk-1.3.290.0.
+x/fcitx5-gtk-5.1.3-x86_64-2.txz:  Rebuilt.
+  Recompiled against vulkan-sdk-1.3.290.0.
+x/ibus-1.5.30-x86_64-2.txz:  Rebuilt.
+  Recompiled against vulkan-sdk-1.3.290.0.
+x/mesa-24.1.5-x86_64-2.txz:  Rebuilt.
+  Recompiled against vulkan-sdk-1.3.290.0.
+x/vulkan-sdk-1.3.290.0-x86_64-1.txz:  Upgraded.
+xap/MPlayer-20240812-x86_64-1.txz:  Upgraded.
+  Recompiled against ffmpeg-7.0.2.
+xap/audacious-plugins-4.4-x86_64-3.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+xap/ffmpegthumbnailer-2.2.2-x86_64-6.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+xap/freerdp-2.11.7-x86_64-2.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+xap/mpv-0.38.0-x86_64-5.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+  Recompiled against vulkan-sdk-1.3.290.0.
+xap/ssr-0.4.4-x86_64-3.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+xap/xine-lib-1.2.13-x86_64-8.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+xap/xscreensaver-6.09-x86_64-2.txz:  Rebuilt.
+  Recompiled against ffmpeg-7.0.2.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Mon, 12 Aug 2024 18:41:11 GMT</title>
          <pubDate>Mon, 12 Aug 2024 18:41:11 GMT</pubDate>

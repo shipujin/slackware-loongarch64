@@ -791,10 +791,7 @@ gzip ./source/l/sdl/SDL_ttf.shaded.text.diff
 gzip ./source/l/sdl/SDL_mixer.usrlocal.diff
 gzip ./source/l/sdl/libsdl-1.2.15-resizing.patch
 gzip ./source/l/adwaita-icon-theme/doinst.sh
-gzip ./source/l/ffmpeg/FFmpeg-devel-v2-2-2-lavc-vaapi_av1-Avoid-sending-the-same-slice-buffer-multiple-times.patch
-gzip ./source/l/ffmpeg/ffmpeg.vulkan.diff
 gzip ./source/l/ffmpeg/add-av_stream_get_first_dts-for-chromium.patch
-gzip ./source/l/ffmpeg/FFmpeg-devel-v2-1-2-lavc-vaapi_decode-Make-it-possible-to-send-multiple-slice-params-buffers.patch
 gzip ./source/l/svgalib/svgalib-1.9.25-kernel-2.6.26.diff
 gzip ./source/l/svgalib/svgalib-1.9.25-round_gtf_gtfcalc_c.patch
 gzip ./source/l/svgalib/svgalib.nohelper.diff
@@ -858,6 +855,7 @@ gzip ./source/l/qt5/patches/qtwebengine.ninja1.12.patch
 gzip ./source/l/qt5/patches/qt5-webengine-gcc12.patch
 gzip ./source/l/qt5/patches/qt5-qtwebsockets-gcc11.patch
 gzip ./source/l/qt5/patches/qt5.qtbase_cmake_isystem_includes.patch
+gzip ./source/l/qt5/patches/qt5-webengine-ffmpeg7.patch
 gzip ./source/l/qt5/patches/qt5.mysql.h.diff
 gzip ./source/l/qt5/patches/qt5-qtwebengine-gcc11.patch
 gzip ./source/l/qt5/doinst.sh
@@ -931,7 +929,6 @@ gzip ./source/xap/fluxbox/fluxbox.startfluxbox.dbus.diff
 gzip ./source/xap/fluxbox/fluxbox.gcc11.patch
 gzip ./source/xap/network-manager-applet/doinst.sh
 gzip ./source/xap/MPlayer/include-samba-4.0.patch
-gzip ./source/xap/MPlayer/po_charset.patch
 gzip ./source/xap/xlockmore/xlockmore.bitmap.diff
 gzip ./source/xap/xlockmore/doinst.sh
 gzip ./source/xap/xsane/xsane-0.999-7-autoconf.patch
@@ -974,7 +971,6 @@ gzip ./source/xap/easytag/easytag.revert.ogg.handle.patch
 gzip ./source/xap/easytag/easytag.no.freedb.musicbrainz.org.diff
 gzip ./source/xap/easytag/doinst.sh
 gzip ./source/xap/gkrellm/gkrellm.theme.defaults.diff
-gzip ./source/xap/ssr/0003-Fix-build-with-ffmpeg-5.0.patch
 gzip ./source/xap/ssr/doinst.sh
 gzip ./source/xap/pidgin/fix-gmain_h-compile-error.diff
 gzip ./source/xap/pidgin/doinst.sh

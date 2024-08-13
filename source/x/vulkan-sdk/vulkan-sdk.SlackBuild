@@ -27,7 +27,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 PKGNAM=vulkan-sdk
 # The ./VERSION file is created by ./fetch-sources.sh:
 VERSION=${VERSION:-$(cat VERSION)}
-BUILD=${BUILD:-3}
+BUILD=${BUILD:-1}
 
 # Choose a compiler (gcc/g++ or clang/clang++ if you'd like to debug that ;-)
 export CC=${CC:-gcc}
@@ -58,15 +58,9 @@ NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
 if [ "$ARCH" = "i686" ]; then
   SLKCFLAGS="-O2 -march=pentium4 -mtune=generic"
   LIBDIRSUFFIX=""
-elif [ "$ARCH" = "s390" ]; then
-  SLKCFLAGS="-O2"
-  LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -march=x86-64 -mtune=generic -fPIC"
   LIBDIRSUFFIX="64"
-elif [ "$ARCH" = "armv7hl" ]; then
-  SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
-  LIBDIRSUFFIX=""
 else
   SLKCFLAGS="-O2"
   LIBDIRSUFFIX=""
@@ -209,17 +203,15 @@ find . \
   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \+
 
-mkdir -p build
-cd build
-cmake \
+cmake -G Ninja -B build \
   -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
   -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
   -DCMAKE_INSTALL_PREFIX=/usr\
   -DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
   -DCMAKE_BUILD_TYPE=Release \
-  ..
-make $NUMJOBS || make || exit 1
-make install DESTDIR=$PKG || exit 1
+  . || exit 1
+cmake --build build || exit 1
+DESTDIR=$PKG cmake --install build || exit 1
 
 cd $TMP
 tar xvf $CWD/Vulkan-Loader-vulkan-sdk-$VULKAN_LOADER_VERSION.tar.?z || exit 1
@@ -510,9 +502,6 @@ find . \
   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \+
 
-# Use python3:
-cat $CWD/shaderc-2023.8.python3.patch | patch -p1 --verbose || exit 1
-
 # Report correct versions in `glslc --version`
 # git describe output collected in fetch-sources.sh
 sed -i "s|\['git', 'describe'\]|\['cat', '.git-version'\]|" \
@@ -713,35 +702,6 @@ cd build
   make install DESTDIR=$PKG || exit 1
 
 cd $TMP
-tar xvf $CWD/VulkanCapsViewer-$VULKAN_CAPS_VIEWER_VERSION.tar.?z || exit 1
-cd $TMP/VulkanCapsViewer-$VULKAN_CAPS_VIEWER_VERSION
-
-# Fix finding Vulkan-Loader
-sed -i "s|/lib/|/lib$LIBDIRSUFFIX/|g" CMakeLists.txt
-
-chown -R root:root .
-find . \
-  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
-  -exec chmod 755 {} \+ -o \
-  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
-  -exec chmod 644 {} \+
-
-mkdir -p build
-cd build
-  cmake \
-    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_SYSCONFDIR=/usr/share \
-    -DVULKAN_LOADER_INSTALL_DIR=$PKG/usr \
-    -DVULKAN_HEADERS_INSTALL_DIR=$PKG/usr \
-    ..
-
-  make $NUMJOBS || make || exit 1
-  make install DESTDIR=$PKG || exit 1
-
-cd $TMP
 tar xvf $CWD/VulkanMemoryAllocator-$VULKAN_MEMORY_ALLOCATOR_VERSION.tar.?z || exit 1
 cd $TMP/VulkanMemoryAllocator-$VULKAN_MEMORY_ALLOCATOR_VERSION
 
@@ -772,6 +732,48 @@ cd build
 
   make $NUMJOBS || make || exit 1
   make install DESTDIR=$PKG || exit 1
+
+cd $TMP
+tar xvf $CWD/VulkanCapsViewer-$VULKAN_CAPS_VIEWER_VERSION.tar.?z || exit 1
+cd $TMP/VulkanCapsViewer-$VULKAN_CAPS_VIEWER_VERSION
+
+# Fix finding Vulkan-Loader
+sed -i "s|/lib/|/lib$LIBDIRSUFFIX/|g" CMakeLists.txt
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+mkdir build-x11
+cd build-x11
+qmake-qt5 .. \
+  DEFINES+=X11 \
+  CONFIG+=release \
+  PREFIX=/usr || exit 1
+  make $NUMJOBS || exit 1
+  make INSTALL_ROOT=$PKG install || exit 1
+  mv $PKG/usr/bin/vulkanCapsViewer $PKG/usr/bin/vulkanCapsViewer-x11
+cd ..
+ 
+
+mkdir build-wayland
+cd build-wayland
+qmake-qt5 .. \
+  DEFINES+=WAYLAND \
+  CONFIG+=release \
+  PREFIX=/usr || exit 1
+  make $NUMJOBS || exit 1
+  make INSTALL_ROOT=$PKG install || exit 1
+  mv $PKG/usr/bin/vulkanCapsViewer $PKG/usr/bin/vulkanCapsViewer-wayland
+cd ..
+
+ln -sf vulkanCapsViewer-x11 $PKG/usr/bin/vulkanCapsViewer
+
+mkdir -p $PKG/usr/share/icons/hicolor/256x256/apps
+cp -a gfx/android_icon_256.png $PKG/usr/share/icons/hicolor/256x256/apps/vulkanCapsViewer.png || exit 1
 
 cd $TMP
 

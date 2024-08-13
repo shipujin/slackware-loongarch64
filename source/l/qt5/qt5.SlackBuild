@@ -31,7 +31,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=qt5
 VERSION=$(ls qt-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 PKGSRC=$(echo $VERSION | cut -d - -f 1)
 PKGVER=$(echo $VERSION | tr - _)
 
@@ -57,20 +57,8 @@ if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
   exit 0
 fi
 
-if [ "$ARCH" = "i486" ]; then
-  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
-  SLKLDFLAGS=""
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "i586" ]; then
-  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
-  SLKLDFLAGS=""
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "i686" ]; then
+if [ "$ARCH" = "i686" ]; then
   SLKCFLAGS="-O2 -march=pentium4 -mtune=generic"
-  SLKLDFLAGS=""
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "s390" ]; then
-  SLKCFLAGS="-O2"
   SLKLDFLAGS=""
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
@@ -78,13 +66,6 @@ elif [ "$ARCH" = "x86_64" ]; then
   SLKLDFLAGS=""
   SLKLDFLAGS="-L/usr/lib64"
   LIBDIRSUFFIX="64"
-elif [ "$ARCH" = "armv7hl" ]; then
-  # To prevent "qatomic_armv6.h error: output number 2 not directly addressable"
-  # More permanent solution is to patch gcc:
-  # http://bazaar.launchpad.net/~linaro-toolchain-dev/gcc-linaro/4.6/revision/106731
-  SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16 -fno-strict-volatile-bitfields"
-  SLKLDFLAGS=""
-  LIBDIRSUFFIX=""
 else
   SLKCFLAGS="-O2"
   SLKLDFLAGS=""
@@ -147,6 +128,11 @@ cd - 1>/dev/null
 # Fix build with ffmpeg-5:
 cd qtwebengine/src/3rdparty
   zcat $CWD/patches/qt5-webengine-ffmpeg5.patch.gz | patch -p1 --verbose || exit 1
+cd - 1>/dev/null
+
+# Fix build with ffmpeg-7:
+cd qtwebengine/src/3rdparty/chromium
+  zcat $CWD/patches/qt5-webengine-ffmpeg7.patch.gz | patch -p1 --verbose || exit 1
 cd - 1>/dev/null
 
 # Fix build with recent ninja:

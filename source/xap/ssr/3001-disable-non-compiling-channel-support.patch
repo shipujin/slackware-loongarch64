@@ -1,0 +1,11 @@
+--- ./src/Global.h.orig	2021-05-24 13:56:32.000000000 -0500
++++ ./src/Global.h	2024-08-08 14:26:28.198920359 -0500
+@@ -284,7 +284,7 @@
+ // AV_CODEC_ID_* instead of CODEC_ID_*: lavc 54.51.100 / 54.25.0
+ #define SSR_USE_AV_CODEC_ID                        TEST_AV_VERSION(LIBAVCODEC, 54, 51, 54, 25)
+ // AVFrame::channels: lavc 54.46.100 / ???
+-#define SSR_USE_AVFRAME_CHANNELS                   TEST_AV_VERSION(LIBAVCODEC, 54, 46, 999, 999)
++#define SSR_USE_AVFRAME_CHANNELS                   TEST_AV_VERSION(LIBAVCODEC, 62, 0, 62, 0)
+ // AVFrame::sample_rate: lavc 54.20.100 / 54.13.0
+ #define SSR_USE_AVFRAME_SAMPLE_RATE                TEST_AV_VERSION(LIBAVCODEC, 54, 20, 54, 13)
+ // av_codec_is_encoder: lavc 54.8.100 / 54.7.0

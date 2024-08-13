@@ -1,0 +1,2349 @@
+From 83b8f9f5d9c9ab06152657e57f85b6f71954a6b9 Mon Sep 17 00:00:00 2001
+From: Maarten Baert <maarten-baert@hotmail.com>
+Date: Sun, 1 May 2022 22:48:24 +0200
+Bug: https://github.com/MaartenBaert/ssr/issues/947
+Bug-Debian: https://bugs.debian.org/1040375
+Forwarded: not-needed
+Origin: https://github.com/MaartenBaert/ssr/commit/83b8f9f5d9c9ab06152657e57f85b6f71954a6b9
+Last-Updated: 2024-05-07
+Subject: [PATCH] Switch to PLT hooks to make GLInject work with new
+ dlopen/dlsym in libc
+
+---
+ data/resources/about.htm |   4 +-
+ glinject/CMakeLists.txt  |   4 +-
+ glinject/Hook.cpp        | 425 ++++++++++----------
+ glinject/ShmStructs.h    |   2 +
+ glinject/elfhacks.c      | 611 -----------------------------
+ glinject/elfhacks.h      | 213 ----------
+ glinject/plthook.h       |  67 ++++
+ glinject/plthook_elf.c   | 821 +++++++++++++++++++++++++++++++++++++++
+ src/GUI/PageWelcome.cpp  |   4 +-
+ 9 files changed, 1091 insertions(+), 1060 deletions(-)
+ delete mode 100644 glinject/elfhacks.c
+ delete mode 100644 glinject/elfhacks.h
+ create mode 100644 glinject/plthook.h
+ create mode 100644 glinject/plthook_elf.c
+
+Index: simplescreenrecorder-salsa/data/resources/about.htm
+===================================================================
+--- simplescreenrecorder-salsa.orig/data/resources/about.htm	2024-05-07 08:50:15.918773109 +0200
++++ simplescreenrecorder-salsa/data/resources/about.htm	2024-05-07 08:50:15.910773036 +0200
+@@ -21,8 +21,8 @@
+ <p>%USES%</p>
+ <ul>
+ <li>%USES_QT%
+-<li>%USES_LIBAV_FFMPEG%
+-<li>%USES_ELFHACKS%
++<li>%USES_FFMPEG%
++<li>%USES_PLTHOOK%
+ </ul>
+ 
+ <p><i>%VERSIONINFO%</i></p>
+Index: simplescreenrecorder-salsa/glinject/CMakeLists.txt
+===================================================================
+--- simplescreenrecorder-salsa.orig/glinject/CMakeLists.txt	2024-05-07 08:50:15.918773109 +0200
++++ simplescreenrecorder-salsa/glinject/CMakeLists.txt	2024-05-07 08:50:15.910773036 +0200
+@@ -5,14 +5,14 @@
+ find_package(OpenGL REQUIRED)
+ 
+ set(sources
+-	elfhacks.c
+-	elfhacks.h
+ 	GLInject.cpp
+ 	GLInject.h
+ 	Global.h
+ 	GLXFrameGrabber.cpp
+ 	GLXFrameGrabber.h
+ 	Hook.cpp
++	plthook_elf.c
++	plthook.h
+ 	ShmStructs.h
+ 	SSRVideoStreamWriter.cpp
+ 	SSRVideoStreamWriter.h
+Index: simplescreenrecorder-salsa/glinject/Hook.cpp
+===================================================================
+--- simplescreenrecorder-salsa.orig/glinject/Hook.cpp	2024-05-07 08:50:15.918773109 +0200
++++ simplescreenrecorder-salsa/glinject/Hook.cpp	2024-05-07 08:50:15.910773036 +0200
+@@ -8,152 +8,130 @@
+ 
+ #include "Global.h"
+ 
+-#include "elfhacks.h"
+ #include "GLInject.h"
+ #include "GLXFrameGrabber.h"
++#include "plthook.h"
++
++#include <dlfcn.h>
++#include <link.h>
+ 
+ #include <GL/glx.h>
+ #include <X11/X.h>
+ 
++// global variable from the standard library that holds all environment variables
+ extern char **environ;
+ 
++// return type of glXGetProcAddressARB
+ typedef void (*GLXextFuncPtr)(void);
+ 
+-void InitGLInject();
+-void FreeGLInject();
++// hook replacement function prototypes
++void*         glinject_hook_dlsym(void* handle, const char* symbol);
++void*         glinject_hook_dlvsym(void* handle, const char* symbol, const char* version);
++int           glinject_hook_execl(const char* filename, const char* arg, ...);
++int           glinject_hook_execlp(const char* filename, const char* arg, ...);
++int           glinject_hook_execle(const char* filename, const char* arg, ...);
++int           glinject_hook_execv(const char* filename, char* const argv[]);
++int           glinject_hook_execve(const char* filename, char* const argv[], char* const envp[]);
++int           glinject_hook_execvp(const char* filename, char* const argv[]);
++int           glinject_hook_execvpe(const char* filename, char* const argv[], char* const envp[]);
++GLXWindow     glinject_hook_glXCreateWindow(Display* dpy, GLXFBConfig config, Window win, const int* attrib_list);
++void          glinject_hook_glXDestroyWindow(Display* dpy, GLXWindow win);
++int           glinject_hook_XDestroyWindow(Display* dpy, Window win);
++void          glinject_hook_glXSwapBuffers(Display* dpy, GLXDrawable drawable);
++GLXextFuncPtr glinject_hook_glXGetProcAddressARB(const GLubyte *proc_name);
+ 
+-GLXWindow glinject_my_glXCreateWindow(Display* dpy, GLXFBConfig config, Window win, const int* attrib_list);
+-void glinject_my_glXDestroyWindow(Display* dpy, GLXWindow win);
+-int glinject_my_XDestroyWindow(Display* dpy, Window win);
+-void glinject_my_glXSwapBuffers(Display* dpy, GLXDrawable drawable);
+-GLXextFuncPtr glinject_my_glXGetProcAddressARB(const GLubyte *proc_name);
+-int glinject_my_XNextEvent(Display* display, XEvent* event_return);
+-
+-void *(*g_glinject_real_dlsym)(void*, const char*) = NULL;
+-void *(*g_glinject_real_dlvsym)(void*, const char*, const char*) = NULL;
+-int (*g_glinject_real_execv)(const char*, char* const*) = NULL;
+-int (*g_glinject_real_execve)(const char*, char* const*, char* const*) = NULL;
+-int (*g_glinject_real_execvp)(const char*, char* const*) = NULL;
+-int (*g_glinject_real_execvpe)(const char*, char* const*, char* const*) = NULL;
+-GLXWindow (*g_glinject_real_glXCreateWindow)(Display*, GLXFBConfig, Window, const int*) = NULL;
+-void (*g_glinject_real_glXDestroyWindow)(Display*, GLXWindow) = NULL;
+-int (*g_glinject_real_XDestroyWindow)(Display*, Window) = NULL;
+-void (*g_glinject_real_glXSwapBuffers)(Display*, GLXDrawable) = NULL;
+-GLXextFuncPtr (*g_glinject_real_glXGetProcAddressARB)(const GLubyte*) = NULL;
+-int (*g_glinject_real_XNextEvent)(Display*, XEvent*) = NULL;
++// hook table
++struct GLInjectHook {
++	const char *name;
++	void *address;
++};
++std::initializer_list<GLInjectHook> glinject_hook_table = {
++	{"dlsym"               , (void*) &glinject_hook_dlsym},
++	{"dlvsym"              , (void*) &glinject_hook_dlvsym},
++	{"execl"               , (void*) &glinject_hook_execl},
++	{"execlp"              , (void*) &glinject_hook_execlp},
++	{"execle"              , (void*) &glinject_hook_execle},
++	{"execv"               , (void*) &glinject_hook_execv},
++	{"execve"              , (void*) &glinject_hook_execve},
++	{"execvp"              , (void*) &glinject_hook_execvp},
++	{"execvpe"             , (void*) &glinject_hook_execvpe},
++	{"glXCreateWindow"     , (void*) &glinject_hook_glXCreateWindow},
++	{"glXDestroyWindow"    , (void*) &glinject_hook_glXDestroyWindow},
++	{"XDestroyWindow"      , (void*) &glinject_hook_XDestroyWindow},
++	{"glXSwapBuffers"      , (void*) &glinject_hook_glXSwapBuffers},
++	{"glXGetProcAddressARB", (void*) &glinject_hook_glXGetProcAddressARB},
++};
+ 
++// main glinject object and mutex
+ static GLInject *g_glinject = NULL;
+ static std::mutex g_glinject_mutex;
+ 
+-void InitGLInject() {
+-	std::lock_guard<std::mutex> lock(g_glinject_mutex);
++// hook initializer
++static struct GLInjectHooksInitializer {
++	GLInjectHooksInitializer() {
++
++		// get the link table of the glinject library (we can use any global variable for this)
++		Dl_info glinject_dlinfo;
++		struct link_map *glinject_lmap = NULL;
++		if(dladdr1((void*) &glinject_hook_table, &glinject_dlinfo, (void**) &glinject_lmap, RTLD_DL_LINKMAP) == 0) {
++			GLINJECT_PRINT("Error: Failed to get link map of glinject library!");
++			return;
++		}
+ 
+-	if(g_glinject != NULL)
+-		return;
++		// replace PLT entries everywhere except in the glinject library
++		void *mainhandle = dlopen(NULL, RTLD_NOW);
++		if(mainhandle == NULL) {
++			GLINJECT_PRINT("Error: Failed to get main program handle!");
++			return;
++		}
++		struct link_map *lmap = NULL;
++		if(dlinfo(mainhandle, RTLD_DI_LINKMAP, &lmap) != 0) {
++			GLINJECT_PRINT("Error: Failed to get link map of main program!");
++			return;
++		}
++		while(lmap) {
++			if(lmap != glinject_lmap) {
++				plthook_t *plthook;
++				if(plthook_open_by_linkmap(&plthook, lmap) == 0) {
++					for(const GLInjectHook &hook : glinject_hook_table) {
++						void *oldfunc;
++						if(plthook_replace(plthook, hook.name, hook.address, &oldfunc) == 0) {
++							GLINJECT_PRINT("Hooked " << hook.name << " PLT entry in '" << lmap->l_name << "'.");
++						}
++					}
++					plthook_close(plthook);
++				}
++			}
++			lmap = lmap->l_next;
++		}
++		dlclose(mainhandle);
+ 
+-	// part 1: get dlsym and dlvsym
+-	eh_obj_t libdl;
+-	if(eh_find_obj(&libdl, "*/libdl.so*")) {
+-		GLINJECT_PRINT("Error: Can't open libdl.so!");
+-		exit(1);
+-	}
+-	if(eh_find_sym(&libdl, "dlsym", (void**) &g_glinject_real_dlsym)) {
+-		GLINJECT_PRINT("Error: Can't get dlsym address!");
+-		eh_destroy_obj(&libdl);
+-		exit(1);
+-	}
+-	if(eh_find_sym(&libdl, "dlvsym", (void**) &g_glinject_real_dlvsym)) {
+-		GLINJECT_PRINT("Error: Can't get dlvsym address!");
+-		eh_destroy_obj(&libdl);
+-		exit(1);
+-	}
+-	eh_destroy_obj(&libdl);
+-
+-	// part 2: get everything else
+-	g_glinject_real_execv = (int (*)(const char*, char* const*)) g_glinject_real_dlsym(RTLD_NEXT, "execv");
+-	if(g_glinject_real_execv == NULL) {
+-		GLINJECT_PRINT("Error: Can't get execv address!");
+-		exit(1);
+-	}
+-	g_glinject_real_execve = (int (*)(const char*, char* const*, char* const*)) g_glinject_real_dlsym(RTLD_NEXT, "execve");
+-	if(g_glinject_real_execve == NULL) {
+-		GLINJECT_PRINT("Error: Can't get execve address!");
+-		exit(1);
+-	}
+-	g_glinject_real_execvp = (int (*)(const char*, char* const*)) g_glinject_real_dlsym(RTLD_NEXT, "execvp");
+-	if(g_glinject_real_execvp == NULL) {
+-		GLINJECT_PRINT("Error: Can't get execvp address!");
+-		exit(1);
+-	}
+-	g_glinject_real_execvpe = (int (*)(const char*, char* const*, char* const*)) g_glinject_real_dlsym(RTLD_NEXT, "execvpe");
+-	if(g_glinject_real_execvpe == NULL) {
+-		GLINJECT_PRINT("Error: Can't get execvpe address!");
+-		exit(1);
+-	}
+-	g_glinject_real_glXCreateWindow = (GLXWindow (*)(Display*, GLXFBConfig, Window, const int*)) g_glinject_real_dlsym(RTLD_NEXT, "glXCreateWindow");
+-	if(g_glinject_real_glXCreateWindow == NULL) {
+-		GLINJECT_PRINT("Error: Can't get glXCreateWindow address!");
+-		exit(1);
+-	}
+-	g_glinject_real_glXDestroyWindow = (void (*)(Display*, GLXWindow)) g_glinject_real_dlsym(RTLD_NEXT, "glXDestroyWindow");
+-	if(g_glinject_real_glXDestroyWindow == NULL) {
+-		GLINJECT_PRINT("Error: Can't get glXDestroyWindow address!");
+-		exit(1);
+-	}
+-	g_glinject_real_XDestroyWindow = (int (*)(Display*, Window)) g_glinject_real_dlsym(RTLD_NEXT, "XDestroyWindow");
+-	if(g_glinject_real_XDestroyWindow == NULL) {
+-		GLINJECT_PRINT("Error: Can't get XDestroyWindow address!");
+-		exit(1);
+-	}
+-	g_glinject_real_glXSwapBuffers = (void (*)(Display*, GLXDrawable)) g_glinject_real_dlsym(RTLD_NEXT, "glXSwapBuffers");
+-	if(g_glinject_real_glXSwapBuffers == NULL) {
+-		GLINJECT_PRINT("Error: Can't get glXSwapBuffers address!");
+-		exit(1);
+-	}
+-	g_glinject_real_glXGetProcAddressARB = (GLXextFuncPtr (*)(const GLubyte*)) g_glinject_real_dlsym(RTLD_NEXT, "glXGetProcAddressARB");
+-	if(g_glinject_real_glXGetProcAddressARB == NULL) {
+-		GLINJECT_PRINT("Error: Can't get glXGetProcAddressARB address!");
+-		exit(1);
+-	}
+-	g_glinject_real_XNextEvent = (int (*)(Display*, XEvent*)) g_glinject_real_dlsym(RTLD_NEXT, "XNextEvent");
+-	if(g_glinject_real_XNextEvent == NULL) {
+-		GLINJECT_PRINT("Error: Can't get XNextEvent address!");
+-		exit(1);
+ 	}
++} glinject_hooks_initializer;
+ 
+-	g_glinject = new GLInject();
+-
+-	atexit(FreeGLInject);
++void GLInjectInit();
++void GLInjectFree();
+ 
++void GLInjectInit() {
++	if(g_glinject != NULL)
++		return;
++	g_glinject = new GLInject();
++	atexit(GLInjectFree);
+ }
+ 
+-void FreeGLInject() {
+-	std::lock_guard<std::mutex> lock(g_glinject_mutex);
++void GLInjectFree() {
+ 	if(g_glinject != NULL) {
+ 		delete g_glinject;
+ 		g_glinject = NULL;
+ 	}
+ }
+ 
+-struct Hook {
+-	const char *name;
+-	void *address;
+-};
+-static Hook hook_table[] = {
+-	{"glXCreateWindow"     , (void*) &glinject_my_glXCreateWindow},
+-	{"glXDestroyWindow"    , (void*) &glinject_my_glXDestroyWindow},
+-	{"XDestroyWindow"      , (void*) &glinject_my_XDestroyWindow},
+-	{"glXSwapBuffers"      , (void*) &glinject_my_glXSwapBuffers},
+-	{"glXGetProcAddressARB", (void*) &glinject_my_glXGetProcAddressARB},
+-	{"XNextEvent"          , (void*) &glinject_my_XNextEvent},
+-};
+-static const char* exec_blacklist[] = {
+-	"ping",
+-	"/bin/ping",
+-	"/usr/bin/ping",
+-};
+-
+ void FilterEnviron(const char* filename, std::vector<char*>* out, char* const* in) {
++	const char* exec_blacklist[] = {
++		"ping",
++		"/bin/ping",
++		"/usr/bin/ping",
++	};
+ 	bool filter = false;
+ 	for(unsigned int i = 0; i < sizeof(exec_blacklist) / sizeof(const char*); ++i) {
+ 		if(strcmp(exec_blacklist[i], filename) == 0) {
+@@ -169,90 +147,35 @@
+ 	out->push_back(NULL);
+ }
+ 
+-GLXWindow glinject_my_glXCreateWindow(Display* dpy, GLXFBConfig config, Window win, const int* attrib_list) {
+-	GLXWindow res = g_glinject_real_glXCreateWindow(dpy, config, win, attrib_list);
+-	if(res == 0)
+-		return 0;
+-	std::lock_guard<std::mutex> lock(g_glinject_mutex);
+-	g_glinject->NewGLXFrameGrabber(dpy, win, res);
+-	return res;
+-}
+-
+-void glinject_my_glXDestroyWindow(Display* dpy, GLXWindow win) {
+-	g_glinject_real_glXDestroyWindow(dpy, win);
+-	std::lock_guard<std::mutex> lock(g_glinject_mutex);
+-	g_glinject->DeleteGLXFrameGrabberByDrawable(dpy, win);
+-}
+-
+-int glinject_my_XDestroyWindow(Display* dpy, Window win) {
+-	int res = g_glinject_real_XDestroyWindow(dpy, win);
+-	std::lock_guard<std::mutex> lock(g_glinject_mutex);
+-	g_glinject->DeleteGLXFrameGrabberByWindow(dpy, win);
+-	return res;
+-}
+-
+-void glinject_my_glXSwapBuffers(Display* dpy, GLXDrawable drawable) {
+-	{
+-		std::lock_guard<std::mutex> lock(g_glinject_mutex);
+-		GLXFrameGrabber *fg = g_glinject->FindGLXFrameGrabber(dpy, drawable);
+-		if(fg == NULL) {
+-			GLINJECT_PRINT("Warning: glXSwapBuffers called without existing frame grabber, creating one assuming window == drawable.");
+-			fg = g_glinject->NewGLXFrameGrabber(dpy, drawable, drawable);
+-		}
+-		fg->GrabFrame();
+-	}
+-	g_glinject_real_glXSwapBuffers(dpy, drawable);
+-}
+-
+-GLXextFuncPtr glinject_my_glXGetProcAddressARB(const GLubyte *proc_name) {
+-	for(unsigned int i = 0; i < sizeof(hook_table) / sizeof(Hook); ++i) {
+-		if(strcmp(hook_table[i].name, (const char*) proc_name) == 0) {
+-			std::lock_guard<std::mutex> lock(g_glinject_mutex);
+-			GLINJECT_PRINT("Hooked: glXGetProcAddressARB(" << proc_name << ").");
+-			return (GLXextFuncPtr) hook_table[i].address;
+-		}
+-	}
+-	return g_glinject_real_glXGetProcAddressARB(proc_name);
+-}
+-
+-int glinject_my_XNextEvent(Display* display, XEvent* event_return) {
+-	int res = g_glinject_real_XNextEvent(display, event_return);
+-	/*std::lock_guard<std::mutex> lock(g_glinject_mutex);
+-	if(g_hotkey_info.enabled && event_return->type == KeyPress && event_return->xkey.keycode == g_hotkey_info.keycode
+-			&& (event_return->xkey.state & ~LockMask & ~Mod2Mask) == g_hotkey_info.modifiers) {
+-		g_hotkey_pressed = true;
+-	}*/
+-	return res;
+-}
+-
+-// override existing functions
+-
+-extern "C" void* dlsym(void* handle, const char* symbol) {
+-	InitGLInject();
+-	for(unsigned int i = 0; i < sizeof(hook_table) / sizeof(Hook); ++i) {
+-		if(strcmp(hook_table[i].name, symbol) == 0) {
++void* glinject_hook_dlsym(void* handle, const char* symbol) {
++	const char *str = "(In glinject_hook_dlsym)\n";
++	write(2, str, strlen(str));
++	for(const GLInjectHook &hook : glinject_hook_table) {
++		if(strcmp(hook.name, symbol) == 0) {
+ 			std::lock_guard<std::mutex> lock(g_glinject_mutex);
+-			GLINJECT_PRINT("Hooked: dlsym(" << symbol << ").");
+-			return hook_table[i].address;
++			GLINJECT_PRINT("Hooked dlsym(" << symbol << ").");
++			return hook.address;
+ 		}
+ 	}
+-	return g_glinject_real_dlsym(handle, symbol);
++	return dlsym(handle, symbol);
+ }
+ 
+-extern "C" void* dlvsym(void* handle, const char* symbol, const char* version) {
+-	InitGLInject();
+-	for(unsigned int i = 0; i < sizeof(hook_table) / sizeof(Hook); ++i) {
+-		if(strcmp(hook_table[i].name, symbol) == 0) {
++void* glinject_hook_dlvsym(void* handle, const char* symbol, const char* version) {
++	const char *str = "(In glinject_hook_dlvsym)\n";
++	write(2, str, strlen(str));
++	for(const GLInjectHook &hook : glinject_hook_table) {
++		if(strcmp(hook.name, symbol) == 0) {
+ 			std::lock_guard<std::mutex> lock(g_glinject_mutex);
+-			GLINJECT_PRINT("Hooked: dlvsym(" << symbol << "," << version << ").");
+-			return hook_table[i].address;
++			GLINJECT_PRINT("Hooked dlvsym(" << symbol << ").");
++			return hook.address;
+ 		}
+ 	}
+-	return g_glinject_real_dlvsym(handle, symbol, version);
++	return dlvsym(handle, symbol, version);
+ }
+ 
+-extern "C" int execl(const char* filename, const char* arg, ...) {
+-	InitGLInject();
++int glinject_hook_execl(const char* filename, const char* arg, ...) {
++	const char *str = "(In glinject_hook_execl)\n";
++	write(2, str, strlen(str));
+ 	std::vector<char*> args;
+ 	args.push_back((char*) arg);
+ 	va_list vl;
+@@ -263,11 +186,12 @@
+ 	va_end(vl);
+ 	std::vector<char*> filtered_environ;
+ 	FilterEnviron(filename, &filtered_environ, environ);
+-	return g_glinject_real_execve(filename, args.data(), filtered_environ.data());
++	return execve(filename, args.data(), filtered_environ.data());
+ }
+ 
+-extern "C" int execlp(const char* filename, const char* arg, ...) {
+-	InitGLInject();
++int glinject_hook_execlp(const char* filename, const char* arg, ...) {
++	const char *str = "(In glinject_hook_execlp)\n";
++	write(2, str, strlen(str));
+ 	std::vector<char*> args;
+ 	args.push_back((char*) arg);
+ 	va_list vl;
+@@ -278,11 +202,12 @@
+ 	va_end(vl);
+ 	std::vector<char*> filtered_environ;
+ 	FilterEnviron(filename, &filtered_environ, environ);
+-	return g_glinject_real_execvpe(filename, args.data(), filtered_environ.data());
++	return execvpe(filename, args.data(), filtered_environ.data());
+ }
+ 
+-extern "C" int execle(const char* filename, const char* arg, ...) {
+-	InitGLInject();
++int glinject_hook_execle(const char* filename, const char* arg, ...) {
++	const char *str = "(In glinject_hook_execle)\n";
++	write(2, str, strlen(str));
+ 	std::vector<char*> args;
+ 	args.push_back((char*) arg);
+ 	va_list vl;
+@@ -294,63 +219,103 @@
+ 	va_end(vl);
+ 	std::vector<char*> filtered_environ;
+ 	FilterEnviron(filename, &filtered_environ, envp);
+-	return g_glinject_real_execvpe(filename, args.data(), filtered_environ.data());
++	return execvpe(filename, args.data(), filtered_environ.data());
+ }
+ 
+-extern "C" int execv(const char* filename, char* const argv[]) {
+-	InitGLInject();
++int glinject_hook_execv(const char* filename, char* const argv[]) {
++	const char *str = "(In glinject_hook_execv)\n";
++	write(2, str, strlen(str));
+ 	std::vector<char*> filtered_environ;
+ 	FilterEnviron(filename, &filtered_environ, environ);
+-	return g_glinject_real_execve(filename, argv, filtered_environ.data());
++	return execve(filename, argv, filtered_environ.data());
+ }
+ 
+-extern "C" int execve(const char* filename, char* const argv[], char* const envp[]) {
+-	InitGLInject();
++int glinject_hook_execve(const char* filename, char* const argv[], char* const envp[]) {
++	const char *str = "(In glinject_hook_execve)\n";
++	write(2, str, strlen(str));
+ 	std::vector<char*> filtered_environ;
+ 	FilterEnviron(filename, &filtered_environ, envp);
+-	return g_glinject_real_execve(filename, argv, filtered_environ.data());
++	return execve(filename, argv, filtered_environ.data());
+ }
+ 
+-extern "C" int execvp(const char* filename, char* const argv[]) {
+-	InitGLInject();
++int glinject_hook_execvp(const char* filename, char* const argv[]) {
++	const char *str = "(In glinject_hook_execvp)\n";
++	write(2, str, strlen(str));
+ 	std::vector<char*> filtered_environ;
+ 	FilterEnviron(filename, &filtered_environ, environ);
+-	return g_glinject_real_execvpe(filename, argv, filtered_environ.data());
++	return execvpe(filename, argv, filtered_environ.data());
+ }
+ 
+-extern "C" int execvpe(const char* filename, char* const argv[], char* const envp[]) {
+-	InitGLInject();
++int glinject_hook_execvpe(const char* filename, char* const argv[], char* const envp[]) {
++	const char *str = "(In glinject_hook_execvpe)\n";
++	write(2, str, strlen(str));
+ 	std::vector<char*> filtered_environ;
+ 	FilterEnviron(filename, &filtered_environ, envp);
+-	return g_glinject_real_execvpe(filename, argv, filtered_environ.data());
++	return execvpe(filename, argv, filtered_environ.data());
+ }
+ 
+-extern "C" GLXWindow glXCreateWindow(Display* dpy, GLXFBConfig config, Window win, const int* attrib_list) {
+-	InitGLInject();
+-	return glinject_my_glXCreateWindow(dpy, config, win, attrib_list);
+-}
+-
+-extern "C" void glXDestroyWindow(Display* dpy, GLXWindow win) {
+-	InitGLInject();
+-	glinject_my_glXDestroyWindow(dpy, win);
++GLXWindow glinject_hook_glXCreateWindow(Display* dpy, GLXFBConfig config, Window win, const int* attrib_list) {
++	const char *str = "(In glinject_hook_glXCreateWindow)\n";
++	write(2, str, strlen(str));
++	GLXWindow res = glXCreateWindow(dpy, config, win, attrib_list);
++	if(res == 0)
++		return 0;
++	{
++		std::lock_guard<std::mutex> lock(g_glinject_mutex);
++		GLInjectInit();
++		g_glinject->NewGLXFrameGrabber(dpy, win, res);
++	}
++	return res;
+ }
+ 
+-extern "C" int XDestroyWindow(Display* dpy, Window win) {
+-	InitGLInject();
+-	return glinject_my_XDestroyWindow(dpy, win);
++void glinject_hook_glXDestroyWindow(Display* dpy, GLXWindow win) {
++	const char *str = "(In glinject_hook_glXDestroyWindow)\n";
++	write(2, str, strlen(str));
++	glXDestroyWindow(dpy, win);
++	{
++		std::lock_guard<std::mutex> lock(g_glinject_mutex);
++		GLInjectInit();
++		g_glinject->DeleteGLXFrameGrabberByDrawable(dpy, win);
++	}
+ }
+ 
+-extern "C" void glXSwapBuffers(Display* dpy, GLXDrawable drawable) {
+-	InitGLInject();
+-	glinject_my_glXSwapBuffers(dpy, drawable);
++int glinject_hook_XDestroyWindow(Display* dpy, Window win) {
++	const char *str = "(In glinject_hook_XDestroyWindow)\n";
++	write(2, str, strlen(str));
++	int res = XDestroyWindow(dpy, win);
++	{
++		std::lock_guard<std::mutex> lock(g_glinject_mutex);
++		GLInjectInit();
++		g_glinject->DeleteGLXFrameGrabberByWindow(dpy, win);
++	}
++	return res;
+ }
+ 
+-extern "C" GLXextFuncPtr glXGetProcAddressARB(const GLubyte* proc_name) {
+-	InitGLInject();
+-	return glinject_my_glXGetProcAddressARB(proc_name);
++void glinject_hook_glXSwapBuffers(Display* dpy, GLXDrawable drawable) {
++	const char *str = "(In glinject_hook_glXSwapBuffers)\n";
++	write(2, str, strlen(str));
++	{
++		std::lock_guard<std::mutex> lock(g_glinject_mutex);
++		GLInjectInit();
++		GLXFrameGrabber *fg = g_glinject->FindGLXFrameGrabber(dpy, drawable);
++		if(fg == NULL) {
++			GLINJECT_PRINT("Warning: glXSwapBuffers called without existing frame grabber, creating one assuming window == drawable.");
++			fg = g_glinject->NewGLXFrameGrabber(dpy, drawable, drawable);
++		}
++		fg->GrabFrame();
++	}
++	glXSwapBuffers(dpy, drawable);
+ }
+ 
+-extern "C" int XNextEvent(Display* display, XEvent* event_return) {
+-	InitGLInject();
+-	return glinject_my_XNextEvent(display, event_return);
++GLXextFuncPtr glinject_hook_glXGetProcAddressARB(const GLubyte *proc_name) {
++	const char *str = "(In glinject_hook_glXGetProcAddressARB)\n";
++	write(2, str, strlen(str));
++	for(const GLInjectHook &hook : glinject_hook_table) {
++		if(strcmp(hook.name, (const char*) proc_name) == 0) {
++			std::lock_guard<std::mutex> lock(g_glinject_mutex);
++			GLINJECT_PRINT("Hooked glXGetProcAddressARB(" << proc_name << ").");
++			return (GLXextFuncPtr) hook.address;
++		}
++	}
++	return glXGetProcAddressARB(proc_name);
+ }
+Index: simplescreenrecorder-salsa/glinject/ShmStructs.h
+===================================================================
+--- simplescreenrecorder-salsa.orig/glinject/ShmStructs.h	2024-05-07 08:50:15.918773109 +0200
++++ simplescreenrecorder-salsa/glinject/ShmStructs.h	2024-05-07 08:50:15.910773036 +0200
+@@ -8,6 +8,8 @@
+ 
+ #pragma once
+ 
++#include <stdint.h>
++
+ /*
+ A captured video stream is transmitted to SimpleScreenRecorder using shared memory files (i.e. files in /dev/shm).
+ The system is entirely lock-free and thread-safe, but supports only a single reader and a single writer.
+Index: simplescreenrecorder-salsa/glinject/elfhacks.c
+===================================================================
+--- simplescreenrecorder-salsa.orig/glinject/elfhacks.c	2024-05-07 08:50:15.918773109 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,611 +0,0 @@
+-/**
+- * \file src/elfhacks.c
+- * \brief various ELF run-time hacks
+- * \author Pyry Haulos <pyry.haulos@gmail.com>
+- * \date 2007-2008
+- * For conditions of distribution and use, see copyright notice in elfhacks.h
+- */
+-
+-#ifndef _GNU_SOURCE
+-#define _GNU_SOURCE
+-#endif
+-
+-#include <stdlib.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include <errno.h>
+-#include <elf.h>
+-#include <link.h>
+-#include <fnmatch.h>
+-#include "elfhacks.h"
+-
+-/**
+- *  \addtogroup elfhacks
+- *  \{
+- */
+-
+-struct eh_iterate_callback_args {
+-	eh_iterate_obj_callback_func callback;
+-	void *arg;
+-};
+-
+-int eh_check_addr(eh_obj_t *obj, const void *addr);
+-int eh_find_callback(struct dl_phdr_info *info, size_t size, void *argptr);
+-int eh_find_next_dyn(eh_obj_t *obj, ElfW_Sword tag, int i, ElfW(Dyn) **next);
+-int eh_init_obj(eh_obj_t *obj);
+-
+-int eh_set_rela_plt(eh_obj_t *obj, int p, const char *sym, void *val);
+-int eh_set_rel_plt(eh_obj_t *obj, int p, const char *sym, void *val);
+-
+-int eh_iterate_rela_plt(eh_obj_t *obj, int p, eh_iterate_rel_callback_func callback, void *arg);
+-int eh_iterate_rel_plt(eh_obj_t *obj, int p, eh_iterate_rel_callback_func callback, void *arg);
+-
+-int eh_find_sym_hash(eh_obj_t *obj, const char *name, eh_sym_t *sym);
+-int eh_find_sym_gnu_hash(eh_obj_t *obj, const char *name, eh_sym_t *sym);
+-
+-ElfW(Word) eh_hash_elf(const char *name);
+-Elf32_Word eh_hash_gnu(const char *name);
+-
+-int eh_find_callback(struct dl_phdr_info *info, size_t size, void *argptr)
+-{
+-	(void) (size);
+-	eh_obj_t *find = (eh_obj_t *) argptr;
+-
+-	if (find->name == NULL) {
+-		if (strcmp(info->dlpi_name, ""))
+-			return 0;
+-	} else if (fnmatch(find->name, info->dlpi_name, 0))
+-		return 0;
+-
+-	if (find->name == NULL) /* TODO readlink? */
+-		find->name = "/proc/self/exe";
+-	else
+-		find->name = info->dlpi_name;
+-	find->addr = info->dlpi_addr;
+-
+-	/* segment headers */
+-	find->phdr = info->dlpi_phdr;
+-	find->phnum = info->dlpi_phnum;
+-
+-	return 0;
+-}
+-
+-int eh_iterate_callback(struct dl_phdr_info *info, size_t size, void *argptr)
+-{
+-	(void) (size);
+-	struct eh_iterate_callback_args *args = (struct eh_iterate_callback_args*) argptr;
+-	eh_obj_t obj;
+-	int ret = 0;
+-
+-	/* eh_init_obj needs phdr and phnum */
+-	obj.phdr = info->dlpi_phdr;
+-	obj.phnum = info->dlpi_phnum;
+-	obj.addr = info->dlpi_addr;
+-	obj.name = info->dlpi_name;
+-
+-	if ((ret = eh_init_obj(&obj))) {
+-		if (ret == ENOTSUP) /* just skip */
+-			return 0;
+-		return ret;
+-	}
+-
+-	if ((ret = args->callback(&obj, args->arg)))
+-		return ret;
+-
+-	if ((ret = eh_destroy_obj(&obj)))
+-		return ret;
+-
+-	return 0;
+-}
+-
+-int eh_iterate_obj(eh_iterate_obj_callback_func callback, void *arg)
+-{
+-	int ret;
+-	struct eh_iterate_callback_args args;
+-
+-	args.callback = callback;
+-	args.arg = arg;
+-
+-	if ((ret = dl_iterate_phdr(eh_iterate_callback, &args)))
+-		return ret;
+-
+-	return 0;
+-}
+-
+-int eh_find_obj(eh_obj_t *obj, const char *soname)
+-{
+-	/* This function uses glibc-specific dl_iterate_phdr().
+-	   Another way could be parsing /proc/self/exe or using
+-	   pmap() on Solaris or *BSD */
+-	obj->phdr = NULL;
+-	obj->name = soname;
+-	dl_iterate_phdr(eh_find_callback, obj);
+-
+-	if (!obj->phdr)
+-		return EAGAIN;
+-
+-	return eh_init_obj(obj);
+-}
+-
+-int eh_check_addr(eh_obj_t *obj, const void *addr)
+-{
+-	/*
+-	 Check that given address is inside program's
+-	 memory maps. PT_LOAD program headers tell us
+-	 where program has been loaded into.
+-	*/
+-	int p;
+-	for (p = 0; p < obj->phnum; p++) {
+-		if (obj->phdr[p].p_type == PT_LOAD) {
+-			if (((ElfW(Addr)) addr < obj->phdr[p].p_memsz + obj->phdr[p].p_vaddr + obj->addr) &&
+-			    ((ElfW(Addr)) addr >= obj->phdr[p].p_vaddr + obj->addr))
+-				return 0;
+-		}
+-	}
+-
+-	return EINVAL;
+-}
+-
+-int eh_init_obj(eh_obj_t *obj)
+-{
+-	/*
+-	 ELF spec says in section header documentation, that:
+-	 "An object file may have only one dynamic section."
+-
+-	 Let's assume it means that object has only one PT_DYNAMIC
+-	 as well.
+-	*/
+-	int p;
+-	obj->dynamic = NULL;
+-	for (p = 0; p < obj->phnum; p++) {
+-		if (obj->phdr[p].p_type == PT_DYNAMIC) {
+-			if (obj->dynamic)
+-				return ENOTSUP;
+-
+-			obj->dynamic = (ElfW(Dyn) *) (obj->phdr[p].p_vaddr + obj->addr);
+-		}
+-	}
+-
+-	if (!obj->dynamic)
+-		return ENOTSUP;
+-
+-	/*
+-	 ELF spec says that program is allowed to have more than one
+-	 .strtab but does not describe how string table indexes translate
+-	 to multiple string tables.
+-
+-	 And spec says that only one SHT_HASH is allowed, does it mean that
+-	 obj has only one DT_HASH?
+-
+-	 About .symtab it does not mention anything about if multiple
+-	 symbol tables are allowed or not.
+-
+-	 Maybe st_shndx is the key here?
+-	*/
+-	obj->strtab = NULL;
+-	obj->hash = NULL;
+-	obj->gnu_hash = NULL;
+-	obj->symtab = NULL;
+-	p = 0;
+-	while (obj->dynamic[p].d_tag != DT_NULL) {
+-		if (obj->dynamic[p].d_tag == DT_STRTAB) {
+-			if (obj->strtab)
+-				return ENOTSUP;
+-
+-			obj->strtab = (const char *) obj->dynamic[p].d_un.d_ptr;
+-		} else if (obj->dynamic[p].d_tag == DT_HASH) {
+-			if (obj->hash)
+-				return ENOTSUP;
+-
+-			obj->hash = (ElfW(Word) *) obj->dynamic[p].d_un.d_ptr;
+-		} else if (obj->dynamic[p].d_tag == DT_GNU_HASH) {
+-			if (obj->gnu_hash)
+-				return ENOTSUP;
+-
+-			obj->gnu_hash = (Elf32_Word *) obj->dynamic[p].d_un.d_ptr;
+-		} else if (obj->dynamic[p].d_tag == DT_SYMTAB) {
+-			if (obj->symtab)
+-				return ENOTSUP;
+-
+-			obj->symtab = (ElfW(Sym) *) obj->dynamic[p].d_un.d_ptr;
+-		}
+-		p++;
+-	}
+-
+-	/* This is here to catch b0rken headers (vdso) */
+-	if ((eh_check_addr(obj, (const void *) obj->strtab)) |
+-	    (eh_check_addr(obj, (const void *) obj->symtab)))
+-		return ENOTSUP;
+-
+-	if (obj->hash) {
+-		/* DT_HASH found */
+-		if (eh_check_addr(obj, (void *) obj->hash))
+-			obj->hash = NULL;
+-	} else if (obj->gnu_hash) {
+-		/* DT_GNU_HASH found */
+-		if (eh_check_addr(obj, (void *) obj->gnu_hash))
+-			obj->gnu_hash = NULL;
+-	}
+-
+-	return 0;
+-}
+-
+-int eh_find_sym(eh_obj_t *obj, const char *name, void **to)
+-{
+-	eh_sym_t sym;
+-
+-	/* DT_GNU_HASH is faster ;) */
+-	if (obj->gnu_hash) {
+-		if (!eh_find_sym_gnu_hash(obj, name, &sym)) {
+-			*to = (void *) (sym.sym->st_value + obj->addr);
+-			return 0;
+-		}
+-	}
+-
+-	/* maybe it is in DT_HASH or DT_GNU_HASH is not present */
+-	if (obj->hash) {
+-		if (!eh_find_sym_hash(obj, name, &sym)) {
+-			*to = (void *) (sym.sym->st_value + obj->addr);
+-			return 0;
+-		}
+-	}
+-
+-	return EAGAIN;
+-}
+-
+-ElfW(Word) eh_hash_elf(const char *name)
+-{
+-	ElfW(Word) tmp, hash = 0;
+-	const unsigned char *uname = (const unsigned char *) name;
+-	int c;
+-
+-	while ((c = *uname++) != '\0') {
+-		hash = (hash << 4) + c;
+-		if ((tmp = (hash & 0xf0000000)) != 0) {
+-			hash ^= tmp >> 24;
+-			hash ^= tmp;
+-		}
+-	}
+-
+-	return hash;
+-}
+-
+-int eh_find_sym_hash(eh_obj_t *obj, const char *name, eh_sym_t *sym)
+-{
+-	ElfW(Word) hash, *chain;
+-	ElfW(Sym) *esym;
+-	unsigned int bucket_idx, idx;
+-
+-	if (!obj->hash)
+-		return ENOTSUP;
+-
+-	if (obj->hash[0] == 0)
+-		return EAGAIN;
+-
+-	hash = eh_hash_elf(name);
+-	/*
+-	 First item in DT_HASH is nbucket, second is nchain.
+-	 hash % nbucket gives us our bucket index.
+-	*/
+-	bucket_idx = obj->hash[2 + (hash % obj->hash[0])];
+-	chain = &obj->hash[2 + obj->hash[0] + bucket_idx];
+-
+-	idx = 0;
+-	sym->sym = NULL;
+-
+-	/* we have to check symtab[bucket_idx] first */
+-	esym = &obj->symtab[bucket_idx];
+-	if (esym->st_name) {
+-		if (!strcmp(&obj->strtab[esym->st_name], name))
+-			sym->sym = esym;
+-	}
+-
+-	while ((sym->sym == NULL) &&
+-	       (chain[idx] != STN_UNDEF)) {
+-		esym = &obj->symtab[chain[idx]];
+-
+-		if (esym->st_name) {
+-			if (!strcmp(&obj->strtab[esym->st_name], name))
+-				sym->sym = esym;
+-		}
+-
+-		idx++;
+-	}
+-
+-	/* symbol not found */
+-	if (sym->sym == NULL)
+-		return EAGAIN;
+-
+-	sym->obj = obj;
+-	sym->name = &obj->strtab[sym->sym->st_name];
+-
+-	return 0;
+-}
+-
+-Elf32_Word eh_hash_gnu(const char *name)
+-{
+-	Elf32_Word hash = 5381;
+-	const unsigned char *uname = (const unsigned char *) name;
+-	int c;
+-
+-	while ((c = *uname++) != '\0')
+-		hash = (hash << 5) + hash + c;
+-
+-	return hash & 0xffffffff;
+-}
+-
+-int eh_find_sym_gnu_hash(eh_obj_t *obj, const char *name, eh_sym_t *sym)
+-{
+-	Elf32_Word *buckets, *chain_zero, *hasharr;
+-	ElfW(Addr) *bitmask, bitmask_word;
+-	Elf32_Word symbias, bitmask_nwords, bucket,
+-		   nbuckets, bitmask_idxbits, shift;
+-	Elf32_Word hash, hashbit1, hashbit2;
+-	ElfW(Sym) *esym;
+-
+-	if (!obj->gnu_hash)
+-		return ENOTSUP;
+-
+-	if (obj->gnu_hash[0] == 0)
+-		return EAGAIN;
+-
+-	sym->sym = NULL;
+-
+-	/*
+-	 Initialize our hash table stuff
+-
+-	 DT_GNU_HASH is(?):
+-	 [nbuckets] [symbias] [bitmask_nwords] [shift]
+-	 [bitmask_nwords * ElfW(Addr)] <- bitmask
+-	 [nbuckets * Elf32_Word] <- buckets
+-	 ...chains? - symbias...
+-	 */
+-	nbuckets = obj->gnu_hash[0];
+-	symbias = obj->gnu_hash[1];
+-	bitmask_nwords = obj->gnu_hash[2]; /* must be power of two */
+-	bitmask_idxbits = bitmask_nwords - 1;
+-	shift = obj->gnu_hash[3];
+-	bitmask = (ElfW(Addr) *) &obj->gnu_hash[4];
+-	buckets = &obj->gnu_hash[4 + (__ELF_NATIVE_CLASS / 32) * bitmask_nwords];
+-	chain_zero = &buckets[nbuckets] - symbias;
+-
+-	/* hash our symbol */
+-	hash = eh_hash_gnu(name);
+-
+-	/* bitmask stuff... no idea really :D */
+-	bitmask_word = bitmask[(hash / __ELF_NATIVE_CLASS) & bitmask_idxbits];
+-	hashbit1 = hash & (__ELF_NATIVE_CLASS - 1);
+-	hashbit2 = (hash >> shift) & (__ELF_NATIVE_CLASS - 1);
+-
+-	/* wtf this does actually? */
+-	if (!((bitmask_word >> hashbit1) & (bitmask_word >> hashbit2) & 1))
+-		return EAGAIN;
+-
+-	/* locate bucket */
+-	bucket = buckets[hash % nbuckets];
+-	if (bucket == 0)
+-		return EAGAIN;
+-
+-	/* and find match in chain */
+-	hasharr = &chain_zero[bucket];
+-	do {
+-		if (((*hasharr ^ hash) >> 1) == 0) {
+-			/* hash matches, but does the name? */
+-			esym = &obj->symtab[hasharr - chain_zero];
+-			if (esym->st_name) {
+-				if (!strcmp(&obj->strtab[esym->st_name], name)) {
+-					sym->sym = esym;
+-					break;
+-				}
+-			}
+-		}
+-	} while ((*hasharr++ & 1u) == 0);
+-
+-	/* symbol not found */
+-	if (sym->sym == NULL)
+-		return EAGAIN;
+-
+-	sym->obj = obj;
+-	sym->name = &obj->strtab[sym->sym->st_name];
+-
+-	return 0;
+-}
+-
+-int eh_iterate_sym(eh_obj_t *obj, eh_iterate_sym_callback_func callback, void *arg)
+-{
+-	(void) (obj);
+-	(void) (callback);
+-	(void) (arg);
+-	return ENOTSUP;
+-}
+-
+-int eh_find_next_dyn(eh_obj_t *obj, ElfW_Sword tag, int i, ElfW(Dyn) **next)
+-{
+-	/* first from i + 1 to end, then from start to i - 1 */
+-	int p;
+-	*next = NULL;
+-
+-	p = i + 1;
+-	while (obj->dynamic[p].d_tag != DT_NULL) {
+-		if (obj->dynamic[p].d_tag == tag) {
+-			*next = &obj->dynamic[p];
+-			return 0;
+-		}
+-		p++;
+-	}
+-
+-	p = 0;
+-	while ((obj->dynamic[i].d_tag != DT_NULL) && (p < i)) {
+-		if (obj->dynamic[p].d_tag == tag) {
+-			*next = &obj->dynamic[p];
+-			return 0;
+-		}
+-		p++;
+-	}
+-
+-	return EAGAIN;
+-}
+-
+-int eh_set_rela_plt(eh_obj_t *obj, int p, const char *sym, void *val)
+-{
+-	ElfW(Rela) *rela = (ElfW(Rela) *) obj->dynamic[p].d_un.d_ptr;
+-	ElfW(Dyn) *relasize;
+-	unsigned int i;
+-
+-	/* DT_PLTRELSZ contains PLT relocs size in bytes */
+-	if (eh_find_next_dyn(obj, DT_PLTRELSZ, p, &relasize))
+-		return EINVAL; /* b0rken elf :/ */
+-
+-	for (i = 0; i < relasize->d_un.d_val / sizeof(ElfW(Rela)); i++) {
+-		if (!obj->symtab[ELFW_R_SYM(rela[i].r_info)].st_name)
+-			continue;
+-
+-		if (!strcmp(&obj->strtab[obj->symtab[ELFW_R_SYM(rela[i].r_info)].st_name], sym))
+-			*((void **) (rela[i].r_offset + obj->addr)) = val;
+-	}
+-
+-	return 0;
+-}
+-
+-int eh_set_rel_plt(eh_obj_t *obj, int p, const char *sym, void *val)
+-{
+-	ElfW(Rel) *rel = (ElfW(Rel) *) obj->dynamic[p].d_un.d_ptr;
+-	ElfW(Dyn) *relsize;
+-	unsigned int i;
+-
+-	if (eh_find_next_dyn(obj, DT_PLTRELSZ, p, &relsize))
+-		return EINVAL; /* b0rken elf :/ */
+-
+-	for (i = 0; i < relsize->d_un.d_val / sizeof(ElfW(Rel)); i++) {
+-		if (!obj->symtab[ELFW_R_SYM(rel[i].r_info)].st_name)
+-			continue;
+-
+-		if (!strcmp(&obj->strtab[obj->symtab[ELFW_R_SYM(rel[i].r_info)].st_name], sym))
+-			*((void **) (rel[i].r_offset + obj->addr)) = val;
+-	}
+-
+-	return 0;
+-}
+-
+-int eh_set_rel(eh_obj_t *obj, const char *sym, void *val)
+-{
+-	/*
+-	 Elf spec states that object is allowed to have multiple
+-	 .rel.plt and .rela.plt tables, so we will support 'em - here.
+-	*/
+-	ElfW(Dyn) *pltrel;
+-	int ret, p = 0;
+-
+-	while (obj->dynamic[p].d_tag != DT_NULL) {
+-		/* DT_JMPREL contains .rel.plt or .rela.plt */
+-		if (obj->dynamic[p].d_tag == DT_JMPREL) {
+-			/* DT_PLTREL tells if it is Rela or Rel */
+-			eh_find_next_dyn(obj, DT_PLTREL, p, &pltrel);
+-
+-			if (pltrel->d_un.d_val == DT_RELA) {
+-				if ((ret = eh_set_rela_plt(obj, p, sym, val)))
+-					return ret;
+-			} else if (pltrel->d_un.d_val == DT_REL) {
+-				if ((ret = eh_set_rel_plt(obj, p, sym, val)))
+-					return ret;
+-			} else
+-				return EINVAL;
+-		}
+-		p++;
+-	}
+-
+-	return 0;
+-}
+-
+-int eh_iterate_rela_plt(eh_obj_t *obj, int p, eh_iterate_rel_callback_func callback, void *arg)
+-{
+-	ElfW(Rela) *rela = (ElfW(Rela) *) obj->dynamic[p].d_un.d_ptr;
+-	ElfW(Dyn) *relasize;
+-	eh_rel_t rel;
+-	eh_sym_t sym;
+-	unsigned int i, ret;
+-
+-	rel.sym = &sym;
+-	rel.rel = NULL;
+-	rel.obj = obj;
+-
+-	if (eh_find_next_dyn(obj, DT_PLTRELSZ, p, &relasize))
+-		return EINVAL;
+-
+-	for (i = 0; i < relasize->d_un.d_val / sizeof(ElfW(Rela)); i++) {
+-		rel.rela = &rela[i];
+-		sym.sym = &obj->symtab[ELFW_R_SYM(rel.rela->r_info)];
+-		if (sym.sym->st_name)
+-			sym.name = &obj->strtab[sym.sym->st_name];
+-		else
+-			sym.name = NULL;
+-
+-		if ((ret = callback(&rel, arg)))
+-			return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-int eh_iterate_rel_plt(eh_obj_t *obj, int p, eh_iterate_rel_callback_func callback, void *arg)
+-{
+-	ElfW(Rel) *relp = (ElfW(Rel) *) obj->dynamic[p].d_un.d_ptr;
+-	ElfW(Dyn) *relsize;
+-	eh_rel_t rel;
+-	eh_sym_t sym;
+-	unsigned int i, ret;
+-
+-	rel.sym = &sym;
+-	rel.rela = NULL;
+-	rel.obj = obj;
+-
+-	if (eh_find_next_dyn(obj, DT_PLTRELSZ, p, &relsize))
+-		return EINVAL;
+-
+-	for (i = 0; i < relsize->d_un.d_val / sizeof(ElfW(Rel)); i++) {
+-		rel.rel = &relp[i];
+-		sym.sym = &obj->symtab[ELFW_R_SYM(rel.rel->r_info)];
+-		if (sym.sym->st_name)
+-			sym.name = &obj->strtab[sym.sym->st_name];
+-		else
+-			sym.name = NULL;
+-
+-		if ((ret = callback(&rel, arg)))
+-			return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-int eh_iterate_rel(eh_obj_t *obj, eh_iterate_rel_callback_func callback, void *arg)
+-{
+-	ElfW(Dyn) *pltrel;
+-	int ret, p = 0;
+-
+-	while (obj->dynamic[p].d_tag != DT_NULL) {
+-		if (obj->dynamic[p].d_tag == DT_JMPREL) {
+-			eh_find_next_dyn(obj, DT_PLTREL, p, &pltrel);
+-
+-			if (pltrel->d_un.d_val == DT_RELA) {
+-				if ((ret = eh_iterate_rela_plt(obj, p, callback, arg)))
+-					return ret;
+-			} else if (pltrel->d_un.d_val == DT_REL) {
+-				if ((ret = eh_iterate_rel_plt(obj, p, callback, arg)))
+-					return ret;
+-			} else
+-				return EINVAL;
+-		}
+-		p++;
+-	}
+-
+-	return 0;
+-}
+-
+-int eh_destroy_obj(eh_obj_t *obj)
+-{
+-	obj->phdr = NULL;
+-
+-	return 0;
+-}
+-
+-/**  \} */
+Index: simplescreenrecorder-salsa/glinject/plthook.h
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ simplescreenrecorder-salsa/glinject/plthook.h	2024-05-07 08:50:15.914773073 +0200
+@@ -0,0 +1,67 @@
++/* -*- indent-tabs-mode: nil -*-
++ *
++ * plthook.h -- the header file of plthook
++ *
++ * URL: https://github.com/kubo/plthook
++ *
++ * ------------------------------------------------------
++ *
++ * Copyright 2013-2014 Kubo Takehiro <kubo@jiubao.org>
++ *
++ * Redistribution and use in source and binary forms, with or without modification, are
++ * permitted provided that the following conditions are met:
++ *
++ *    1. Redistributions of source code must retain the above copyright notice, this list of
++ *       conditions and the following disclaimer.
++ *
++ *    2. Redistributions in binary form must reproduce the above copyright notice, this list
++ *       of conditions and the following disclaimer in the documentation and/or other materials
++ *       provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE AUTHORS ''AS IS'' AND ANY EXPRESS OR IMPLIED
++ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
++ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
++ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
++ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ * The views and conclusions contained in the software and documentation are those of the
++ * authors and should not be interpreted as representing official policies, either expressed
++ * or implied, of the authors.
++ *
++ */
++#ifndef PLTHOOK_H
++#define PLTHOOK_H 1
++
++#define PLTHOOK_SUCCESS              0
++#define PLTHOOK_FILE_NOT_FOUND       1
++#define PLTHOOK_INVALID_FILE_FORMAT  2
++#define PLTHOOK_FUNCTION_NOT_FOUND   3
++#define PLTHOOK_INVALID_ARGUMENT     4
++#define PLTHOOK_OUT_OF_MEMORY        5
++#define PLTHOOK_INTERNAL_ERROR       6
++#define PLTHOOK_NOT_IMPLEMENTED      7
++
++typedef struct plthook plthook_t;
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++int plthook_open(plthook_t **plthook_out, const char *filename);
++int plthook_open_by_handle(plthook_t **plthook_out, void *handle);
++int plthook_open_by_address(plthook_t **plthook_out, void *address);
++int plthook_open_by_linkmap(plthook_t **plthook_out, void *linkmap);
++int plthook_enum(plthook_t *plthook, unsigned int *pos, const char **name_out, void ***addr_out);
++int plthook_replace(plthook_t *plthook, const char *funcname, void *funcaddr, void **oldfunc);
++void plthook_close(plthook_t *plthook);
++const char *plthook_error(void);
++
++#ifdef __cplusplus
++} /* extern "C" */
++#endif
++
++#endif
+Index: simplescreenrecorder-salsa/glinject/plthook_elf.c
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ simplescreenrecorder-salsa/glinject/plthook_elf.c	2024-05-07 08:50:15.914773073 +0200
+@@ -0,0 +1,821 @@
++/* -*- indent-tabs-mode: nil -*-
++ *
++ * plthook_elf.c -- implementation of plthook for ELF format
++ *
++ * URL: https://github.com/kubo/plthook
++ *
++ * ------------------------------------------------------
++ *
++ * Copyright 2013-2019 Kubo Takehiro <kubo@jiubao.org>
++ *
++ * Redistribution and use in source and binary forms, with or without modification, are
++ * permitted provided that the following conditions are met:
++ *
++ *    1. Redistributions of source code must retain the above copyright notice, this list of
++ *       conditions and the following disclaimer.
++ *
++ *    2. Redistributions in binary form must reproduce the above copyright notice, this list
++ *       of conditions and the following disclaimer in the documentation and/or other materials
++ *       provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE AUTHORS ''AS IS'' AND ANY EXPRESS OR IMPLIED
++ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
++ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> OR
++ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
++ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
++ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
++ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ * The views and conclusions contained in the software and documentation are those of the
++ * authors and should not be interpreted as representing official policies, either expressed
++ * or implied, of the authors.
++ *
++ */
++#if defined(__sun) && defined(_XOPEN_SOURCE) && !defined(__EXTENSIONS__)
++#define __EXTENSIONS__
++#endif
++#if defined(__linux__) && !defined(_GNU_SOURCE)
++#define _GNU_SOURCE
++#endif
++#include <stdio.h>
++#include <stdarg.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <string.h>
++#include <limits.h>
++#include <sys/mman.h>
++#include <errno.h>
++#include <dlfcn.h>
++#ifdef __sun
++#include <sys/auxv.h>
++#include <procfs.h>
++#define ELF_TARGET_ALL
++#endif /* __sun */
++#ifdef __FreeBSD__
++#include <sys/types.h>
++#include <sys/user.h>
++#include <libutil.h>
++#endif
++#include <elf.h>
++#include <link.h>
++#include "plthook.h"
++
++#if defined __UCLIBC__ && !defined RTLD_NOLOAD
++#define RTLD_NOLOAD 0
++#endif
++
++#ifndef __GNUC__
++#define __attribute__(arg)
++#endif
++
++#if defined __FreeBSD__ && defined __i386__ && __ELF_WORD_SIZE == 64
++#error 32-bit application on 64-bit OS is not supported.
++#endif
++
++#if !defined(R_X86_64_JUMP_SLOT) && defined(R_X86_64_JMP_SLOT)
++#define R_X86_64_JUMP_SLOT R_X86_64_JMP_SLOT
++#endif
++
++#if defined __x86_64__ || defined __x86_64
++#define R_JUMP_SLOT   R_X86_64_JUMP_SLOT
++#define R_GLOBAL_DATA R_X86_64_GLOB_DAT
++#elif defined __i386__ || defined __i386
++#define R_JUMP_SLOT   R_386_JMP_SLOT
++#define R_GLOBAL_DATA R_386_GLOB_DAT
++#define USE_REL
++#elif defined __arm__ || defined __arm
++#define R_JUMP_SLOT   R_ARM_JUMP_SLOT
++#define R_GLOBAL_DATA R_ARM_GLOB_DAT
++#define USE_REL
++#elif defined __aarch64__ || defined __aarch64 /* ARM64 */
++#define R_JUMP_SLOT   R_AARCH64_JUMP_SLOT
++#define R_GLOBAL_DATA R_AARCH64_GLOB_DAT
++#elif defined __powerpc64__
++#define R_JUMP_SLOT   R_PPC64_JMP_SLOT
++#define R_GLOBAL_DATA R_PPC64_GLOB_DAT
++#elif defined __powerpc__
++#define R_JUMP_SLOT   R_PPC_JMP_SLOT
++#define R_GLOBAL_DATA R_PPC_GLOB_DAT
++#elif 0 /* disabled because not tested */ && (defined __sparcv9 || defined __sparc_v9__)
++#define R_JUMP_SLOT   R_SPARC_JMP_SLOT
++#elif 0 /* disabled because not tested */ && (defined __sparc || defined __sparc__)
++#define R_JUMP_SLOT   R_SPARC_JMP_SLOT
++#elif 0 /* disabled because not tested */ && (defined __ia64 || defined __ia64__)
++#define R_JUMP_SLOT   R_IA64_IPLTMSB
++#else
++#error unsupported OS
++#endif
++
++#ifdef USE_REL
++#define Elf_Plt_Rel   Elf_Rel
++#define PLT_DT_REL    DT_REL
++#define PLT_DT_RELSZ  DT_RELSZ
++#define PLT_DT_RELENT DT_RELENT
++#else
++#define Elf_Plt_Rel   Elf_Rela
++#define PLT_DT_REL    DT_RELA
++#define PLT_DT_RELSZ  DT_RELASZ
++#define PLT_DT_RELENT DT_RELAENT
++#endif
++
++#if defined __LP64__
++#ifndef ELF_CLASS
++#define ELF_CLASS     ELFCLASS64
++#endif
++#define SIZE_T_FMT "lu"
++#define ELF_WORD_FMT "u"
++#ifdef __ANDROID__
++#define ELF_XWORD_FMT "llu"
++#else
++#define ELF_XWORD_FMT "lu"
++#endif
++#define ELF_SXWORD_FMT "ld"
++#define Elf_Half Elf64_Half
++#define Elf_Xword Elf64_Xword
++#define Elf_Sxword Elf64_Sxword
++#define Elf_Ehdr Elf64_Ehdr
++#define Elf_Phdr Elf64_Phdr
++#define Elf_Sym  Elf64_Sym
++#define Elf_Dyn  Elf64_Dyn
++#define Elf_Rel  Elf64_Rel
++#define Elf_Rela Elf64_Rela
++#ifndef ELF_R_SYM
++#define ELF_R_SYM ELF64_R_SYM
++#endif
++#ifndef ELF_R_TYPE
++#define ELF_R_TYPE ELF64_R_TYPE
++#endif
++#else /* __LP64__ */
++#ifndef ELF_CLASS
++#define ELF_CLASS     ELFCLASS32
++#endif
++#define SIZE_T_FMT "u"
++#ifdef __sun
++#define ELF_WORD_FMT "lu"
++#define ELF_XWORD_FMT "lu"
++#define ELF_SXWORD_FMT "ld"
++#else
++#define ELF_WORD_FMT "u"
++#define ELF_XWORD_FMT "u"
++#define ELF_SXWORD_FMT "d"
++#endif
++#define Elf_Half Elf32_Half
++#define Elf_Xword Elf32_Word
++#define Elf_Sxword Elf32_Sword
++#define Elf_Ehdr Elf32_Ehdr
++#define Elf_Phdr Elf32_Phdr
++#define Elf_Sym  Elf32_Sym
++#define Elf_Dyn  Elf32_Dyn
++#define Elf_Rel  Elf32_Rel
++#define Elf_Rela Elf32_Rela
++#ifndef ELF_R_SYM
++#define ELF_R_SYM ELF32_R_SYM
++#endif
++#ifndef ELF_R_TYPE
++#define ELF_R_TYPE ELF32_R_TYPE
++#endif
++#endif /* __LP64__ */
++
++struct plthook {
++    const Elf_Sym *dynsym;
++    const char *dynstr;
++    size_t dynstr_size;
++    const char *plt_addr_base;
++    const Elf_Plt_Rel *rela_plt;
++    size_t rela_plt_cnt;
++#ifdef R_GLOBAL_DATA
++    const Elf_Plt_Rel *rela_dyn;
++    size_t rela_dyn_cnt;
++#endif
++};
++
++static char errmsg[512];
++static size_t page_size;
++#define ALIGN_ADDR(addr) ((void*)((size_t)(addr) & ~(page_size - 1)))
++
++static int plthook_open_executable(plthook_t **plthook_out);
++static int plthook_open_shared_library(plthook_t **plthook_out, const char *filename);
++static const Elf_Dyn *find_dyn_by_tag(const Elf_Dyn *dyn, Elf_Sxword tag);
++static int plthook_open_real(plthook_t **plthook_out, struct link_map *lmap);
++#if defined __FreeBSD__ || defined __sun
++static int check_elf_header(const Elf_Ehdr *ehdr);
++#endif
++static void set_errmsg(const char *fmt, ...) __attribute__((__format__ (__printf__, 1, 2)));
++
++#if defined __ANDROID__ || defined __UCLIBC__
++struct dl_iterate_data {
++    char* addr;
++    struct link_map lmap;
++};
++
++static int dl_iterate_cb(struct dl_phdr_info *info, size_t size, void *cb_data)
++{
++    struct dl_iterate_data *data = (struct dl_iterate_data*)cb_data;
++    Elf_Half idx = 0;
++
++    for (idx = 0; idx < info->dlpi_phnum; ++idx) {
++        const Elf_Phdr *phdr = &info->dlpi_phdr[idx];
++        char* base = (char*)info->dlpi_addr + phdr->p_vaddr;
++        if (base <= data->addr && data->addr < base + phdr->p_memsz) {
++            break;
++        }
++    }
++    if (idx == info->dlpi_phnum) {
++        return 0;
++    }
++    for (idx = 0; idx < info->dlpi_phnum; ++idx) {
++        const Elf_Phdr *phdr = &info->dlpi_phdr[idx];
++        if (phdr->p_type == PT_DYNAMIC) {
++            data->lmap.l_addr = info->dlpi_addr;
++            data->lmap.l_ld = (Elf_Dyn*)(info->dlpi_addr + phdr->p_vaddr);
++            return 1;
++        }
++    }
++    return 0;
++}
++#endif
++
++int plthook_open(plthook_t **plthook_out, const char *filename)
++{
++    *plthook_out = NULL;
++    if (filename == NULL) {
++        return plthook_open_executable(plthook_out);
++    } else {
++        return plthook_open_shared_library(plthook_out, filename);
++    }
++}
++
++int plthook_open_by_handle(plthook_t **plthook_out, void *hndl)
++{
++#if defined __ANDROID__ || defined __UCLIBC__
++    const static char *symbols[] = {
++        "__INIT_ARRAY__",
++        "_end",
++        "_start"
++    };
++    size_t i;
++
++    if (hndl == NULL) {
++        set_errmsg("NULL handle");
++        return PLTHOOK_FILE_NOT_FOUND;
++    }
++    for (i = 0; i < sizeof(symbols)/sizeof(symbols[0]); i++) {
++        char *addr = dlsym(hndl, symbols[i]);
++        if (addr != NULL) {
++            return plthook_open_by_address(plthook_out, addr - 1);
++        }
++    }
++    set_errmsg("Could not find an address in the specified handle.");
++    return PLTHOOK_INTERNAL_ERROR;
++#else
++    struct link_map *lmap = NULL;
++
++    if (hndl == NULL) {
++        set_errmsg("NULL handle");
++        return PLTHOOK_FILE_NOT_FOUND;
++    }
++    if (dlinfo(hndl, RTLD_DI_LINKMAP, &lmap) != 0) {
++        set_errmsg("dlinfo error");
++        return PLTHOOK_FILE_NOT_FOUND;
++    }
++    return plthook_open_real(plthook_out, lmap);
++#endif
++}
++
++int plthook_open_by_address(plthook_t **plthook_out, void *address)
++{
++#if defined __FreeBSD__
++    return PLTHOOK_NOT_IMPLEMENTED;
++#elif defined __ANDROID__ || defined __UCLIBC__
++    struct dl_iterate_data data = {0,};
++    data.addr = address;
++    dl_iterate_phdr(dl_iterate_cb, &data);
++    if (data.lmap.l_ld == NULL) {
++        set_errmsg("Could not find memory region containing address %p", address);
++        return PLTHOOK_INTERNAL_ERROR;
++    }
++    return plthook_open_real(plthook_out, &data.lmap);
++#else
++    Dl_info info;
++    struct link_map *lmap = NULL;
++
++    *plthook_out = NULL;
++    if (dladdr1(address, &info, (void**)&lmap, RTLD_DL_LINKMAP) == 0) {
++        set_errmsg("dladdr error");
++        return PLTHOOK_FILE_NOT_FOUND;
++    }
++    return plthook_open_real(plthook_out, lmap);
++#endif
++}
++
++int plthook_open_by_linkmap(plthook_t **plthook_out, void *linkmap)
++{
++	return plthook_open_real(plthook_out, (struct link_map*)linkmap);
++}
++
++static int plthook_open_executable(plthook_t **plthook_out)
++{
++#if defined __ANDROID__ || defined __UCLIBC__
++    return plthook_open_shared_library(plthook_out, NULL);
++#elif defined __linux__
++    return plthook_open_real(plthook_out, _r_debug.r_map);
++#elif defined __sun
++    const char *auxv_file = "/proc/self/auxv";
++#define NUM_AUXV_CNT 10
++    FILE *fp = fopen(auxv_file, "r");
++    auxv_t auxv;
++    struct r_debug *r_debug = NULL;
++
++    if (fp == NULL) {
++        set_errmsg("Could not open %s: %s", auxv_file,
++                   strerror(errno));
++        return PLTHOOK_INTERNAL_ERROR;
++    }
++    while (fread(&auxv, sizeof(auxv_t), 1, fp) == 1) {
++        if (auxv.a_type == AT_SUN_LDDATA) {
++            r_debug = (struct r_debug *)auxv.a_un.a_ptr;
++            break;
++        }
++    }
++    fclose(fp);
++    if (r_debug == NULL) {
++        set_errmsg("Could not find r_debug");
++        return PLTHOOK_INTERNAL_ERROR;
++    }
++    return plthook_open_real(plthook_out, r_debug->r_map);
++#elif defined __FreeBSD__
++    return plthook_open_shared_library(plthook_out, NULL);
++#else
++    set_errmsg("Opening the main program is not supported on this platform.");
++    return PLTHOOK_NOT_IMPLEMENTED;
++#endif
++}
++
++static int plthook_open_shared_library(plthook_t **plthook_out, const char *filename)
++{
++    void *hndl = dlopen(filename, RTLD_LAZY | RTLD_NOLOAD);
++#if defined __ANDROID__ || defined __UCLIBC__
++    int rv;
++#else
++    struct link_map *lmap = NULL;
++#endif
++
++    if (hndl == NULL) {
++        set_errmsg("dlopen error: %s", dlerror());
++        return PLTHOOK_FILE_NOT_FOUND;
++    }
++#if defined __ANDROID__ || defined __UCLIBC__
++    rv = plthook_open_by_handle(plthook_out, hndl);
++    dlclose(hndl);
++    return rv;
++#else
++    if (dlinfo(hndl, RTLD_DI_LINKMAP, &lmap) != 0) {
++        set_errmsg("dlinfo error");
++        dlclose(hndl);
++        return PLTHOOK_FILE_NOT_FOUND;
++    }
++    dlclose(hndl);
++    return plthook_open_real(plthook_out, lmap);
++#endif
++}
++
++static const Elf_Dyn *find_dyn_by_tag(const Elf_Dyn *dyn, Elf_Sxword tag)
++{
++    while (dyn->d_tag != DT_NULL) {
++        if (dyn->d_tag == tag) {
++            return dyn;
++        }
++        dyn++;
++    }
++    return NULL;
++}
++
++#ifdef __linux__
++static int get_memory_permission(void *address)
++{
++    unsigned long addr = (unsigned long)address;
++    FILE *fp;
++    char buf[PATH_MAX];
++    char perms[5];
++    int bol = 1;
++
++    fp = fopen("/proc/self/maps", "r");
++    if (fp == NULL) {
++        set_errmsg("failed to open /proc/self/maps");
++        return 0;
++    }
++    while (fgets(buf, PATH_MAX, fp) != NULL) {
++        unsigned long start, end;
++        int eol = (strchr(buf, '\n') != NULL);
++        if (bol) {
++            /* The fgets reads from the beginning of a line. */
++            if (!eol) {
++                /* The next fgets reads from the middle of the same line. */
++                bol = 0;
++            }
++        } else {
++            /* The fgets reads from the middle of a line. */
++            if (eol) {
++                /* The next fgets reads from the beginnig of a line. */
++                bol = 1;
++            }
++            continue;
++        }
++
++        if (sscanf(buf, "%lx-%lx %4s", &start, &end, perms) != 3) {
++            continue;
++        }
++        if (start <= addr && addr < end) {
++            int prot = 0;
++            if (perms[0] == 'r') {
++                prot |= PROT_READ;
++            } else if (perms[0] != '-') {
++                goto unknown_perms;
++            }
++            if (perms[1] == 'w') {
++                prot |= PROT_WRITE;
++            } else if (perms[1] != '-') {
++                goto unknown_perms;
++            }
++            if (perms[2] == 'x') {
++                prot |= PROT_EXEC;
++            } else if (perms[2] != '-') {
++                goto unknown_perms;
++            }
++            if (perms[3] != 'p') {
++                goto unknown_perms;
++            }
++            if (perms[4] != '\0') {
++                perms[4] = '\0';
++                goto unknown_perms;
++            }
++            fclose(fp);
++            return prot;
++        }
++    }
++    fclose(fp);
++    set_errmsg("Could not find memory region containing %p", (void*)addr);
++    return 0;
++unknown_perms:
++    fclose(fp);
++    set_errmsg("Unexcepted memory permission %s at %p", perms, (void*)addr);
++    return 0;
++}
++#elif defined __FreeBSD__
++static int get_memory_permission(void *address)
++{
++    uint64_t addr = (uint64_t)address;
++    struct kinfo_vmentry *top;
++    int i, cnt;
++
++    top = kinfo_getvmmap(getpid(), &cnt);
++    if (top == NULL) {
++         set_errmsg("failed to call kinfo_getvmmap()\n");
++         return 0;
++    }
++    for (i = 0; i < cnt; i++) {
++        struct kinfo_vmentry *kve = top + i;
++
++        if (kve->kve_start <= addr && addr < kve->kve_end) {
++            int prot = 0;
++            if (kve->kve_protection & KVME_PROT_READ) {
++                prot |= PROT_READ;
++            }
++            if (kve->kve_protection & KVME_PROT_WRITE) {
++                prot |= PROT_WRITE;
++            }
++            if (kve->kve_protection & KVME_PROT_EXEC) {
++                prot |= PROT_EXEC;
++            }
++            if (prot == 0) {
++                set_errmsg("Unknown kve_protection 0x%x at %p", kve->kve_protection, (void*)addr);
++            }
++            free(top);
++            return prot;
++        }
++    }
++    free(top);
++    set_errmsg("Could not find memory region containing %p", (void*)addr);
++    return 0;
++}
++#elif defined(__sun)
++#define NUM_MAPS 20
++static int get_memory_permission(void *address)
++{
++    unsigned long addr = (unsigned long)address;
++    FILE *fp;
++    prmap_t maps[NUM_MAPS];
++    size_t num;
++
++    fp = fopen("/proc/self/map", "r");
++    if (fp == NULL) {
++        set_errmsg("failed to open /proc/self/map");
++        return 0;
++    }
++    while ((num = fread(maps, sizeof(prmap_t), NUM_MAPS, fp)) > 0) {
++        size_t i;
++        for (i = 0; i < num; i++) {
++            prmap_t *map = &maps[i];
++
++            if (map->pr_vaddr <= addr && addr < map->pr_vaddr + map->pr_size) {
++                int prot = 0;
++                if (map->pr_mflags & MA_READ) {
++                    prot |= PROT_READ;
++                }
++                if (map->pr_mflags & MA_WRITE) {
++                    prot |= PROT_WRITE;
++                }
++                if (map->pr_mflags & MA_EXEC) {
++                    prot |= PROT_EXEC;
++                }
++                if (prot == 0) {
++                    set_errmsg("Unknown pr_mflags 0x%x at %p", map->pr_mflags, (void*)addr);
++                }
++                fclose(fp);
++                return prot;
++            }
++        }
++    }
++    fclose(fp);
++    set_errmsg("Could not find memory region containing %p", (void*)addr);
++    return 0;
++}
++#else
++#error Unsupported platform
++#endif
++
++static int plthook_open_real(plthook_t **plthook_out, struct link_map *lmap)
++{
++    plthook_t plthook = {NULL,};
++    const Elf_Dyn *dyn;
++    const char *dyn_addr_base = NULL;
++
++    if (page_size == 0) {
++        page_size = sysconf(_SC_PAGESIZE);
++    }
++
++#if defined __linux__
++    plthook.plt_addr_base = (char*)lmap->l_addr;
++#if defined __ANDROID__ || defined __UCLIBC__
++    dyn_addr_base = (const char*)lmap->l_addr;
++#endif
++#elif defined __FreeBSD__ || defined __sun
++    const Elf_Ehdr *ehdr = (const Elf_Ehdr*)lmap->l_addr;
++    int rv_ = check_elf_header(ehdr);
++    if (rv_ != 0) {
++        return rv_;
++    }
++    if (ehdr->e_type == ET_DYN) {
++        dyn_addr_base = (const char*)lmap->l_addr;
++        plthook.plt_addr_base = (const char*)lmap->l_addr;
++    }
++#else
++#error unsupported OS
++#endif
++
++    /* get .dynsym section */
++    dyn = find_dyn_by_tag(lmap->l_ld, DT_SYMTAB);
++    if (dyn == NULL) {
++        set_errmsg("failed to find DT_SYMTAB");
++        return PLTHOOK_INTERNAL_ERROR;
++    }
++    plthook.dynsym = (const Elf_Sym*)(dyn_addr_base + dyn->d_un.d_ptr);
++
++    /* Check sizeof(Elf_Sym) */
++    dyn = find_dyn_by_tag(lmap->l_ld, DT_SYMENT);
++    if (dyn == NULL) {
++        set_errmsg("failed to find DT_SYMTAB");
++        return PLTHOOK_INTERNAL_ERROR;
++    }
++    if (dyn->d_un.d_val != sizeof(Elf_Sym)) {
++        set_errmsg("DT_SYMENT size %" ELF_XWORD_FMT " != %" SIZE_T_FMT, dyn->d_un.d_val, sizeof(Elf_Sym));
++        return PLTHOOK_INTERNAL_ERROR;
++    }
++
++    /* get .dynstr section */
++    dyn = find_dyn_by_tag(lmap->l_ld, DT_STRTAB);
++    if (dyn == NULL) {
++        set_errmsg("failed to find DT_STRTAB");
++        return PLTHOOK_INTERNAL_ERROR;
++    }
++    plthook.dynstr = dyn_addr_base + dyn->d_un.d_ptr;
++
++    /* get .dynstr size */
++    dyn = find_dyn_by_tag(lmap->l_ld, DT_STRSZ);
++    if (dyn == NULL) {
++        set_errmsg("failed to find DT_STRSZ");
++        return PLTHOOK_INTERNAL_ERROR;
++    }
++    plthook.dynstr_size = dyn->d_un.d_val;
++
++    /* get .rela.plt or .rel.plt section */
++    dyn = find_dyn_by_tag(lmap->l_ld, DT_JMPREL);
++    if (dyn != NULL) {
++        plthook.rela_plt = (const Elf_Plt_Rel *)(dyn_addr_base + dyn->d_un.d_ptr);
++        dyn = find_dyn_by_tag(lmap->l_ld, DT_PLTRELSZ);
++        if (dyn == NULL) {
++            set_errmsg("failed to find DT_PLTRELSZ");
++            return PLTHOOK_INTERNAL_ERROR;
++        }
++        plthook.rela_plt_cnt = dyn->d_un.d_val / sizeof(Elf_Plt_Rel);
++    }
++#ifdef R_GLOBAL_DATA
++    /* get .rela.dyn or .rel.dyn section */
++    dyn = find_dyn_by_tag(lmap->l_ld, PLT_DT_REL);
++    if (dyn != NULL) {
++        size_t total_size, elem_size;
++
++        plthook.rela_dyn = (const Elf_Plt_Rel *)(dyn_addr_base + dyn->d_un.d_ptr);
++        dyn = find_dyn_by_tag(lmap->l_ld, PLT_DT_RELSZ);
++        if (dyn == NULL) {
++            set_errmsg("failed to find PLT_DT_RELSZ");
++            return PLTHOOK_INTERNAL_ERROR;
++        }
++        total_size = dyn->d_un.d_ptr;
++
++        dyn = find_dyn_by_tag(lmap->l_ld, PLT_DT_RELENT);
++        if (dyn == NULL) {
++            set_errmsg("failed to find PLT_DT_RELENT");
++            return PLTHOOK_INTERNAL_ERROR;
++        }
++        elem_size = dyn->d_un.d_ptr;
++        plthook.rela_dyn_cnt = total_size / elem_size;
++    }
++#endif
++
++#ifdef R_GLOBAL_DATA
++    if (plthook.rela_plt == NULL && plthook.rela_dyn == NULL) {
++        set_errmsg("failed to find either of DT_JMPREL and DT_REL");
++        return PLTHOOK_INTERNAL_ERROR;
++    }
++#else
++    if (plthook.rela_plt == NULL) {
++        set_errmsg("failed to find DT_JMPREL");
++        return PLTHOOK_INTERNAL_ERROR;
++    }
++#endif
++
++    *plthook_out = malloc(sizeof(plthook_t));
++    if (*plthook_out == NULL) {
++        set_errmsg("failed to allocate memory: %" SIZE_T_FMT " bytes", sizeof(plthook_t));
++        return PLTHOOK_OUT_OF_MEMORY;
++    }
++    **plthook_out = plthook;
++    return 0;
++}
++
++#if defined __FreeBSD__ || defined __sun
++static int check_elf_header(const Elf_Ehdr *ehdr)
++{
++    static const unsigned short s = 1;
++    /* Check endianness at runtime. */
++    unsigned char elfdata = (*(const char*)&s) ? ELFDATA2LSB : ELFDATA2MSB;
++
++    if (ehdr == NULL) {
++        set_errmsg("invalid elf header address: NULL");
++        return PLTHOOK_INTERNAL_ERROR;
++    }
++
++    if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG) != 0) {
++        set_errmsg("invalid file signature: 0x%02x,0x%02x,0x%02x,0x%02x",
++                   ehdr->e_ident[0], ehdr->e_ident[1], ehdr->e_ident[2], ehdr->e_ident[3]);
++        return PLTHOOK_INVALID_FILE_FORMAT;
++    }
++    if (ehdr->e_ident[EI_CLASS] != ELF_CLASS) {
++        set_errmsg("invalid elf class: 0x%02x", ehdr->e_ident[EI_CLASS]);
++        return PLTHOOK_INVALID_FILE_FORMAT;
++    }
++    if (ehdr->e_ident[EI_DATA] != elfdata) {
++        set_errmsg("invalid elf data: 0x%02x", ehdr->e_ident[EI_DATA]);
++        return PLTHOOK_INVALID_FILE_FORMAT;
++    }
++    if (ehdr->e_ident[EI_VERSION] != EV_CURRENT) {
++        set_errmsg("invalid elf version: 0x%02x", ehdr->e_ident[EI_VERSION]);
++        return PLTHOOK_INVALID_FILE_FORMAT;
++    }
++    if (ehdr->e_type != ET_EXEC && ehdr->e_type != ET_DYN) {
++        set_errmsg("invalid file type: 0x%04x", ehdr->e_type);
++        return PLTHOOK_INVALID_FILE_FORMAT;
++    }
++    if (ehdr->e_version != EV_CURRENT) {
++        set_errmsg("invalid object file version: %" ELF_WORD_FMT, ehdr->e_version);
++        return PLTHOOK_INVALID_FILE_FORMAT;
++    }
++    if (ehdr->e_ehsize != sizeof(Elf_Ehdr)) {
++        set_errmsg("invalid elf header size: %u", ehdr->e_ehsize);
++        return PLTHOOK_INVALID_FILE_FORMAT;
++    }
++    if (ehdr->e_phentsize != sizeof(Elf_Phdr)) {
++        set_errmsg("invalid program header table entry size: %u", ehdr->e_phentsize);
++        return PLTHOOK_INVALID_FILE_FORMAT;
++    }
++    return 0;
++}
++#endif
++
++static int check_rel(const plthook_t *plthook, const Elf_Plt_Rel *plt, Elf_Xword r_type, const char **name_out, void ***addr_out)
++{
++    if (ELF_R_TYPE(plt->r_info) == r_type) {
++        size_t idx = ELF_R_SYM(plt->r_info);
++        idx = plthook->dynsym[idx].st_name;
++        if (idx + 1 > plthook->dynstr_size) {
++            set_errmsg("too big section header string table index: %" SIZE_T_FMT, idx);
++            return PLTHOOK_INVALID_FILE_FORMAT;
++        }
++        *name_out = plthook->dynstr + idx;
++        *addr_out = (void**)(plthook->plt_addr_base + plt->r_offset);
++        return 0;
++    }
++    return -1;
++}
++
++int plthook_enum(plthook_t *plthook, unsigned int *pos, const char **name_out, void ***addr_out)
++{
++    while (*pos < plthook->rela_plt_cnt) {
++        const Elf_Plt_Rel *plt = plthook->rela_plt + *pos;
++        int rv = check_rel(plthook, plt, R_JUMP_SLOT, name_out, addr_out);
++        (*pos)++;
++        if (rv >= 0) {
++            return rv;
++        }
++    }
++#ifdef R_GLOBAL_DATA
++    while (*pos < plthook->rela_plt_cnt + plthook->rela_dyn_cnt) {
++        const Elf_Plt_Rel *plt = plthook->rela_dyn + (*pos - plthook->rela_plt_cnt);
++        int rv = check_rel(plthook, plt, R_GLOBAL_DATA, name_out, addr_out);
++        (*pos)++;
++        if (rv >= 0) {
++            return rv;
++        }
++    }
++#endif
++    *name_out = NULL;
++    *addr_out = NULL;
++    return EOF;
++}
++
++int plthook_replace(plthook_t *plthook, const char *funcname, void *funcaddr, void **oldfunc)
++{
++    size_t funcnamelen = strlen(funcname);
++    unsigned int pos = 0;
++    const char *name;
++    void **addr;
++    int rv;
++
++    if (plthook == NULL) {
++        set_errmsg("invalid argument: The first argument is null.");
++        return PLTHOOK_INVALID_ARGUMENT;
++    }
++    while ((rv = plthook_enum(plthook, &pos, &name, &addr)) == 0) {
++        if (strncmp(name, funcname, funcnamelen) == 0) {
++            if (name[funcnamelen] == '\0' || name[funcnamelen] == '@') {
++                int prot = get_memory_permission(addr);
++                if (prot == 0) {
++                    return PLTHOOK_INTERNAL_ERROR;
++                }
++                if (!(prot & PROT_WRITE)) {
++                    if (mprotect(ALIGN_ADDR(addr), page_size, PROT_READ | PROT_WRITE) != 0) {
++                        set_errmsg("Could not change the process memory permission at %p: %s",
++                                   ALIGN_ADDR(addr), strerror(errno));
++                        return PLTHOOK_INTERNAL_ERROR;
++                    }
++                }
++                if (oldfunc) {
++                    *oldfunc = *addr;
++                }
++                *addr = funcaddr;
++                if (!(prot & PROT_WRITE)) {
++                    mprotect(ALIGN_ADDR(addr), page_size, prot);
++                }
++                return 0;
++            }
++        }
++    }
++    if (rv == EOF) {
++        set_errmsg("no such function: %s", funcname);
++        rv = PLTHOOK_FUNCTION_NOT_FOUND;
++    }
++    return rv;
++}
++
++void plthook_close(plthook_t *plthook)
++{
++    if (plthook != NULL) {
++        free(plthook);
++    }
++}
++
++const char *plthook_error(void)
++{
++    return errmsg;
++}
++
++static void set_errmsg(const char *fmt, ...)
++{
++    va_list ap;
++    va_start(ap, fmt);
++    vsnprintf(errmsg, sizeof(errmsg) - 1, fmt, ap);
++    va_end(ap);
++}
+Index: simplescreenrecorder-salsa/src/GUI/PageWelcome.cpp
+===================================================================
+--- simplescreenrecorder-salsa.orig/src/GUI/PageWelcome.cpp	2024-05-07 08:50:15.918773109 +0200
++++ simplescreenrecorder-salsa/src/GUI/PageWelcome.cpp	2024-05-07 08:50:15.914773073 +0200
+@@ -121,8 +121,8 @@
+ 	html_about.replace("%SOURCECODE%", tr("The source code of this program can be found at:"));
+ 	html_about.replace("%USES%", tr("This program uses:"));
+ 	html_about.replace("%USES_QT%", tr("%1 for the graphical user interface").arg("<a href=\"https://qt-project.org/\">Qt</a>"));
+-	html_about.replace("%USES_LIBAV_FFMPEG%", tr("%1 or %2 (depending on your distribution) for video/audio encoding").arg("<a href=\"http://libav.org/\">libav</a>").arg("<a href=\"http://ffmpeg.org/\">ffmpeg</a>"));
+-	html_about.replace("%USES_ELFHACKS%", tr("%1 for hooking system functions for OpenGL recording").arg("<a href=\"https://github.com/nullkey/elfhacks\">elfhacks</a>"));
++	html_about.replace("%USES_FFMPEG%", tr("%1 for video/audio encoding").arg("<a href=\"https://ffmpeg.org/\">FFmpeg</a>"));
++	html_about.replace("%USES_PLTHOOK%", tr("%1 for hooking system functions for OpenGL recording").arg("<a href=\"https://github.com/kubo/plthook\">PLTHook</a>"));
+ 	html_about.replace("%VERSION%", SSR_VERSION);
+ 	html_about.replace("%VERSIONINFO%", GetVersionInfo().replace("\n", "<br>\n"));
+ 
+Index: simplescreenrecorder-salsa/glinject/elfhacks.h
+===================================================================
+--- simplescreenrecorder-salsa.orig/glinject/elfhacks.h	2024-05-07 08:50:11.850735880 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,208 +0,0 @@
+-/**
+- * \file src/elfhacks.h
+- * \brief elfhacks application interface
+- * \author Pyry Haulos <pyry.haulos@gmail.com>
+- * \date 2007-2008
+- */
+-
+-/* elfhacks.h -- Various ELF run-time hacks
+-  version 0.4.1, March 9th, 2008
+-
+-  Copyright (C) 2007-2008 Pyry Haulos
+-
+-  This software is provided 'as-is', without any express or implied
+-  warranty.  In no event will the authors be held liable for any damages
+-  arising from the use of this software.
+-
+-  Permission is granted to anyone to use this software for any purpose,
+-  including commercial applications, and to alter it and redistribute it
+-  freely, subject to the following restrictions:
+-
+-  1. The origin of this software must not be misrepresented; you must not
+-     claim that you wrote the original software. If you use this software
+-     in a product, an acknowledgment in the product documentation would be
+-     appreciated but is not required.
+-  2. Altered source versions must be plainly marked as such, and must not be
+-     misrepresented as being the original software.
+-  3. This notice may not be removed or altered from any source distribution.
+-
+-  Pyry Haulos <pyry.haulos@gmail.com>
+-*/
+-
+-#include <elf.h>
+-#include <link.h>
+-
+-#ifdef __cplusplus
+-extern "C" {
+-#endif
+-
+-#define __PUBLIC __attribute__ ((visibility ("default")))
+-
+-#ifdef __x86_64__
+-# define __elf64
+-#endif
+-#ifdef __i386__
+-# define __elf32
+-#endif
+-
+-#if defined(__elf64)
+-# define ELFW_R_SYM ELF64_R_SYM
+-# define ElfW_Sword Elf64_Sxword
+-# ifndef ElfW
+-#  define ElfW(v) Elf64_##v
+-# endif
+-# ifndef __ELF_NATIVE_CLASS
+-#  define __ELF_NATIVE_CLASS 64
+-# endif
+-#elif defined(__elf32)
+-# define ELFW_R_SYM ELF32_R_SYM
+-# define ElfW_Sword Elf32_Sword
+-# ifndef ElfW
+-#  define ElfW(v) Elf32_##v
+-# endif
+-# ifndef __ELF_NATIVE_CLASS
+-#  define __ELF_NATIVE_CLASS 32
+-# endif
+-#else
+-# error neither __elf32 nor __elf64 is defined
+-#endif
+-
+-/**
+- *  \defgroup elfhacks elfhacks
+- *  Elfhacks is a collection of functions that aim for retvieving
+- *  or modifying progam's dynamic linking information at run-time.
+- *  \{
+- */
+-
+-/**
+- * \brief elfhacks program object
+- */
+-typedef struct {
+-	/** file name */
+-	const char *name;
+-	/** base address in memory */
+-	ElfW(Addr) addr;
+-	/** program headers */
+-	const ElfW(Phdr) *phdr;
+-	/** number of program headers */
+-	ElfW(Half) phnum;
+-	/** .dynamic */
+-	ElfW(Dyn) *dynamic;
+-	/** .symtab */
+-	ElfW(Sym) *symtab;
+-	/** .strtab */
+-	const char *strtab;
+-	/** symbol hash table (DT_HASH) */
+-	ElfW(Word) *hash;
+-	/** symbol hash table (DT_GNU_HASH) */
+-	Elf32_Word *gnu_hash;
+-} eh_obj_t;
+-
+-/**
+- * \brief elfhacks symbol
+- */
+-typedef struct {
+-	/** symbol name */
+-	const char *name;
+-	/** corresponding ElfW(Sym) */
+-	ElfW(Sym) *sym;
+-	/** elfhacks object this symbol is associated to */
+-	eh_obj_t *obj;
+-} eh_sym_t;
+-
+-/**
+- * \brief elfhacks relocation
+- */
+-typedef struct {
+-	/** symbol this relocation is associated to */
+-	eh_sym_t *sym;
+-	/** corresponding ElfW(Rel) (NULL if this is Rela) */
+-	ElfW(Rel) *rel;
+-	/** corresponding ElfW(Rela) (NULL if this is Rel) */
+-	ElfW(Rela) *rela;
+-	/** elfhacks program object */
+-	eh_obj_t *obj;
+-} eh_rel_t;
+-
+-/**
+- * \brief Iterate objects callback
+- */
+-typedef int (*eh_iterate_obj_callback_func)(eh_obj_t *obj, void *arg);
+-/**
+- * \brief Iterate symbols callback
+- */
+-typedef int (*eh_iterate_sym_callback_func)(eh_sym_t *sym, void *arg);
+-/**
+- * \brief Iterate relocations callback
+- */
+-typedef int (*eh_iterate_rel_callback_func)(eh_rel_t *rel, void *arg);
+-
+-/**
+- * \brief Initializes eh_obj_t for given soname
+- *
+- * Matching is done using fnmatch() so wildcards and other standard
+- * filename metacharacters and expressions work.
+- *
+- * If soname is NULL, this function returns the main program object.
+- * \param obj elfhacks object
+- * \param soname object's soname (see /proc/pid/maps) or NULL for main
+- * \return 0 on success otherwise a positive error code
+-*/
+-__PUBLIC int eh_find_obj(eh_obj_t *obj, const char *soname);
+-
+-/**
+- * \brief Walk through list of objects
+- * \param callback callback function
+- * \param arg argument passed to callback function
+- * \return 0 on success otherwise an error code
+- */
+-__PUBLIC int eh_iterate_obj(eh_iterate_obj_callback_func callback, void *arg);
+-
+-/**
+- * \brief Finds symbol in object's .dynsym and retrvieves its value.
+- * \param obj elfhacks program object
+- * \param name symbol to find
+- * \param to returned value
+- * \return 0 on success otherwise a positive error code
+-*/
+-__PUBLIC int eh_find_sym(eh_obj_t *obj, const char *name, void **to);
+-
+-/**
+- * \brief Walk through list of symbols in object
+- * \param obj elfhacks program object
+- * \param callback callback function
+- * \param arg argument passed to callback function
+- * \return 0 on success otherwise an error code
+- */
+-__PUBLIC int eh_iterate_sym(eh_obj_t *obj, eh_iterate_sym_callback_func callback, void *arg);
+-
+-/**
+- * \brief Iterates through object's .rel.plt and .rela.plt and sets every
+- *        occurrence of some symbol to the specified value.
+- * \param obj elfhacks program object
+- * \param sym symbol to replace
+- * \param val new value
+- * \return 0 on success otherwise a positive error code
+-*/
+-__PUBLIC int eh_set_rel(eh_obj_t *obj, const char *sym, void *val);
+-
+-/**
+- * \brief Walk through object's .rel.plt and .rela.plt
+- * \param obj elfhacks program object
+- * \param callback callback function
+- * \param arg argument passed to callback function
+- */
+-__PUBLIC int eh_iterate_rel(eh_obj_t *obj, eh_iterate_rel_callback_func callback, void *arg);
+-
+-/**
+- * \brief Destroy eh_obj_t object.
+- * \param obj elfhacks program object
+- * \return 0 on success otherwise a positive error code
+-*/
+-__PUBLIC int eh_destroy_obj(eh_obj_t *obj);
+-
+-/** \} */
+-
+-#ifdef __cplusplus
+-}
+-#endif
