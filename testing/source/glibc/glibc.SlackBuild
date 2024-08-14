@@ -25,7 +25,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 PKGNAM=glibc
 VERSION=${VERSION:-$(echo glibc-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 CHECKOUT=${CHECKOUT:-""}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 
 # I was considering disabling NSCD, but MoZes talked me out of it.  :)
 #DISABLE_NSCD=" --disable-nscd "
@@ -65,17 +65,22 @@ if [ "$(gcc -dumpversion)" = "10.2.0" ]; then
 fi
 
 # I'll break this out as an option for fun  :-)
+#
+# NOTE: -mstackrealign improves compatibility with old binaries.
+# -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer will improve
+# binary compatibility as well, and at negligible cost if it's only
+# applied to glibc. Also useful for profiling.
 case $ARCH  in
   i586)
     OPTIMIZ="-O3 -march=i586 -mtune=i686"
     LIBDIRSUFFIX=""
     ;;
   i686)
-    OPTIMIZ="-O3 -march=pentium4 -mtune=generic"
+    OPTIMIZ="-O3 -march=pentium4 -mtune=generic -mstackrealign -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer"
     LIBDIRSUFFIX=""
     ;;
   x86_64)
-    OPTIMIZ="-O3 -march=x86-64 -mtune=generic -fPIC"
+    OPTIMIZ="-O3 -march=x86-64 -mtune=generic -fPIC -mstackrealign -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer"
     LIBDIRSUFFIX="64"
     ;;
   *)
@@ -204,9 +209,8 @@ mkdir build-glibc-$VERSION
 cd build-glibc-$VERSION || exit 1
 
 echo "BUILDING DAS NPTL GLIBC"
-# Adding -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer to CFLAGS and the
-# option --enable-multi-arch to see if it stabilizes Steam.
-CFLAGS="-g $OPTIMIZ -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer" \
+CFLAGS="-g $OPTIMIZ" \
+CXXFLAGS="-g $OPTIMIZ" \
 ../configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \

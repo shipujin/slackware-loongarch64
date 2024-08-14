@@ -11,9 +11,25 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Tue, 13 Aug 2024 20:33:27 GMT</pubDate>
-      <lastBuildDate>Tue, 13 Aug 2024 21:09:14 GMT</lastBuildDate>
+      <pubDate>Wed, 14 Aug 2024 01:47:55 GMT</pubDate>
+      <lastBuildDate>Wed, 14 Aug 2024 01:59:18 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Wed, 14 Aug 2024 01:47:55 GMT</title>
+         <pubDate>Wed, 14 Aug 2024 01:47:55 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240814014755</link>
+         <guid isPermaLink="false">20240814014755</guid>
+         <description>
+           <![CDATA[<pre>
+testing/packages/aaa_glibc-solibs-2.40-x86_64-3.txz:  Rebuilt.
+testing/packages/glibc-2.40-x86_64-3.txz:  Rebuilt.
+  Let's try this again with these options on both sides:
+  -mstackrealign -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
+testing/packages/glibc-i18n-2.40-x86_64-3.txz:  Rebuilt.
+testing/packages/glibc-profile-2.40-x86_64-3.txz:  Rebuilt.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Tue, 13 Aug 2024 20:33:27 GMT</title>
          <pubDate>Tue, 13 Aug 2024 20:33:27 GMT</pubDate>

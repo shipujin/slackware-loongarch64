@@ -1,3 +1,11 @@
+Wed Aug 14 01:47:55 UTC 2024
+testing/packages/aaa_glibc-solibs-2.40-x86_64-3.txz:  Rebuilt.
+testing/packages/glibc-2.40-x86_64-3.txz:  Rebuilt.
+  Let's try this again with these options on both sides:
+  -mstackrealign -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
+testing/packages/glibc-i18n-2.40-x86_64-3.txz:  Rebuilt.
+testing/packages/glibc-profile-2.40-x86_64-3.txz:  Rebuilt.
++--------------------------+
 Tue Aug 13 20:33:27 UTC 2024
 ap/moc-2.6_alpha3-x86_64-4.txz:  Rebuilt.
   The ffmpeg7 patch isn't 100% there, so rebuild without the ffmpeg plugin.
