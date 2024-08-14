@@ -67,14 +67,15 @@ LOCALVERSION="$(cat ${KERNEL_SOURCE}/.config 2> /dev/null | grep CONFIG_LOCALVER
 # the name of the created package would be, and then exit. This information
 # could be useful to other scripts.
 if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
-  # We will need to copy the config and run make oldconfig and make
+  # We will need to copy the config and run make olddefconfig and make
   # prepare in order to generate kernel/bounds.s, where we can find
-  # the true $PACKAGE_ARCH.
+  # the true $PACKAGE_ARCH. Use olddefconfig (not oldconfig) to prevent
+  # stalling if user input would be required.
   if [ ! "${KERNEL_CONFIG}" = "${KERNEL_SOURCE}/.config" ]; then
     cp -a ${KERNEL_CONFIG} ${KERNEL_SOURCE}/.config
   fi
   cd ${KERNEL_SOURCE}
-  make oldconfig 1> /dev/null 2> /dev/null
+  make olddefconfig 1> /dev/null 2> /dev/null
   make prepare 1> /dev/null 2> /dev/null
   PACKAGE_ARCH=$(cat kernel/bounds.s | grep -w "\-march=.*" | tr " " "\n" | grep -w "\-march=.*" | cut -f 2 -d = | tr - _)
   echo "kernel${KERNEL_NAME}-modules${LOCALVERSION}-$(echo ${VERSION} | tr - _)$(echo ${LOCALVERSION} | tr - _)-${PACKAGE_ARCH}-$BUILD.txz"
