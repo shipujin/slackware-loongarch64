@@ -1,3 +1,25 @@
+Thu Aug 15 20:07:37 UTC 2024
+a/aaa_libraries-15.1-x86_64-33.txz:  Rebuilt.
+  Upgraded:  libcares.so.2.18.0, libtdb.so.1.4.12.
+  Added (temporarily):  libboost_*.so.1.85.0.
+a/btrfs-progs-6.10.1-x86_64-1.txz:  Upgraded.
+ap/cups-browsed-2.0.1-x86_64-1.txz:  Upgraded.
+ap/cups-filters-2.0.1-x86_64-1.txz:  Upgraded.
+kde/kig-23.08.5-x86_64-5.txz:  Rebuilt.
+  Recompiled against boost-1.86.0.
+kde/kopeninghours-23.08.5-x86_64-5.txz:  Rebuilt.
+  Recompiled against boost-1.86.0.
+l/boost-1.86.0-x86_64-1.txz:  Upgraded.
+  Shared library .so-version bump.
+l/cryfs-0.10.3-x86_64-12.txz:  Rebuilt.
+  Recompiled against boost-1.86.0.
+l/enchant-2.8.2-x86_64-1.txz:  Upgraded.
+n/gnutls-3.8.7.1-x86_64-1.txz:  Upgraded.
+x/fcitx5-chinese-addons-5.1.6-x86_64-2.txz:  Rebuilt.
+  Recompiled against boost-1.86.0.
+x/libime-1.1.8-x86_64-2.txz:  Rebuilt.
+  Recompiled against boost-1.86.0.
++--------------------------+
 Wed Aug 14 19:36:01 UTC 2024
 a/kernel-generic-6.10.5-x86_64-1.txz:  Upgraded.
 a/kernel-huge-6.10.5-x86_64-1.txz:  Upgraded.
