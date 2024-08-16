@@ -11,9 +11,41 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Thu, 15 Aug 2024 20:07:37 GMT</pubDate>
-      <lastBuildDate>Thu, 15 Aug 2024 21:02:27 GMT</lastBuildDate>
+      <pubDate>Fri, 16 Aug 2024 19:58:10 GMT</pubDate>
+      <lastBuildDate>Fri, 16 Aug 2024 20:28:29 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Fri, 16 Aug 2024 19:58:10 GMT</title>
+         <pubDate>Fri, 16 Aug 2024 19:58:10 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240816195810</link>
+         <guid isPermaLink="false">20240816195810</guid>
+         <description>
+           <![CDATA[<pre>
+a/aaa_glibc-solibs-2.40-x86_64-4.txz:  Rebuilt.
+a/sysvinit-scripts-15.1-noarch-21.txz:  Rebuilt.
+  rc.S: fix_errors when mounting a bcachefs filesystem. Thanks to 0XBF.
+l/glibc-2.40-x86_64-4.txz:  Rebuilt.
+  On 32-bit, add these compile flags:
+  -mstackrealign
+  This is needed for compatibility with old binaries, thanks to iive.
+  -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
+  Without these, both nouveau and the nvidia driver are prone to crashes and
+  hangs. Thanks to UnrelatedMicrowave.
+  On both 32-bit and 64-bit, add --enable-multi-arch. This will enable
+  optimized assembly code within glibc, depending on the CPU detected.
+  Thanks to iive.
+  With -mstackrealign and --enable-multi-arch on 32-bit, I believe that
+  -march= could be set to any x86 arch -- it's merely a decoration.
+l/glibc-i18n-2.40-x86_64-4.txz:  Rebuilt.
+l/glibc-profile-2.40-x86_64-4.txz:  Rebuilt.
+l/gtk4-4.14.5-x86_64-1.txz:  Upgraded.
+l/python-markdown-3.7-x86_64-1.txz:  Upgraded.
+x/libglvnd-1.7.0-x86_64-2.txz:  Rebuilt.
+  Use the new compiler flags. On 32-bit, add -mstackrealign just in case.
+xfce/xfce4-notifyd-0.9.6-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Thu, 15 Aug 2024 20:07:37 GMT</title>
          <pubDate>Thu, 15 Aug 2024 20:07:37 GMT</pubDate>

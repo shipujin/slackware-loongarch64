@@ -25,7 +25,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 PKGNAM=glibc
 VERSION=${VERSION:-$(echo glibc-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 CHECKOUT=${CHECKOUT:-""}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-4}
 
 # I was considering disabling NSCD, but MoZes talked me out of it.  :)
 #DISABLE_NSCD=" --disable-nscd "
@@ -66,28 +66,16 @@ fi
 
 # I'll break this out as an option for fun  :-)
 case $ARCH  in
-  i386)
-    OPTIMIZ="-O3 -march=i386 -mcpu=i686"
-    LIBDIRSUFFIX=""
-    ;;
-  i486)
-    OPTIMIZ="-O3 -march=i486 -mtune=i686"
-    LIBDIRSUFFIX=""
-    ;;
   i586)
     OPTIMIZ="-O3 -march=i586 -mtune=i686"
     LIBDIRSUFFIX=""
     ;;
   i686)
-    OPTIMIZ="-O3 -march=pentium4 -mtune=generic"
-    LIBDIRSUFFIX=""
-    ;;
-  athlon)
-    OPTIMIZ="-O3 -march=athlon"
-    LIBDIRSUFFIX=""
-    ;;
-  s390)
-    OPTIMIZ="-O3"
+    # -mstackrealign is needed for compatibilty with legacy binaries that
+    # keep 4-byte stack alignment.
+    # -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer are required by
+    # both nouveau and the nvidia driver to prevent crashes and hangs.
+    OPTIMIZ="-O3 -march=pentium4 -mtune=generic -mstackrealign -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer"
     LIBDIRSUFFIX=""
     ;;
   x86_64)
@@ -220,18 +208,15 @@ mkdir build-glibc-$VERSION
 cd build-glibc-$VERSION || exit 1
 
 echo "BUILDING DAS NPTL GLIBC"
-# We are setting the variable below so that x86 ISA level is not included
-# in shared libraries. Without this, glibc compiled with -march= may not
-# run on some CPUs that it should be able to support. Needed for glibc-2.33.
-# FIXME: revisit this with future glibc releases!
-libc_cv_include_x86_isa_level=no \
 CFLAGS="-g $OPTIMIZ" \
+CXXFLAGS="-g $OPTIMIZ" \
 ../configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --enable-kernel=4.4 \
   --with-headers=/usr/include \
   --enable-add-ons \
+  --enable-multi-arch \
   --enable-profile \
   $DISABLE_NSCD \
   $WERROR \

@@ -226,7 +226,7 @@ if [ -z "$container" ]; then
   # and let bcachefs do its own fsck:
   elif grep -q ' / bcachefs ' /proc/mounts ; then
     echo "Remounting bcachefs root device(s) with read-write enabled."
-    /sbin/mount -o remount,rw,fsck /
+    /sbin/mount -o remount,rw,fsck,fix_errors /
   elif [ ! $READWRITE = yes ]; then
     # Check the root filesystem:
     RETVAL=0
