@@ -1,3 +1,16 @@
+Sat Aug 17 18:14:54 UTC 2024
+a/eudev-3.2.14-x86_64-2.txz:  Rebuilt.
+  Add a few more modules to /lib/modprobe.d/watchdog.conf.
+a/kmod-33-x86_64-1.txz:  Upgraded.
+ap/sc-im-0.8.4-x86_64-1.txz:  Upgraded.
+ap/scdoc-1.11.3-x86_64-1.txz:  Added.
+  This is needed to build kmod-33.
+d/luajit-2.1.1723675123-x86_64-1.txz:  Upgraded.
+d/rust-bindgen-0.70.0-x86_64-1.txz:  Upgraded.
+l/librsvg-2.58.3-x86_64-1.txz:  Upgraded.
+x/mesa-24.2.0-x86_64-2.txz:  Rebuilt.
+  Updated the subprojects and recompiled.
++--------------------------+
 Fri Aug 16 19:58:10 UTC 2024
 a/aaa_glibc-solibs-2.40-x86_64-4.txz:  Rebuilt.
 a/sysvinit-scripts-15.1-noarch-21.txz:  Rebuilt.

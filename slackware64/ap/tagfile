@@ -63,6 +63,7 @@ rpm:OPT
 rzip:OPT
 sc:OPT
 sc-im:OPT
+scdoc:REC
 screen:OPT
 seejpeg:REC
 slackpkg:REC

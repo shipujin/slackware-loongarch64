@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Copyright 2022  Patrick J. Volkerding, Sebeka, MN, USA
-# Copyright 2022  Heinz Wiesinger, Amsterdam, The Netherlands
+# Copyright 2024  Patrick J. Volkerding, Sebeka, Minnesota, USA
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -23,7 +22,7 @@
 
 cd $(dirname $0) ; CWD=$(pwd)
 
-PKGNAM=rust-bindgen
+PKGNAM=scdoc
 VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 BUILD=${BUILD:-1}
 
@@ -46,7 +45,7 @@ if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
   exit 0
 fi
 
-NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+NUMJOBS=${NUMJOBS:-" -j $(expr $(nproc) + 1) "}
 
 if [ "$ARCH" = "i686" ]; then
   SLKCFLAGS="-O2 -march=pentium4 -mtune=generic"
@@ -69,8 +68,6 @@ cd $TMP
 rm -rf $PKGNAM-$VERSION
 tar xvf $CWD/$PKGNAM-$VERSION.tar.?z || exit 1
 cd $PKGNAM-$VERSION || exit 1
-tar xvf $CWD/cargo-$PKGNAM-$VERSION.tar.?z || exit 1
-mv cargo-$PKGNAM-$VERSION vendor
 
 chown -R root:root .
 find . \
@@ -79,36 +76,32 @@ find . \
   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \+
 
-# Configure cargo for offline builds
-mkdir -p .cargo
-cat << EOF >> .cargo/config.toml
-[source.crates-io]
-replace-with = "vendored-sources"
-
-[source.vendored-sources]
-directory = "vendor"
-EOF
+CFLAGS="$SLKCFLAGS" \
+PREFIX=/usr \
+MANDIR=/usr/man \
+make $NUMJOBS || exit 1
 
 CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-RUSTONIG_DYNAMIC_LIBONIG=1 \
-cargo build \
-  --offline \
-  --release \
-  --target $ARCH-unknown-linux-gnu \
-  --verbose \
-  $NUMJOBS || exit 1
+DESTDIR=$PKG \
+PREFIX=/usr \
+MANDIR=/usr/man \
+make install || exit 1
 
-mkdir -p $PKG/usr/bin
-install -m 755 target/$ARCH-unknown-linux-gnu/release/bindgen \
-  $PKG/usr/bin/
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
 
-find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
-  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+# Compress manual pages:
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do
+  ln -s $( readlink $i ).gz $i.gz
+  rm $i
+done
 
-mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
-cp -a *.md LICENSE* \
-  $PKG/usr/doc/$PKGNAM-$VERSION
+# Add a documentation directory:
+mkdir -p $PKG/usr/doc/${PKGNAM}-$VERSION
+cp -a \
+  COPYING* README* \
+  $PKG/usr/doc/${PKGNAM}-$VERSION
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
