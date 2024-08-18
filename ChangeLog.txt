@@ -1,3 +1,11 @@
+Sun Aug 18 18:11:20 UTC 2024
+ap/vim-9.1.0680-x86_64-1.txz:  Upgraded.
+d/binutils-2.43.1-x86_64-1.txz:  Upgraded.
+  Shared library .so-version bump.
+d/oprofile-1.4.0-x86_64-15.txz:  Rebuilt.
+  Recompiled against binutils-2.43.1.
+xap/vim-gvim-9.1.0680-x86_64-1.txz:  Upgraded.
++--------------------------+
 Sat Aug 17 18:14:54 UTC 2024
 a/eudev-3.2.14-x86_64-2.txz:  Rebuilt.
   Add a few more modules to /lib/modprobe.d/watchdog.conf.

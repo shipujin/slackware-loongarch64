@@ -75,6 +75,10 @@ case $ARCH  in
     # keep 4-byte stack alignment.
     # -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer are required by
     # both nouveau and the nvidia driver to prevent crashes and hangs.
+    # We could also possibly add these:
+    # -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize
+    # But since we're already requiring at least a pentium4, I'm not sure
+    # what the benefit would be, so we won't do this yet.
     OPTIMIZ="-O3 -march=pentium4 -mtune=generic -mstackrealign -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer"
     LIBDIRSUFFIX=""
     ;;
