@@ -1,3 +1,16 @@
+Mon Aug 19 18:50:19 UTC 2024
+a/kernel-firmware-20240816_5649ca7-noarch-1.txz:  Upgraded.
+a/kernel-generic-6.10.6-x86_64-1.txz:  Upgraded.
+a/kernel-huge-6.10.6-x86_64-1.txz:  Upgraded.
+a/kernel-modules-6.10.6-x86_64-1.txz:  Upgraded.
+d/kernel-headers-6.10.6-x86-1.txz:  Upgraded.
+k/kernel-source-6.10.6-noarch-1.txz:  Upgraded.
+l/liburing-2.7-x86_64-1.txz:  Upgraded.
+x/libinput-1.26.2-x86_64-1.txz:  Upgraded.
+isolinux/initrd.img:  Rebuilt.
+kernels/*:  Upgraded.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
++--------------------------+
 Sun Aug 18 18:11:20 UTC 2024
 ap/vim-9.1.0680-x86_64-1.txz:  Upgraded.
 d/binutils-2.43.1-x86_64-1.txz:  Upgraded.
