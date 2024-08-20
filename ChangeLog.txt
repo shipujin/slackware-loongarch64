@@ -1,3 +1,20 @@
+Tue Aug 20 18:23:52 UTC 2024
+a/libbytesize-2.11-x86_64-1.txz:  Upgraded.
+d/python-setuptools-73.0.0-x86_64-1.txz:  Upgraded.
+l/python-importlib_metadata-8.4.0-x86_64-1.txz:  Upgraded.
+n/epic5-2.2-x86_64-1.txz:  Upgraded.
+n/netatalk-3.2.7-x86_64-1.txz:  Upgraded.
+x/xorg-server-21.1.13-x86_64-2.txz:  Rebuilt.
+  On 32-bit, using the modesetting driver with Intel graphics is resulting in
+  a black screen (observed here with CoffeeLake-H GT2), so on 32-bit only let's
+  stop applying the patch that was making xorg-server use modesetting by
+  default. Thanks to LuckyCyborg and Petri Kaukasoina.
+  Fix build with gcc-14.2.
+x/xorg-server-xephyr-21.1.13-x86_64-2.txz:  Rebuilt.
+x/xorg-server-xnest-21.1.13-x86_64-2.txz:  Rebuilt.
+x/xorg-server-xvfb-21.1.13-x86_64-2.txz:  Rebuilt.
+xfce/xfce4-screenshooter-1.11.1-x86_64-1.txz:  Upgraded.
++--------------------------+
 Mon Aug 19 18:50:19 UTC 2024
 a/kernel-firmware-20240816_5649ca7-noarch-1.txz:  Upgraded.
 a/kernel-generic-6.10.6-x86_64-1.txz:  Upgraded.
