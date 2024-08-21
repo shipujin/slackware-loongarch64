@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+            |-----handy-ruler------------------------------------------------------|
+libqrtr-glib: libqrtr-glib (Qualcomm router protocol library)
+libqrtr-glib:
+libqrtr-glib: libqrtr-glib is a glib-based library to use and manage the QRTR
+libqrtr-glib: (Qualcomm IPC Router) bus.
+libqrtr-glib:
+libqrtr-glib: Homepage: https://gitlab.freedesktop.org/mobile-broadband/libqrtr-glib
+libqrtr-glib:
+libqrtr-glib:
+libqrtr-glib:
+libqrtr-glib:
+libqrtr-glib:

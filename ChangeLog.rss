@@ -11,9 +11,39 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Tue, 20 Aug 2024 18:23:52 GMT</pubDate>
-      <lastBuildDate>Tue, 20 Aug 2024 18:59:35 GMT</lastBuildDate>
+      <pubDate>Wed, 21 Aug 2024 18:08:47 GMT</pubDate>
+      <lastBuildDate>Wed, 21 Aug 2024 18:30:18 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Wed, 21 Aug 2024 18:08:47 GMT</title>
+         <pubDate>Wed, 21 Aug 2024 18:08:47 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240821180847</link>
+         <guid isPermaLink="false">20240821180847</guid>
+         <description>
+           <![CDATA[<pre>
+d/python-setuptools-73.0.1-x86_64-1.txz:  Upgraded.
+d/rust-bindgen-0.70.1-x86_64-1.txz:  Upgraded.
+n/ModemManager-1.22.0-x86_64-1.txz:  Upgraded.
+n/dhcpcd-10.0.10-x86_64-1.txz:  Upgraded.
+n/epic5-2.4-x86_64-1.txz:  Upgraded.
+n/libqmi-1.34.0-x86_64-2.txz:  Rebuilt.
+  Build against libqrtr-glib with -Dqrtr=true.
+n/libqrtr-glib-1.2.2-x86_64-1.txz:  Added.
+  ModemManager-1.22.0 needs libqmi to be linked with this.
+x/xorg-server-21.1.13-x86_64-3.txz:  Rebuilt.
+  Patched changing a type from unsigned long to unsigned long long which fixes
+  the black screen seen on 32-bit with the modesetting driver. Seems fine on
+  64-bit as well, so the patch is applied for all builds. The patch to default
+  to modesetting for Intel graphics is restored (and the one for nouveau is kept
+  as well).
+  Thanks to Lenard Spencer for reporting that nouveau was also hitting this.
+  Thanks to Petri Kaukasoina for the patch.
+x/xorg-server-xephyr-21.1.13-x86_64-3.txz:  Rebuilt.
+x/xorg-server-xnest-21.1.13-x86_64-3.txz:  Rebuilt.
+x/xorg-server-xvfb-21.1.13-x86_64-3.txz:  Rebuilt.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Tue, 20 Aug 2024 18:23:52 GMT</title>
          <pubDate>Tue, 20 Aug 2024 18:23:52 GMT</pubDate>

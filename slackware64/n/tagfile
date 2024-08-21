@@ -65,6 +65,7 @@ libnetfilter_queue:REC
 libnfnetlink:REC
 libnftnl:REC
 libqmi:REC
+libqrtr-glib:REC
 libtirpc:REC
 links:OPT
 lynx:OPT
