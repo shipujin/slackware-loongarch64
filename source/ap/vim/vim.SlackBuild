@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2008, 2009, 2010, 2013, 2016, 2018, 2019, 2020, 2021, 2022, 2023  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# Copyright 2008, 2009, 2010, 2013, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024  Patrick J. Volkerding, Sebeka, Minnesota, USA
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -141,6 +141,7 @@ CFLAGS="$SLKCFLAGS" \
   --enable-multibyte \
   --enable-cscope \
   --with-features=huge \
+  --with-python3-stable-abi=no \
   --with-compiledby="<volkerdi@slackware.com>" \
   --build=$ARCH-slackware-linux || exit 1
 }

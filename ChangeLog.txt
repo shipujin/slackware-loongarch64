@@ -1,3 +1,25 @@
+Thu Aug 22 19:10:18 UTC 2024
+ap/vim-9.1.0686-x86_64-1.txz:  Upgraded.
+  Build with --with-python3-stable-abi=no (which was the default until
+  recently). This fixes segfaults when python3 is used from vim.
+  Thanks to audriusk.
+d/luajit-2.1.1724232689-x86_64-1.txz:  Upgraded.
+d/parallel-20240822-noarch-1.txz:  Upgraded.
+l/gst-plugins-bad-free-1.24.7-x86_64-1.txz:  Upgraded.
+l/gst-plugins-base-1.24.7-x86_64-1.txz:  Upgraded.
+l/gst-plugins-good-1.24.7-x86_64-1.txz:  Upgraded.
+l/gst-plugins-libav-1.24.7-x86_64-1.txz:  Upgraded.
+l/gstreamer-1.24.7-x86_64-1.txz:  Upgraded.
+l/nodejs-20.17.0-x86_64-1.txz:  Upgraded.
+l/pipewire-1.2.3-x86_64-1.txz:  Upgraded.
+n/bind-9.18.29-x86_64-1.txz:  Upgraded.
+n/nfs-utils-2.7.1-x86_64-1.txz:  Upgraded.
+xap/mozilla-thunderbird-128.1.1esr-x86_64-1.txz:  Upgraded.
+  This is a bugfix release.
+  For more information, see:
+    https://www.mozilla.org/en-US/thunderbird/128.1.1esr/releasenotes/
+xap/vim-gvim-9.1.0686-x86_64-1.txz:  Upgraded.
++--------------------------+
 Wed Aug 21 18:08:47 UTC 2024
 d/python-setuptools-73.0.1-x86_64-1.txz:  Upgraded.
 d/rust-bindgen-0.70.1-x86_64-1.txz:  Upgraded.
