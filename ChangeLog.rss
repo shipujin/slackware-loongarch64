@@ -11,9 +11,22 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Thu, 22 Aug 2024 19:10:18 GMT</pubDate>
-      <lastBuildDate>Thu, 22 Aug 2024 20:16:09 GMT</lastBuildDate>
+      <pubDate>Fri, 23 Aug 2024 19:36:53 GMT</pubDate>
+      <lastBuildDate>Fri, 23 Aug 2024 19:58:59 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Fri, 23 Aug 2024 19:36:53 GMT</title>
+         <pubDate>Fri, 23 Aug 2024 19:36:53 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240823193653</link>
+         <guid isPermaLink="false">20240823193653</guid>
+         <description>
+           <![CDATA[<pre>
+l/python-idna-3.8-x86_64-1.txz:  Upgraded.
+n/c-ares-1.33.1-x86_64-1.txz:  Upgraded.
+x/egl-wayland-1.1.16-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Thu, 22 Aug 2024 19:10:18 GMT</title>
          <pubDate>Thu, 22 Aug 2024 19:10:18 GMT</pubDate>
