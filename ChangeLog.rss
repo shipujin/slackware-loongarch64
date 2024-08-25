@@ -11,9 +11,23 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Sat, 24 Aug 2024 23:36:26 GMT</pubDate>
-      <lastBuildDate>Sat, 24 Aug 2024 23:59:18 GMT</lastBuildDate>
+      <pubDate>Sun, 25 Aug 2024 17:38:49 GMT</pubDate>
+      <lastBuildDate>Sun, 25 Aug 2024 17:58:57 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Sun, 25 Aug 2024 17:38:49 GMT</title>
+         <pubDate>Sun, 25 Aug 2024 17:38:49 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240825173849</link>
+         <guid isPermaLink="false">20240825173849</guid>
+         <description>
+           <![CDATA[<pre>
+d/luajit-2.1.1724512491-x86_64-1.txz:  Upgraded.
+n/getmail-6.19.04-x86_64-1.txz:  Upgraded.
+n/socat-1.8.0.1-x86_64-1.txz:  Upgraded.
+x/wayland-1.23.1-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Sat, 24 Aug 2024 23:36:26 GMT</title>
          <pubDate>Sat, 24 Aug 2024 23:36:26 GMT</pubDate>

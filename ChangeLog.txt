@@ -1,3 +1,9 @@
+Sun Aug 25 17:38:49 UTC 2024
+d/luajit-2.1.1724512491-x86_64-1.txz:  Upgraded.
+n/getmail-6.19.04-x86_64-1.txz:  Upgraded.
+n/socat-1.8.0.1-x86_64-1.txz:  Upgraded.
+x/wayland-1.23.1-x86_64-1.txz:  Upgraded.
++--------------------------+
 Sat Aug 24 23:36:26 UTC 2024
 a/lvm2-2.03.26-x86_64-1.txz:  Upgraded.
 ap/mc-4.8.32-x86_64-1.txz:  Upgraded.
