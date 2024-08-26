@@ -11,9 +11,29 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Sun, 25 Aug 2024 17:38:49 GMT</pubDate>
-      <lastBuildDate>Sun, 25 Aug 2024 17:58:57 GMT</lastBuildDate>
+      <pubDate>Mon, 26 Aug 2024 20:07:36 GMT</pubDate>
+      <lastBuildDate>Mon, 26 Aug 2024 20:28:18 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Mon, 26 Aug 2024 20:07:36 GMT</title>
+         <pubDate>Mon, 26 Aug 2024 20:07:36 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240826200736</link>
+         <guid isPermaLink="false">20240826200736</guid>
+         <description>
+           <![CDATA[<pre>
+a/xfsprogs-6.10.0-x86_64-1.txz:  Upgraded.
+ap/stow-2.4.0-x86_64-2.txz:  Rebuilt.
+  Applied upstream patch to fix perl warning. Thanks to mid-kid and pbslxw.
+l/apr-1.7.5-x86_64-1.txz:  Upgraded.
+l/glib2-2.82.0-x86_64-1.txz:  Upgraded.
+l/imagemagick-7.1.1_37-x86_64-1.txz:  Upgraded.
+l/libsoup3-3.6.0-x86_64-1.txz:  Upgraded.
+l/mlt-7.26.0-x86_64-1.txz:  Upgraded.
+l/python-zipp-3.20.1-x86_64-1.txz:  Upgraded.
+n/NetworkManager-1.48.10-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Sun, 25 Aug 2024 17:38:49 GMT</title>
          <pubDate>Sun, 25 Aug 2024 17:38:49 GMT</pubDate>

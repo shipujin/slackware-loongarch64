@@ -1,3 +1,15 @@
+Mon Aug 26 20:07:36 UTC 2024
+a/xfsprogs-6.10.0-x86_64-1.txz:  Upgraded.
+ap/stow-2.4.0-x86_64-2.txz:  Rebuilt.
+  Applied upstream patch to fix perl warning. Thanks to mid-kid and pbslxw.
+l/apr-1.7.5-x86_64-1.txz:  Upgraded.
+l/glib2-2.82.0-x86_64-1.txz:  Upgraded.
+l/imagemagick-7.1.1_37-x86_64-1.txz:  Upgraded.
+l/libsoup3-3.6.0-x86_64-1.txz:  Upgraded.
+l/mlt-7.26.0-x86_64-1.txz:  Upgraded.
+l/python-zipp-3.20.1-x86_64-1.txz:  Upgraded.
+n/NetworkManager-1.48.10-x86_64-1.txz:  Upgraded.
++--------------------------+
 Sun Aug 25 17:38:49 UTC 2024
 d/luajit-2.1.1724512491-x86_64-1.txz:  Upgraded.
 n/getmail-6.19.04-x86_64-1.txz:  Upgraded.
