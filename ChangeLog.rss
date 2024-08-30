@@ -11,9 +11,76 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Wed, 28 Aug 2024 17:31:38 GMT</pubDate>
-      <lastBuildDate>Wed, 28 Aug 2024 18:01:59 GMT</lastBuildDate>
+      <pubDate>Fri, 30 Aug 2024 17:52:19 GMT</pubDate>
+      <lastBuildDate>Fri, 30 Aug 2024 18:49:48 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Fri, 30 Aug 2024 17:52:19 GMT</title>
+         <pubDate>Fri, 30 Aug 2024 17:52:19 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240830175219</link>
+         <guid isPermaLink="false">20240830175219</guid>
+         <description>
+           <![CDATA[<pre>
+a/aaa_glibc-solibs-2.40-x86_64-5.txz:  Rebuilt.
+a/kernel-firmware-20240828_335a1de-noarch-1.txz:  Upgraded.
+a/kernel-generic-6.10.7-x86_64-1.txz:  Upgraded.
+a/kernel-huge-6.10.7-x86_64-1.txz:  Upgraded.
+a/kernel-modules-6.10.7-x86_64-1.txz:  Upgraded.
+a/userspace-rcu-0.14.1-x86_64-1.txz:  Upgraded.
+ap/man-db-2.13.0-x86_64-1.txz:  Upgraded.
+ap/screen-5.0.0-x86_64-1.txz:  Upgraded.
+ap/vim-9.1.0702-x86_64-1.txz:  Upgraded.
+d/cmake-3.30.3-x86_64-1.txz:  Upgraded.
+d/gcc-14.2.0-x86_64-2.txz:  Rebuilt.
+  Merge in parts of alienBOB's multilib build script, generalize the script
+  to work with both --enable-multilib and --disable-multilib, and otherwise
+  clean things up. Go ahead and build it multilib on 64-bit, because why not?
+  It's worth the bit of bloat to no longer have this package need to be
+  maintained separately and kept in sync. Thanks to alienBOB.
+d/gcc-g++-14.2.0-x86_64-2.txz:  Rebuilt.
+d/gcc-gdc-14.2.0-x86_64-2.txz:  Rebuilt.
+d/gcc-gfortran-14.2.0-x86_64-2.txz:  Rebuilt.
+d/gcc-gm2-14.2.0-x86_64-2.txz:  Rebuilt.
+d/gcc-gnat-14.2.0-x86_64-2.txz:  Rebuilt.
+d/gcc-go-14.2.0-x86_64-2.txz:  Rebuilt.
+d/gcc-objc-14.2.0-x86_64-2.txz:  Rebuilt.
+d/gcc-rust-14.2.0-x86_64-2.txz:  Rebuilt.
+d/kernel-headers-6.10.7-x86-1.txz:  Upgraded.
+d/python-setuptools-73.0.1-x86_64-1.txz:  Rebuilt.
+  Reverted due to regression: breaks g-ir-scanner
+k/kernel-source-6.10.7-noarch-1.txz:  Upgraded.
+l/glibc-2.40-x86_64-5.txz:  Rebuilt.
+  Enable multilib on 64-bit. Thanks to alienBOB.
+  Note that Slackware 64-bit can now run a 32-bit "Hello World!" but there
+  are no immediate plans to add additional multilib support by default.
+  Maybe down the road when bare metal 32-bit support goes away.
+l/glibc-i18n-2.40-x86_64-5.txz:  Rebuilt.
+l/glibc-profile-2.40-x86_64-5.txz:  Rebuilt.
+l/gtk4-4.15.6-x86_64-1.txz:  Upgraded.
+l/libssh-0.11.1-x86_64-1.txz:  Upgraded.
+l/protobuf-28.0-x86_64-1.txz:  Upgraded.
+  Shared library .so-version bump.
+l/python-certifi-2024.8.30-x86_64-1.txz:  Upgraded.
+l/qt6-6.7.2_20240610_3f005f1e-x86_64-6.txz:  Rebuilt.
+  Recompiled against protobuf-28.0.
+n/ca-certificates-20240830-noarch-1.txz:  Upgraded.
+  This update provides the latest CA certificates to check for the
+  authenticity of SSL connections.
+n/mosh-1.4.0-x86_64-4.txz:  Rebuilt.
+  Recompiled against protobuf-28.0.
+n/php-8.3.11-x86_64-1.txz:  Upgraded.
+  This is a bugfix release.
+  For more information, see:
+    https://www.php.net/ChangeLog-8.php#8.3.11
+x/mesa-24.2.1-x86_64-1.txz:  Upgraded.
+  Thanks to lucabon for the rust-bindgen patch.
+xap/vim-gvim-9.1.0702-x86_64-1.txz:  Upgraded.
+isolinux/initrd.img:  Rebuilt.
+kernels/*:  Upgraded.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Wed, 28 Aug 2024 17:31:38 GMT</title>
          <pubDate>Wed, 28 Aug 2024 17:31:38 GMT</pubDate>

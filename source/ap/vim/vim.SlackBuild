@@ -141,7 +141,6 @@ CFLAGS="$SLKCFLAGS" \
   --enable-multibyte \
   --enable-cscope \
   --with-features=huge \
-  --with-python3-stable-abi=no \
   --with-compiledby="<volkerdi@slackware.com>" \
   --build=$ARCH-slackware-linux || exit 1
 }

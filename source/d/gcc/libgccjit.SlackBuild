@@ -164,7 +164,7 @@ fi
      --infodir=/usr/info \
      --enable-shared \
      --enable-host-shared \
-     --enable-bootstrap \
+     --disable-bootstrap \
      --enable-languages=jit \
      --enable-threads=posix \
      --enable-checking=release \
@@ -192,12 +192,12 @@ fi
      --build=${TARGET} \
      --host=${TARGET} || exit 1
 
-  make $NUMJOBS bootstrap || exit 1
+  make $NUMJOBS || exit 1
   make -C gcc DESTDIR=$PKG jit.install-common jit.install-info || exit 1
 ) || exit 1
 
-# Don't ship .la files in /{,usr/}lib${LIBDIRSUFFIX}:
-rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+# Don't ship any .la files:
+find $PKG1 -name "*.la" -exec rm -f "{}" \;
 
 # Strip binaries:
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null

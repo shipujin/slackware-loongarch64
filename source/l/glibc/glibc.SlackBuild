@@ -20,12 +20,26 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Extended to build 32-bit compatibility libraries on x86_64,
+# by Fred Emmott <mail@fredemmott.co.uk>. No copyright claim.
+# Simplified to produce combined packages (no separate compat-32),
+# by Eric Hameleers <alien@slackware.com>
+# Merged into main glibc.SlackBuild and adjusted to be capable of
+# building as pure 64-bit, pure 32-bit, or multilib
+# by Patrick Volkerding <volkerdi@slackware.com>
+
 cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=glibc
 VERSION=${VERSION:-$(echo glibc-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 CHECKOUT=${CHECKOUT:-""}
-BUILD=${BUILD:-4}
+BUILD=${BUILD:-5}
+
+# An optional tag for after the version number in the package's filename:
+#VERTAG=_multilib
+
+# An optional tag for after the build number in the package's filename:
+#TAG=alien
 
 # I was considering disabling NSCD, but MoZes talked me out of it.  :)
 #DISABLE_NSCD=" --disable-nscd "
@@ -40,18 +54,26 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
+# Try to figure out if we want multilib (or set MULTILIB= manually):
+if [ "$ARCH" = "x86_64" -a -f /usr/lib/libgcc_s.so ]; then
+  MULTILIB=${MULTILIB:-"--enable-multilib"}
+else
+  MULTILIB=${MULTILIB:-"--disable-multilib"}
+fi
+
 # If the variable PRINT_PACKAGE_NAME is set, then this script will report what
 # the name of the created package would be, and then exit. This information
 # could be useful to other scripts.
 if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
-  echo "glibc-$VERSION-$ARCH-$BUILD.txz"
-  echo "glibc-i18n-$VERSION-$ARCH-$BUILD.txz"
-  echo "glibc-profile-$VERSION-$ARCH-$BUILD.txz"
-  echo "aaa_glibc-solibs-$VERSION-$ARCH-$BUILD.txz"
+  echo "glibc-${VERSION}${VERTAG}-$ARCH-${BUILD}${TAG}.txz"
+  echo "glibc-i18n-${VERSION}${VERTAG}-$ARCH-${BUILD}${TAG}.txz"
+  echo "glibc-profile-${VERSION}${VERTAG}-$ARCH-${BUILD}${TAG}.txz"
+  echo "aaa_glibc-solibs-${VERSION}${VERTAG}-$ARCH-${BUILD}${TAG}.txz"
   exit 0
 fi
 
-NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+# How many jobs to run in parallel:
+NUMJOBS=${NUMJOBS:-" -j $(expr $(nproc) + 1) "}
 
 # Work around -Werror failure with gcc-10.2.0.
 # NOTE: Until the next glibc release takes care of this issue, this will
@@ -64,41 +86,36 @@ if [ "$(gcc -dumpversion)" = "10.2.0" ]; then
   fi
 fi
 
+# Define the build flags for both 64-bit and 32-bit x86 before using them
+# below. We'll possibly need them both later on...
+# -mstackrealign is needed for compatibilty with legacy binaries that
+# keep 4-byte stack alignment.
+# -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer are required by
+# both nouveau and the nvidia driver to prevent crashes and hangs.
+# We could also possibly add these:
+# -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize
+# But since we're already requiring at least a pentium4, I'm not sure
+# what the benefit would be, so we won't do this yet.
+X86FLAGS32="-O3 -march=pentium4 -mtune=generic -mstackrealign -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer"
+X86FLAGS64="-O3 -march=x86-64 -mtune=generic -fPIC"
+
 # I'll break this out as an option for fun  :-)
 case $ARCH  in
-  i586)
-    OPTIMIZ="-O3 -march=i586 -mtune=i686"
-    LIBDIRSUFFIX=""
-    ;;
   i686)
-    # -mstackrealign is needed for compatibilty with legacy binaries that
-    # keep 4-byte stack alignment.
-    # -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer are required by
-    # both nouveau and the nvidia driver to prevent crashes and hangs.
-    # We could also possibly add these:
-    # -fno-tree-vectorize -fno-tree-loop-vectorize -fno-tree-slp-vectorize
-    # But since we're already requiring at least a pentium4, I'm not sure
-    # what the benefit would be, so we won't do this yet.
-    OPTIMIZ="-O3 -march=pentium4 -mtune=generic -mstackrealign -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer"
+    OPTIMIZ="${X86FLAGS32}"
     LIBDIRSUFFIX=""
+    TARGET=${TARGET:-i686}
     ;;
   x86_64)
-    OPTIMIZ="-O3 -march=x86-64 -mtune=generic -fPIC"
+    OPTIMIZ="${X86FLAGS64}"
     LIBDIRSUFFIX="64"
+    TARGET=${TARGET:-x86_64}
+    TARGET32=${TARGET32:-i686}
     ;;
   *)
     OPTIMIZ="-O3"
     LIBDIRSUFFIX=""
-    ;;
-esac
-
-case $ARCH in
-  x86_64)
-    TARGET=${TARGET:-x86_64}
-    ;;
-  i686)
-    # This should be i686 for all 32-bit x86 arch:
-    TARGET=${TARGET:-i686}
+    TARGET=${TARGET:-"$ARCH"}
     ;;
 esac
 
@@ -119,18 +136,26 @@ mkdir -p $TMP
 # This function fixes a doinst.sh file for x86_64.
 # With thanks to Fred Emmott.
 fix_doinst() {
-  if [ "x$LIBDIRSUFFIX" = "x" ]; then
+  if [ "$LIBDIRSUFFIX" = "" ]; then
     return;
   fi;
+  if [ "$MULTILIB" = "--enable-multilib" ]; then
+    # Save a copy of this to append the 32-bit links later.
+    cp -a install/doinst.sh install/doinst32.sh
+  fi
   # Fix "( cd usr/lib ;" occurrences
   sed -i "s#lib ;#lib${LIBDIRSUFFIX} ;#" install/doinst.sh
   # Fix "lib/" occurrences
   sed -i "s#lib/#lib${LIBDIRSUFFIX}/#g" install/doinst.sh
   # Fix "( cd lib" occurrences
   sed -i "s#( cd lib\$#( cd lib${LIBDIRSUFFIX}#" install/doinst.sh
-
   if [ "$SLACKWARE_ARCH" = "x86_64" ]; then
     sed -i 's#ld-linux.so.2#ld-linux-x86-64.so.2#' install/doinst.sh
+  fi
+  if [ "$MULTILIB" = "--enable-multilib" ]; then
+    echo "# Add 32-bit library links for multilib:"  >> install/doinst.sh
+    cat install/doinst32.sh | grep -e '^( cd lib ' -e '^( cd usr/lib ' >> install/doinst.sh
+    rm -f install/doinst32.sh
   fi
 }
 
@@ -181,6 +206,10 @@ mkdir -p $PKG/usr/man
 mkdir -p $PKG/usr/share
 mkdir -p $PKG/var/db/nscd
 mkdir -p $PKG/var/run/nscd
+if [ "$MULTILIB" = "--enable-multilib" ]; then
+  mkdir -p $PKG/lib
+  mkdir -p $PKG/usr/lib
+fi
 
 # Begin extract/compile:
 cd $TMP
@@ -207,61 +236,75 @@ find . \
   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \+
 
-# Make build directory:
+# Main function to build glibc:
+build_glibc() {
+  CFLAGS="-g $OPTIMIZ" \
+  CXXFLAGS="-g $OPTIMIZ" \
+  ../configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --enable-kernel=4.4 \
+    --with-headers=/usr/include \
+    --enable-add-ons \
+    --enable-multi-arch \
+    --enable-profile \
+    $DISABLE_NSCD \
+    $WERROR \
+    --infodir=/usr/info \
+    --mandir=/usr/man \
+    --with-tls \
+    --with-__thread \
+    --without-cvs \
+    $TARGET-slackware-linux || exit 1
+  make $NUMJOBS || exit 1
+  make $NUMJOBS install install_root=$PKG || exit 1
+  # Don't use this, as it makes the i18n package WAY bigger:
+  #make localedata/install-locale-files DESTDIR=$PKG || exit 1
+  # This is ugly run in parallel, and seems to hang at the end. But it actually
+  # completes much faster. :)
+  make $NUMJOBS localedata/install-locales install_root=$PKG DESTDIR=$PKG || exit 1
+}
+
+# If this is a multilib build, then build the 32-bit binaries first so that the
+# 64-bit stuff will overwrite it later where appropriate:
+if [ "$MULTILIB" = "--enable-multilib" ]; then
+  echo "BUILDING DAS 32-BiT NPTL GLIBC"
+  (
+    MYRET=0
+    mkdir build-glibc-compat32-$VERSION
+    cd build-glibc-compat32-$VERSION || exit 1
+    export BUILD_ARCH=$TARGET
+    export TARGET=$TARGET32
+    export LIBDIRSUFFIX=
+    export CC="gcc -m32"
+    export CXX="g++ -m32"
+    export OPTIMIZ="${X86FLAGS32}"
+    build_glibc || exit 1
+    MYRET=$(( $MYRET + $? ))
+    # Build and install libxcrypt:
+    pushd $CWD
+    ARCH=$TARGET LIBDIRSUFFIX=$LIBDIRSUFFIX SLKCFLAGS=$OPTIMIZ ./libxcrypt.build || exit 1
+    MYRET=$(( $MYRET + $? ))
+    popd
+    exit $MYRET
+  ) || exit $?
+fi
+
+# Now do the main build:
 mkdir build-glibc-$VERSION
-cd build-glibc-$VERSION || exit 1
-
+cd build-glibc-$VERSION
 echo "BUILDING DAS NPTL GLIBC"
-CFLAGS="-g $OPTIMIZ" \
-CXXFLAGS="-g $OPTIMIZ" \
-../configure \
-  --prefix=/usr \
-  --libdir=/usr/lib${LIBDIRSUFFIX} \
-  --enable-kernel=4.4 \
-  --with-headers=/usr/include \
-  --enable-add-ons \
-  --enable-multi-arch \
-  --enable-profile \
-  $DISABLE_NSCD \
-  $WERROR \
-  --infodir=/usr/info \
-  --mandir=/usr/man \
-  --with-tls \
-  --with-__thread \
-  --without-cvs \
-  $TARGET-slackware-linux
-
-make $NUMJOBS || exit 1
-make $NUMJOBS install install_root=$PKG || exit 1
-# Don't use this, as it makes the i18n package WAY bigger:
-#make localedata/install-locale-files DESTDIR=$PKG || exit 1
-# This is ugly run in parallel, and seems to hang at the end. But it actually
-# completes much faster. :)
-make $NUMJOBS localedata/install-locales install_root=$PKG DESTDIR=$PKG || exit 1
+build_glibc || exit 1
 
 # Build and install libxcrypt:
 pushd $CWD
-ARCH=$SLACKWARE_ARCH LIBDIRSUFFIX=$LIBDIRSUFFIX SLKCFLAGS=$OPTIMIZ ./libxcrypt.build
+ARCH=$SLACKWARE_ARCH LIBDIRSUFFIX=$LIBDIRSUFFIX SLKCFLAGS=$OPTIMIZ ./libxcrypt.build || exit 1
 popd
 
 # We've always had an sln symlink in /bin, so let's make sure it
 # remains there so as not to break any scripts that might need it:
 mkdir -p $PKG/bin
 ( cd $PKG/bin ; ln -sf /sbin/sln sln )
-
-# This bit was mostly copped from Fedora Rawhide's .spec file. I'm not
-# entirely sure how important it is, since I'm not aware of anything
-# we ship trying to link libpthread as static. What it does is make sure
-# that anything linking libpthread static includes all of the functions
-# so that the resulting binary doesn't rely on parts of the library that
-# were not linked in. Optimizing actually working over binary size, so
-# to speak.
-( cd $PKG/usr/lib${LIBDIRSUFFIX}
-  gcc -r -nostdlib -o libpthread.o -Wl,--whole-archive ./libpthread.a
-  rm libpthread.a
-  ar rcs libpthread.a libpthread.o
-  rm libpthread.o
-)
 
 # The prevailing standard seems to be putting unstripped libraries in
 # /usr/lib/debug/ and stripping the debugging symbols from all the other
@@ -271,18 +314,25 @@ cp -a $PKG/lib${LIBDIRSUFFIX}/l*.so* $PKG/usr/lib${LIBDIRSUFFIX}/debug
 cp -a $PKG/usr/lib${LIBDIRSUFFIX}/*.a $PKG/usr/lib${LIBDIRSUFFIX}/debug
 # Don't need debug+profile:
 ( cd $PKG/usr/lib${LIBDIRSUFFIX}/debug ; rm -f *_p.* )
+if [ "$MULTILIB" = "--enable-multilib" ]; then
+  mkdir -p $PKG/usr/lib/debug
+  cp -a $PKG/lib/l*.so* $PKG/usr/lib/debug
+  cp -a $PKG/usr/lib/*.a $PKG/usr/lib/debug
+  # Don't need debug+profile:
+  ( cd $PKG/usr/lib/debug ; rm -f *_p.* )
+fi
 # NOTE:  Is there really a reason for the glibc-debug package?
 # If you're debugging glibc, you can also compile it, right?
-
 ## COMMENTED OUT:  There's no reason for profile libs to include -g information.
 ## Put back unstripped profiling libraries:
 #mv $PKG/usr/lib${LIBDIRSUFFIX}/debug/*_p.a $PKG/usr/lib${LIBDIRSUFFIX}
 # It might be best to put the unstripped and profiling libraries in glibc-debug and glibc-profile.
 
 # I don't think "strip -g" causes the pthread problems.  It's --strip-unneeded that does.
-strip -g $PKG/lib${LIBDIRSUFFIX}/l*.so*
-strip -g $PKG/usr/lib${LIBDIRSUFFIX}/l*.so*
 strip -g $PKG/usr/lib${LIBDIRSUFFIX}/lib*.a
+if [ "$MULTILIB" = "--enable-multilib" ]; then
+  strip -g $PKG/usr/lib/lib*.a
+fi
 
 # Remove the rquota.x and rquota.h include files, as they are provided by
 # the quota package:
@@ -310,20 +360,6 @@ if [ -r NEWS ]; then
   touch -r NEWS $DOCSDIR/NEWS
 fi
 
-# OK, there are some very old Linux standards that say that any binaries in a /bin or
-# /sbin directory (and the directories themselves) should be group bin rather than
-# group root, unless a specific group is really needed for some reason.
-#
-# I can't find any mention of this in more recent standards docs, and always thought
-# that it was pretty cosmetic anyway (hey, if there's a reason -- fill me in!), so
-# it's possible that this ownership change won't be followed in the near future
-# (it's a PITA, and causes many bug reports when the perms change is occasionally
-# forgotten).
-#
-# But, it's hard to get me to break old habits, so we'll continue the tradition here:
-#
-# No, no we won't.  You know how we love to break traditions.
-
 # Strip most binaries:
 ( cd $PKG
   find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-debug 2> /dev/null
@@ -345,8 +381,10 @@ if [ -d $PKG/usr/info ]; then
   )
 fi
 
-# This is junk
+# This is junk:
 rm $PKG/etc/ld.so.cache
+
+# Remove any stray .orig files:
 ( cd $PKG
   find . -name "*.orig" -exec rm {} \+
 )
@@ -360,11 +398,17 @@ cd $PPROFILE
 mkdir -p usr/lib${LIBDIRSUFFIX}
 # Might as well just grab these with 'mv' to simplify things later:
 mv $PKG/usr/lib${LIBDIRSUFFIX}/lib*_p.a usr/lib${LIBDIRSUFFIX}
-# Profile libs should be stripped.  Use the debug libs to debug...
+# Profile libs should be stripped. Use the debug libs to debug...
 ( cd usr/lib${LIBDIRSUFFIX} ; strip -g *.a )
+if [ "$MULTILIB" = "--enable-multilib" ]; then
+  # Might as well just grab these with 'mv' to simplify things later:
+  mv $PKG/usr/lib/lib*_p.a usr/lib
+  # Profile libs should be stripped. Use the debug libs to debug...
+  ( cd usr/lib ; strip -g *.a )
+fi
 mkdir install
 cp -a $CWD/slack-desc.glibc-profile install/slack-desc
-makepkg -l y -c n $TMP/glibc-profile-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
+makepkg -l y -c n $TMP/glibc-profile-${VERSION}${VERTAG}-$SLACKWARE_ARCH-${BUILD}${TAG}.txz
 
 # THIS IS NO LONGER PACKAGED (or is it?  might be better to let it be made, and then ship it or not...)
 # glibc-debug:
@@ -374,25 +418,36 @@ mkdir -p usr/lib${LIBDIRSUFFIX}
 mv $PKG/usr/lib${LIBDIRSUFFIX}/debug usr/lib${LIBDIRSUFFIX}
 mkdir install
 cp -a $CWD/slack-desc.glibc-debug install/slack-desc
+if [ "$MULTILIB" = "--enable-multilib" ]; then
+  mkdir -p usr/lib
+  # Might as well just grab these with 'mv' to simplify things later:
+  mv $PKG/usr/lib/debug usr/lib
+fi
 ## Don't package this:
-#makepkg -l y -c n $TMP/glibc-debug-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
+#makepkg -l y -c n $TMP/glibc-debug-${VERSION}${VERTAG}-$SLACKWARE_ARCH-${BUILD}${TAG}.txz
 ## INSTEAD, NUKE THESE LIBS
 #rm -rf $PKG/usr/lib${LIBDIRSUFFIX}/debug
 
 # glibc-i18n:
 cd $PI18N
-mkdir -p usr/lib${LIBDIRSUFFIX}/locale
-mv $PKG/usr/lib${LIBDIRSUFFIX}/locale/* usr/lib${LIBDIRSUFFIX}/locale
 mkdir -p usr/share/{i18n,locale}
 mv $PKG/usr/share/i18n/* usr/share/i18n
 mv $PKG/usr/share/locale/* usr/share/locale
+mkdir -p usr/lib${LIBDIRSUFFIX}/locale
+mv $PKG/usr/lib${LIBDIRSUFFIX}/locale/* usr/lib${LIBDIRSUFFIX}/locale
 # Leave copies of the C, POSIX, and en_US locales in the main glibc package:
 cp -a usr/lib${LIBDIRSUFFIX}/locale/{C,en_US}* $PKG/usr/lib${LIBDIRSUFFIX}/locale
 mkdir -p $PKG/usr/share/i18n/locales
 cp -a usr/share/i18n/locales/{C,POSIX,en_US} $PKG/usr/share/i18n/locales
+if [ "$MULTILIB" = "--enable-multilib" ]; then
+  mkdir -p usr/lib/locale
+  mv $PKG/usr/lib/locale/* usr/lib/locale
+  # Leave copies of the C, POSIX, and en_US locales in the main glibc package:
+  cp -a usr/lib/locale/{C,en_US}* $PKG/usr/lib/locale
+fi
 mkdir install
 cp -a $CWD/slack-desc.glibc-i18n install/slack-desc
-makepkg -l y -c n $TMP/glibc-i18n-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
+makepkg -l y -c n $TMP/glibc-i18n-${VERSION}${VERTAG}-$SLACKWARE_ARCH-${BUILD}${TAG}.txz
 
 # aaa_glibc-solibs:
 cd $PSOLIBS
@@ -429,6 +484,20 @@ cp -a $PKG/lib${LIBDIRSUFFIX}/* lib${LIBDIRSUFFIX}
   # format:
   mv ld-linux*-${VERSION}.so ld-${VERSION}.so
 )
+if [ "$MULTILIB" = "--enable-multilib" ]; then
+  # We don't need to use an incoming directory here.
+  mkdir -p lib
+  cp -a $PKG/lib/* lib
+  ( cd lib
+    for cryptlib in libcrypt.so.* ; do
+      CRYPTSO=$(echo $cryptlib | cut -f 3 -d .)
+      mv $cryptlib libcrypt${CRYPTSO}-${VERSION}.so
+    done
+    for library in *.so.* ; do
+      mv $library $(echo $library | cut -f 1 -d .)-${VERSION}.so
+    done
+  )
+fi
 mkdir -p usr
 cp -a $PKG/usr/bin usr
 mv usr/bin/ldd .
@@ -438,6 +507,10 @@ mkdir -p usr/lib${LIBDIRSUFFIX}
 # The gconv directory has a lot of stuff, but including it here will save some problems.
 # Seems standard elsewhere.
 cp -a $PKG/usr/lib${LIBDIRSUFFIX}/gconv usr/lib${LIBDIRSUFFIX}
+if [ "$MULTILIB" = "--enable-multilib" ]; then
+  mkdir -p usr/lib
+  cp -a $PKG/usr/lib/gconv usr/lib
+fi
 mkdir -p usr/libexec
 cp -a $PKG/usr/libexec/pt_chown usr/libexec
 # Same usr.bin deal:
@@ -457,8 +530,11 @@ sed -i "s/@@VERSION@@/$VERSION/g" install/doinst.sh
 fix_doinst
 # Only scrub the links in /lib{,64} that will be created by ldconfig:
 find lib${LIBDIRSUFFIX} -type l -exec rm {} \+
+if [ "$MULTILIB" = "--enable-multilib" ]; then
+  find lib -type l -exec rm {} \+
+fi
 # Build the package:
-makepkg -l y -c n $TMP/aaa_glibc-solibs-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
+makepkg -l y -c n $TMP/aaa_glibc-solibs-${VERSION}${VERTAG}-$SLACKWARE_ARCH-${BUILD}${TAG}.txz
 
 # And finally, the complete "all-in-one" glibc package is created
 # from whatever was leftover:
@@ -470,6 +546,9 @@ chown -R root:root etc
 chmod 755 etc/profile.d/*
 # Only scrub the links in /lib{,64} that will be created by ldconfig:
 find lib${LIBDIRSUFFIX} -type l -exec rm {} \+
+if [ "$MULTILIB" = "--enable-multilib" ]; then
+  find lib -type l -exec rm {} \+
+fi
 mkdir install
 cp -a $CWD/slack-desc.glibc install/slack-desc
 cp -a $CWD/doinst.sh-glibc install/doinst.sh
@@ -507,8 +586,22 @@ fix_doinst
   # format:
   mv ld-linux*-${VERSION}.so ld-${VERSION}.so
 )
+if [ "$MULTILIB" = "--enable-multilib" ]; then
+  # We don't need to use an incoming directory here.
+  mkdir -p lib
+  cp -a $PKG/lib/* lib
+  ( cd lib
+    for cryptlib in libcrypt.so.* ; do
+      CRYPTSO=$(echo $cryptlib | cut -f 3 -d .)
+      mv $cryptlib libcrypt${CRYPTSO}-${VERSION}.so
+    done
+    for library in *.so.* ; do
+      mv $library $(echo $library | cut -f 1 -d .)-${VERSION}.so
+    done
+  )
+fi
 # Build the package:
-/sbin/makepkg -l y -c n $TMP/glibc-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
+/sbin/makepkg -l y -c n $TMP/glibc-${VERSION}${VERTAG}-$SLACKWARE_ARCH-${BUILD}${TAG}.txz
 
 # Done!
 echo

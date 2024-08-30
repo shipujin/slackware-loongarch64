@@ -92,7 +92,7 @@ cd build
     -DWITH_SERVER=1 \
     -DWITH_STATIC_LIB=0 \
     .. || exit 1
-  make $NUMJOBS VERBOSE=1 || make || exit 1
+  make $NUMJOBS || make || exit 1
   make install DESTDIR=$PKG || exit 1
 cd -
 

@@ -32,7 +32,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=qt6
 VERSION=$(ls qt-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
-BUILD=${BUILD:-5}
+BUILD=${BUILD:-6}
 PKGSRC=$(echo $VERSION | cut -d - -f 1)
 PKGVER=$(echo $VERSION | tr - _)
 
@@ -58,8 +58,11 @@ if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
   exit 0
 fi
 
+# Since this could be needed twice...
+OPTS32="-O2 -march=pentium4 -mtune=generic"
+
 if [ "$ARCH" = "i686" ]; then
-  SLKCFLAGS="-O2 -march=pentium4 -mtune=generic"
+  SLKCFLAGS="$OPTS32"
   SLKLDFLAGS=""
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
@@ -85,7 +88,7 @@ esac
 # For cross-compiling from x86_64:
 if [ "$(uname -m)" = "x86_64" -a "$(file -L /usr/bin/gcc | grep 80386 | grep 32-bit)" != "" ]; then
   ARCH=i686
-  SLKCFLAGS="-O2 -march=i686 -mtune=i686 -mfpmath=sse -msse -msse2 -fcf-protection=none"
+  SLKCFLAGS="$OPTS32"
   SLKLDFLAGS=""
   LIBDIRSUFFIX=""
 fi

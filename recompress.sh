@@ -630,10 +630,7 @@ gzip ./source/ap/seejpeg/seejpeg-1.10.diff
 gzip ./source/ap/cups/doinst.sh
 gzip ./source/ap/at/doinst.sh
 gzip ./source/ap/ghostscript/cidfmap
-gzip ./source/ap/screen/52fix_screen_utf8_nfd.patch
 gzip ./source/ap/screen/60-revert-screenrc-change.diff
-gzip ./source/ap/screen/26source_encoding.patch
-gzip ./source/ap/screen/45suppress_remap.patch
 gzip ./source/ap/screen/doinst.sh
 gzip ./source/ap/groff/0006-Revert-upstream-change-of-mapping-special-characters.patch
 gzip ./source/ap/cdparanoia/cdparanoia-III-10.2_cdda_private.patch
