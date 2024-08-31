@@ -1,3 +1,19 @@
+Sat Aug 31 18:26:20 UTC 2024
+l/aom-3.10.0-x86_64-1.txz:  Upgraded.
+l/libpcap-1.10.5-x86_64-1.txz:  Upgraded.
+  This update fixes security issues:
+  Clean up sock_initaddress() and its callers to avoid double frees
+  in some cases.
+  Fix pcap_findalldevs_ex() not to crash if passed a file:// URL with a
+  path to a directory that cannot be opened.
+  For more information, see:
+    https://www.cve.org/CVERecord?id=CVE-2023-7256
+    https://www.cve.org/CVERecord?id=CVE-2024-8006
+  (* Security fix *)
+l/mozilla-nss-3.104-x86_64-1.txz:  Upgraded.
+n/tcpdump-4.99.5-x86_64-1.txz:  Upgraded.
+x/wayland-protocols-1.37-noarch-1.txz:  Upgraded.
++--------------------------+
 Fri Aug 30 19:56:06 UTC 2024
 l/gtk4-4.14.6-x86_64-1.txz:  Upgraded.
 l/json-glib-1.10.0-x86_64-1.txz:  Upgraded.
