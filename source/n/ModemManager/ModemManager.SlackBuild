@@ -79,16 +79,6 @@ find . \
 
 zcat $CWD/WeDoNotHaveSystemD.patch.gz | patch -p1 --verbose || exit 1
 
-if [ ! -r configure ]; then
-  if [ -x ./autogen.sh ]; then
-    NOCONFIGURE=1 ./autogen.sh
-  else
-    autoreconf -vif
-  fi
-fi
-
-#LIBSYSTEMD_LOGIN_CFLAGS="$(pkg-config --cflags libelogind)" \
-#LIBSYSTEMD_LOGIN_LIBS="$(pkg-config --libs libelogind)" \
 # Configure, build, and install:
 export CFLAGS="$SLKCFLAGS -Wno-incompatible-pointer-types"
 export CXXFLAGS="$SLKCFLAGS"
