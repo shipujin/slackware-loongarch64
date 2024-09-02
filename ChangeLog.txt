@@ -1,3 +1,28 @@
+Mon Sep  2 19:56:17 UTC 2024
+ap/sudo-1.9.16-x86_64-1.txz:  Upgraded.
+kde/calligra-3.2.1-x86_64-44.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/cantor-23.08.5-x86_64-10.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/kfilemetadata-5.116.0-x86_64-7.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/kile-2.9.93-x86_64-37.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/kitinerary-23.08.5-x86_64-8.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/krita-5.2.3-x86_64-4.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/labplot-2.11.1-x86_64-3.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/okular-23.08.5-x86_64-8.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+l/imagemagick-7.1.1_38-x86_64-1.txz:  Upgraded.
+l/isl-0.27-x86_64-1.txz:  Upgraded.
+l/poppler-24.09.0-x86_64-1.txz:  Upgraded.
+  Shared library .so-version bump.
+x/libwacom-2.13.0-x86_64-1.txz:  Upgraded.
+extra/xv/xv-6.0.1-x86_64-1.txz:  Upgraded.
++--------------------------+
 Mon Sep  2 02:42:42 UTC 2024
 l/SDL2-2.30.7-x86_64-1.txz:  Upgraded.
 l/spirv-llvm-translator-18.1.4-x86_64-1.txz:  Upgraded.

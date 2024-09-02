@@ -11,9 +11,42 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Mon,  2 Sep 2024 02:42:42 GMT</pubDate>
-      <lastBuildDate>Mon,  2 Sep 2024 03:03:40 GMT</lastBuildDate>
+      <pubDate>Mon,  2 Sep 2024 19:56:17 GMT</pubDate>
+      <lastBuildDate>Mon,  2 Sep 2024 20:40:12 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Mon,  2 Sep 2024 19:56:17 GMT</title>
+         <pubDate>Mon,  2 Sep 2024 19:56:17 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240902195617</link>
+         <guid isPermaLink="false">20240902195617</guid>
+         <description>
+           <![CDATA[<pre>
+ap/sudo-1.9.16-x86_64-1.txz:  Upgraded.
+kde/calligra-3.2.1-x86_64-44.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/cantor-23.08.5-x86_64-10.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/kfilemetadata-5.116.0-x86_64-7.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/kile-2.9.93-x86_64-37.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/kitinerary-23.08.5-x86_64-8.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/krita-5.2.3-x86_64-4.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/labplot-2.11.1-x86_64-3.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+kde/okular-23.08.5-x86_64-8.txz:  Rebuilt.
+  Recompiled against poppler-24.09.0.
+l/imagemagick-7.1.1_38-x86_64-1.txz:  Upgraded.
+l/isl-0.27-x86_64-1.txz:  Upgraded.
+l/poppler-24.09.0-x86_64-1.txz:  Upgraded.
+  Shared library .so-version bump.
+x/libwacom-2.13.0-x86_64-1.txz:  Upgraded.
+extra/xv/xv-6.0.1-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Mon,  2 Sep 2024 02:42:42 GMT</title>
          <pubDate>Mon,  2 Sep 2024 02:42:42 GMT</pubDate>
