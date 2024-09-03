@@ -33,7 +33,7 @@ BUILD=${BUILD:-1}
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
-    i?86) export ARCH=i586 ;;
+    i?86) export ARCH=i686 ;;
     arm*) export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
        *) export ARCH=$( uname -m ) ;;
@@ -67,13 +67,8 @@ tar xvf $CWD/openssl-$VERSION.tar.gz || exit 1
 cd openssl-$VERSION
 chown -R root:root .
 
-if [ "$ARCH" = "i586" ]; then
-  # Build with -march=i586 -mtune=i686:
-  sed -i "/linux-elf/s/fomit-frame-pointer/fomit-frame-pointer -march=i586 -mtune=i686/g" Configure
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "i686" ]; then
-  # Build with -march=i686 -mtune=i686:
-  sed -i "/linux-elf/s/fomit-frame-pointer/fomit-frame-pointer -march=i686 -mtune=i686/g" Configure
+if [ "$ARCH" = "i686" ]; then
+  sed -i "/linux-elf/s/fomit-frame-pointer/fomit-frame-pointer -march=pentium4 -mtune=generic/g" Configure
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
   LIBDIRSUFFIX="64"
