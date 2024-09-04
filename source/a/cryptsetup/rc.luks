@@ -58,6 +58,8 @@ luks_start() {
       if echo $OPTS | grep -wq discard ; then LUKSOPTS="${LUKSOPTS} --allow-discards" ; fi
       # Skip LUKS volumes that were already unlocked (in the initrd):
       /sbin/cryptsetup status $LUKS 2>/dev/null | head -n 1 | grep -q "is active" && continue
+      # Skip LUKS volumes that have the "noauto" option in /etc/fstab:
+      if echo $OPTS | grep -wq noauto ; then continue ; fi
       if /sbin/cryptsetup isLuks $DEV 2>/dev/null ; then
         if [ -z "${LUKSOPTS}" ]; then
           echo "Unlocking LUKS encrypted volume '${LUKS}' on device '$DEV':"

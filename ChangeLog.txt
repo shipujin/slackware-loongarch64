@@ -1,3 +1,29 @@
+Wed Sep  4 23:37:27 UTC 2024
+a/cryptsetup-2.7.5-x86_64-2.txz:  Rebuilt.
+  rc.luks: skip LUKS volumes that have the noauto option in /etc/crypttab.
+  Thanks to z80.
+a/hwdata-0.386-noarch-1.txz:  Upgraded.
+a/kernel-firmware-20240904_87cae27-noarch-1.txz:  Upgraded.
+a/kernel-generic-6.10.8-x86_64-1.txz:  Upgraded.
+a/kernel-huge-6.10.8-x86_64-1.txz:  Upgraded.
+a/kernel-modules-6.10.8-x86_64-1.txz:  Upgraded.
+a/xfsprogs-6.10.1-x86_64-1.txz:  Upgraded.
+d/kernel-headers-6.10.8-x86-1.txz:  Upgraded.
+d/scons-4.8.1-x86_64-1.txz:  Upgraded.
+k/kernel-source-6.10.8-noarch-1.txz:  Upgraded.
+l/expat-2.6.3-x86_64-1.txz:  Upgraded.
+  This update addresses security issues with impact ranging from denial of
+  service to potentially artitrary code execution.
+  For more information, see:
+    https://www.cve.org/CVERecord?id=CVE-2024-45490
+    https://www.cve.org/CVERecord?id=CVE-2024-45491
+    https://www.cve.org/CVERecord?id=CVE-2024-45492
+  (* Security fix *)
+x/eglexternalplatform-1.2-x86_64-1.txz:  Upgraded.
+isolinux/initrd.img:  Rebuilt.
+kernels/*:  Upgraded.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
++--------------------------+
 Tue Sep  3 21:07:09 UTC 2024
 a/cryptsetup-2.7.5-x86_64-1.txz:  Upgraded.
 a/kernel-firmware-20240903_7a7a88f-noarch-1.txz:  Upgraded.
