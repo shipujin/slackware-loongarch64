@@ -11,9 +11,22 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Thu,  5 Sep 2024 22:14:23 GMT</pubDate>
-      <lastBuildDate>Thu,  5 Sep 2024 23:14:14 GMT</lastBuildDate>
+      <pubDate>Fri,  6 Sep 2024 19:22:57 GMT</pubDate>
+      <lastBuildDate>Fri,  6 Sep 2024 20:03:29 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Fri,  6 Sep 2024 19:22:57 GMT</title>
+         <pubDate>Fri,  6 Sep 2024 19:22:57 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240906192257</link>
+         <guid isPermaLink="false">20240906192257</guid>
+         <description>
+           <![CDATA[<pre>
+a/hwdata-0.387-noarch-1.txz:  Upgraded.
+n/epic5-3.0-x86_64-1.txz:  Upgraded.
+x/mesa-24.2.2-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Thu,  5 Sep 2024 22:14:23 GMT</title>
          <pubDate>Thu,  5 Sep 2024 22:14:23 GMT</pubDate>
