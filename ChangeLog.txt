@@ -1,3 +1,10 @@
+Sat Sep  7 18:16:12 UTC 2024
+a/glibc-zoneinfo-2024b-noarch-1.txz:  Upgraded.
+  This package provides the latest timezone updates.
+l/gtk4-4.16.0-x86_64-1.txz:  Upgraded.
+l/pycairo-1.27.0-x86_64-1.txz:  Upgraded.
+l/python-build-1.2.2-x86_64-1.txz:  Upgraded.
++--------------------------+
 Fri Sep  6 19:22:57 UTC 2024
 a/hwdata-0.387-noarch-1.txz:  Upgraded.
 n/epic5-3.0-x86_64-1.txz:  Upgraded.

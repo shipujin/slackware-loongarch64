@@ -11,9 +11,24 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Fri,  6 Sep 2024 19:22:57 GMT</pubDate>
-      <lastBuildDate>Fri,  6 Sep 2024 20:03:29 GMT</lastBuildDate>
+      <pubDate>Sat,  7 Sep 2024 18:16:12 GMT</pubDate>
+      <lastBuildDate>Sat,  7 Sep 2024 19:01:42 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Sat,  7 Sep 2024 18:16:12 GMT</title>
+         <pubDate>Sat,  7 Sep 2024 18:16:12 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240907181612</link>
+         <guid isPermaLink="false">20240907181612</guid>
+         <description>
+           <![CDATA[<pre>
+a/glibc-zoneinfo-2024b-noarch-1.txz:  Upgraded.
+  This package provides the latest timezone updates.
+l/gtk4-4.16.0-x86_64-1.txz:  Upgraded.
+l/pycairo-1.27.0-x86_64-1.txz:  Upgraded.
+l/python-build-1.2.2-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Fri,  6 Sep 2024 19:22:57 GMT</title>
          <pubDate>Fri,  6 Sep 2024 19:22:57 GMT</pubDate>
