@@ -1,3 +1,18 @@
+Mon Sep  9 17:27:00 UTC 2024
+ap/stow-2.4.1-x86_64-1.txz:  Upgraded.
+l/cairo-1.18.2-x86_64-1.txz:  Upgraded.
+l/gc-8.2.8-x86_64-1.txz:  Upgraded.
+n/bluez-5.78-x86_64-1.txz:  Upgraded.
+n/netatalk-3.2.8-x86_64-1.txz:  Upgraded.
+  Bump bundled WolfSSL library to stable version 5.7.2, GitHub #1433.
+  For more information, see:
+    https://www.cve.org/CVERecord?id=CVE-2024-1544
+    https://www.cve.org/CVERecord?id=CVE-2024-5288
+    https://www.cve.org/CVERecord?id=CVE-2024-5991
+    https://www.cve.org/CVERecord?id=CVE-2024-5814
+  (* Security fix *)
+x/ibus-m17n-1.4.32-x86_64-1.txz:  Upgraded.
++--------------------------+
 Mon Sep  9 00:53:17 UTC 2024
 a/kernel-generic-6.10.9-x86_64-1.txz:  Upgraded.
 a/kernel-huge-6.10.9-x86_64-1.txz:  Upgraded.

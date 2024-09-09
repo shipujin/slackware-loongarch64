@@ -36,7 +36,6 @@ MARCH=$( uname -m )
 if [ -z "$ARCH" ]; then
   case "$MARCH" in
     i?86)    export ARCH=i686 ;;
-    armv7hl) export ARCH=$MARCH ;;
     arm*)    export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
     *)       export ARCH=$MARCH ;;
