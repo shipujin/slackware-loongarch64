@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 6.10.8 Kernel Configuration
+# Linux/x86 6.10.9 Kernel Configuration
 #
 CONFIG_CC_VERSION_TEXT="gcc (GCC) 14.2.0"
 CONFIG_CC_IS_GCC=y
@@ -8854,6 +8854,8 @@ CONFIG_YT2_1380=m
 CONFIG_ACERHDF=m
 CONFIG_ACER_WIRELESS=m
 CONFIG_ACER_WMI=m
+CONFIG_AMD_PMF=m
+# CONFIG_AMD_PMF_DEBUG is not set
 CONFIG_AMD_PMC=m
 CONFIG_AMD_MP2_STB=y
 CONFIG_AMD_HSMP=m
@@ -9954,7 +9956,8 @@ CONFIG_INTEL_TH_PTI=m
 # end of HW tracing support
 
 # CONFIG_FPGA is not set
-# CONFIG_TEE is not set
+CONFIG_TEE=m
+CONFIG_AMDTEE=m
 CONFIG_MULTIPLEXER=m
 
 #

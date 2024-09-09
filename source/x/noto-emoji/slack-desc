@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+          |-----handy-ruler------------------------------------------------------|
+noto-emoji: noto-emoji (Google's Noto Emoji fonts)
+noto-emoji:
+noto-emoji: Google's Noto Emoji is an open source font that has you covered for
+noto-emoji: all your emoji needs, including support for the latest Unicode
+noto-emoji: emoji specification. It has multiple weights and features thousands
+noto-emoji: of emoji.
+noto-emoji:
+noto-emoji: Homepage: https://github.com/googlei18n/noto-emoji
+noto-emoji:
+noto-emoji:
+noto-emoji:

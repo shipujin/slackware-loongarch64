@@ -11,9 +11,71 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Sat,  7 Sep 2024 18:16:12 GMT</pubDate>
-      <lastBuildDate>Sat,  7 Sep 2024 19:01:42 GMT</lastBuildDate>
+      <pubDate>Mon,  9 Sep 2024 00:53:17 GMT</pubDate>
+      <lastBuildDate>Mon,  9 Sep 2024 02:00:46 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Mon,  9 Sep 2024 00:53:17 GMT</title>
+         <pubDate>Mon,  9 Sep 2024 00:53:17 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240909005317</link>
+         <guid isPermaLink="false">20240909005317</guid>
+         <description>
+           <![CDATA[<pre>
+a/kernel-generic-6.10.9-x86_64-1.txz:  Upgraded.
+a/kernel-huge-6.10.9-x86_64-1.txz:  Upgraded.
+a/kernel-modules-6.10.9-x86_64-1.txz:  Upgraded.
+ap/texinfo-7.1.1-x86_64-1.txz:  Upgraded.
+d/kernel-headers-6.10.9-x86-1.txz:  Upgraded.
+d/python3-3.11.10-x86_64-1.txz:  Upgraded.
+  This update fixes security issues:
+  Bundled libexpat was updated to 2.6.3.
+  Fix quadratic complexity in parsing "-quoted cookie values with backslashes
+  by http.cookies.
+  Fixed various false positives and false negatives in IPv4Address.is_private,
+  IPv4Address.is_global, IPv6Address.is_private, IPv6Address.is_global.
+  Fix urllib.parse.urlunparse() and urllib.parse.urlunsplit() for URIs with
+  path starting with multiple slashes and no authority.
+  Remove backtracking from tarfile header parsing for hdrcharset, PAX, and
+  GNU sparse headers.
+  email.utils.getaddresses() and email.utils.parseaddr() now return ('', '')
+  2-tuples in more situations where invalid email addresses are encountered
+  instead of potentially inaccurate values. Add optional strict parameter to
+  these two functions: use strict=False to get the old behavior, accept
+  malformed inputs. getattr(email.utils, 'supports_strict_parsing', False) can
+  be used to check if the strict paramater is available.
+  Sanitize names in zipfile.Path to avoid infinite loops (gh-122905) without
+  breaking contents using legitimate characters.
+  Email headers with embedded newlines are now quoted on output. The generator
+  will now refuse to serialize (write) headers that are unsafely folded or
+  delimited; see verify_generated_headers.
+  For more information, see:
+    https://pythoninsider.blogspot.com/2024/09/python-3130rc2-3126-31110-31015-3920.html
+    https://www.cve.org/CVERecord?id=CVE-2024-28757
+    https://www.cve.org/CVERecord?id=CVE-2024-45490
+    https://www.cve.org/CVERecord?id=CVE-2024-45491
+    https://www.cve.org/CVERecord?id=CVE-2024-45492
+    https://www.cve.org/CVERecord?id=CVE-2024-7592
+    https://www.cve.org/CVERecord?id=CVE-2024-4032
+    https://www.cve.org/CVERecord?id=CVE-2015-2104
+    https://www.cve.org/CVERecord?id=CVE-2024-6232
+    https://www.cve.org/CVERecord?id=CVE-2023-27043
+    https://www.cve.org/CVERecord?id=CVE-2024-8088
+    https://www.cve.org/CVERecord?id=CVE-2024-6923
+  (* Security fix *)
+k/kernel-source-6.10.9-noarch-1.txz:  Upgraded.
+   TEE n -> m
+  +AMDTEE m
+  +AMD_PMF m
+  +AMD_PMF_DEBUG n
+  Thanks to nick8325 for the suggestion.
+l/qt5-5.15.15_20240903_363456a6-x86_64-1.txz:  Upgraded.
+x/noto-emoji-2.042-noarch-1.txz:  Added.
+isolinux/initrd.img:  Rebuilt.
+kernels/*:  Upgraded.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Sat,  7 Sep 2024 18:16:12 GMT</title>
          <pubDate>Sat,  7 Sep 2024 18:16:12 GMT</pubDate>
