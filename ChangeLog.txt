@@ -1,3 +1,8 @@
+Tue Sep 10 19:32:34 UTC 2024
+l/Imath-3.1.12-x86_64-1.txz:  Upgraded.
+l/gtkmm4-4.16.0-x86_64-1.txz:  Upgraded.
+n/stunnel-5.73-x86_64-1.txz:  Upgraded.
++--------------------------+
 Mon Sep  9 17:27:00 UTC 2024
 ap/stow-2.4.1-x86_64-1.txz:  Upgraded.
 l/cairo-1.18.2-x86_64-1.txz:  Upgraded.
