@@ -28,7 +28,7 @@ PKGNAM=grub
 VERSION=${VERSION:-$(echo $PKGNAM-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 # Better to use _ than ~ in the package filenames version:
 PKGVER=$(echo $VERSION | tr '~' '_')
-BUILD=${BUILD:-15}
+BUILD=${BUILD:-16}
 
 # If you use stack-protector, then grub will not work with legacy BIOS:
 STACKPROTECT=${STACKPROTECT:---enable-stack-protector=no}
@@ -119,6 +119,10 @@ cat $CWD/0004-initrd_fallback_name.patch | patch -p1 --verbose || exit 1
 # symlinks, or both. This is set with the GRUB_DISPLAY_KERNEL_FILETYPES
 # variable in /etc/default/grub:
 cat $CWD/0005-GRUB_DISPLAY_KERNEL_FILETYPES.patch | patch -p1 --verbose || exit 1
+
+# Add a warning to the README in /etc/grub.d/ so that users know that the
+# standard files in here will be overwritten with every upgrade:
+cat $CWD/0006-warn-grub.d-overwrites-docs.patch | patch -p1 --verbose || exit 1
 
 # Still won't compile. Someday they'll remember how to cut a new release.
 touch grub-core/extra_deps.lst

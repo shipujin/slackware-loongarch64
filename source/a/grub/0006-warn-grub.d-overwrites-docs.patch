@@ -1,0 +1,11 @@
+--- ./util/grub.d/README.orig	2018-11-24 11:13:02.000000000 -0600
++++ ./util/grub.d/README	2024-09-10 16:45:11.619178928 -0500
+@@ -9,3 +9,8 @@
+ administrator.  For example, you can add an entry to boot another OS as
+ 01_otheros, 11_otheros, etc, depending on the position you want it to occupy in
+ the menu; and then adjust the default setting via /etc/default/grub.
++
++When the grub package is upgraded/reinstalled, all the files in this directory
++that are normally shipped with the package (with the exception of 40_custom)
++will be replaced!  Make copies or new files with a unique filename if you don't
++want them to be overwritten.

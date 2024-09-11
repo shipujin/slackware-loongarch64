@@ -11,9 +11,40 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Tue, 10 Sep 2024 19:32:34 GMT</pubDate>
-      <lastBuildDate>Tue, 10 Sep 2024 20:00:16 GMT</lastBuildDate>
+      <pubDate>Wed, 11 Sep 2024 17:47:14 GMT</pubDate>
+      <lastBuildDate>Wed, 11 Sep 2024 18:35:08 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Wed, 11 Sep 2024 17:47:14 GMT</title>
+         <pubDate>Wed, 11 Sep 2024 17:47:14 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240911174714</link>
+         <guid isPermaLink="false">20240911174714</guid>
+         <description>
+           <![CDATA[<pre>
+a/efibootmgr-18-x86_64-1.txz:  Upgraded.
+a/grub-2.12-x86_64-16.txz:  Rebuilt.
+  Long ago, we began giving all the scripts in /etc/grub.d/ the .new treatment
+  to prevent local customizations from being overwritten with a package
+  upgrade. But, this no longer appears to be a good idea, especially if we're
+  ever going to offer the possibility to automate grub-install and grub-update.
+  So, we are no longer going to preserve the contents of these files when the
+  grub package is upgraded. We *will* however preserve the existing
+  permissions, so you'll be able to turn off scripts that you don't want
+  running, and you'll be able to make new scripts, or make edited and renamed
+  copies of the scripts shipped in this package, so there's no real loss of
+  functionality here.
+  It looks like 40_custom is intended to be locally edited, so we make an
+  exception and do not overwrite that one.
+d/python-setuptools-74.1.2-x86_64-1.txz:  Upgraded.
+kde/okteta-0.26.17-x86_64-1.txz:  Upgraded.
+l/gobject-introspection-1.80.1-x86_64-2.txz:  Rebuilt.
+  Fix running against python-setuptools-74.1.2:
+  [PATCH] giscanner: remove dependency on distutils.msvccompiler.
+l/python-importlib_metadata-8.5.0-x86_64-1.txz:  Upgraded.
+n/curl-8.10.0-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Tue, 10 Sep 2024 19:32:34 GMT</title>
          <pubDate>Tue, 10 Sep 2024 19:32:34 GMT</pubDate>
