@@ -11,9 +11,28 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Fri, 13 Sep 2024 01:32:33 GMT</pubDate>
-      <lastBuildDate>Fri, 13 Sep 2024 02:11:00 GMT</lastBuildDate>
+      <pubDate>Fri, 13 Sep 2024 18:37:35 GMT</pubDate>
+      <lastBuildDate>Fri, 13 Sep 2024 19:00:29 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Fri, 13 Sep 2024 18:37:35 GMT</title>
+         <pubDate>Fri, 13 Sep 2024 18:37:35 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240913183735</link>
+         <guid isPermaLink="false">20240913183735</guid>
+         <description>
+           <![CDATA[<pre>
+l/gobject-introspection-1.82.0-x86_64-1.txz:  Upgraded.
+l/gtk4-4.16.1-x86_64-1.txz:  Upgraded.
+l/gvfs-1.56.0-x86_64-1.txz:  Upgraded.
+l/libpng-1.6.44-x86_64-1.txz:  Upgraded.
+l/mlt-7.28.0-x86_64-1.txz:  Upgraded.
+l/orc-0.4.40-x86_64-1.txz:  Upgraded.
+l/python-zipp-3.20.2-x86_64-1.txz:  Upgraded.
+l/unicode-ucd-16.0.0-noarch-1.txz:  Upgraded.
+xap/gucharmap-16.0.0-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Fri, 13 Sep 2024 01:32:33 GMT</title>
          <pubDate>Fri, 13 Sep 2024 01:32:33 GMT</pubDate>

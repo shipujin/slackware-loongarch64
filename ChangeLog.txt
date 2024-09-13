@@ -1,3 +1,14 @@
+Fri Sep 13 18:37:35 UTC 2024
+l/gobject-introspection-1.82.0-x86_64-1.txz:  Upgraded.
+l/gtk4-4.16.1-x86_64-1.txz:  Upgraded.
+l/gvfs-1.56.0-x86_64-1.txz:  Upgraded.
+l/libpng-1.6.44-x86_64-1.txz:  Upgraded.
+l/mlt-7.28.0-x86_64-1.txz:  Upgraded.
+l/orc-0.4.40-x86_64-1.txz:  Upgraded.
+l/python-zipp-3.20.2-x86_64-1.txz:  Upgraded.
+l/unicode-ucd-16.0.0-noarch-1.txz:  Upgraded.
+xap/gucharmap-16.0.0-x86_64-1.txz:  Upgraded.
++--------------------------+
 Fri Sep 13 01:32:33 UTC 2024
 a/kernel-firmware-20240912_b9daf8c-noarch-1.txz:  Upgraded.
 a/kernel-generic-6.10.10-x86_64-1.txz:  Upgraded.

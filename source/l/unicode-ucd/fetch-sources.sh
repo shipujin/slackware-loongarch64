@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=${VERSION:-15.1.0}
+VERSION=${VERSION:-16.0.0}
 
 rm -f UCD*.zip Unihan*.zip license.txt
 lftpget https://www.unicode.org/Public/zipped/$VERSION/UCD.zip
