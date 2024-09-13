@@ -6,14 +6,14 @@
 # customary to leave one space after the ':'.
 
               |-----handy-ruler------------------------------------------------------|
-%PACKAGE_NAME%: %PACKAGE_NAME% (a Linux kernel)
+%PACKAGE_NAME%: %PACKAGE_NAME% (Linux kernel/modules)
 %PACKAGE_NAME%:
 %PACKAGE_NAME%: This is a Linux kernel with built-in support for SATA, NVMe, and most
-%PACKAGE_NAME%: commonly used filesystems. It is recommended to use an initrd with
-%PACKAGE_NAME%: this kernel for best results. For more information about creating an
-%PACKAGE_NAME%: initrd, see the README.initrd file in the /boot directory.
+%PACKAGE_NAME%: commonly used filesystems, as well as a large collection of loadable
+%PACKAGE_NAME%: kernel modules.
 %PACKAGE_NAME%:
-%PACKAGE_NAME%:
-%PACKAGE_NAME%:
+%PACKAGE_NAME%: It is recommended to use an initrd with this kernel for best results.
+%PACKAGE_NAME%: For more information about creating an initrd, see the README.initrd
+%PACKAGE_NAME%: file in the /boot directory.
 %PACKAGE_NAME%:
 %PACKAGE_NAME%:

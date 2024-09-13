@@ -94,25 +94,12 @@ for recipe in $RECIPES ; do
     installpkg ${OUTPUT}/${KERNEL_SOURCE_PACKAGE_NAME} || exit 1
   fi
 
-  # Build kernel-huge package:
+  # Build kernel-generic+modules package:
   # We will build in the just-built kernel tree. First, let's put back the
   # symlinks:
   ( cd $TMP/package-kernel-source
     sh install/doinst.sh
   )
-  KERNEL_HUGE_PACKAGE_NAME=$(PRINT_PACKAGE_NAME=YES KERNEL_NAME=huge KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=./kernel-configs/config-${VERSION}${LOCALVERSION}-huge${CONFIG_SUFFIX} CONFIG_SUFFIX=${CONFIG_SUFFIX} KERNEL_OUTPUT_DIRECTORY=$OUTPUT/kernels/huge.s BUILD=$BUILD ./kernel-generic.SlackBuild)
-  KERNEL_NAME=huge KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=./kernel-configs/config-${VERSION}${LOCALVERSION}-huge${CONFIG_SUFFIX} CONFIG_SUFFIX=${CONFIG_SUFFIX} KERNEL_OUTPUT_DIRECTORY=$OUTPUT/kernels/huge.s BUILD=$BUILD ./kernel-generic.SlackBuild
-  if [ -r ${TMP}/${KERNEL_HUGE_PACKAGE_NAME} ]; then
-    mv ${TMP}/${KERNEL_HUGE_PACKAGE_NAME} $OUTPUT
-  else
-    echo "kernel-source build failed."
-    exit 1
-  fi
-  if [ "${INSTALL_PACKAGES}" = "YES" ]; then
-    installpkg ${OUTPUT}/${KERNEL_HUGE_PACKAGE_NAME} || exit 1
-  fi
-
-  # Build kernel-generic package:
   KERNEL_GENERIC_PACKAGE_NAME=$(PRINT_PACKAGE_NAME=YES KERNEL_NAME=generic KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=./kernel-configs/config-${VERSION}${LOCALVERSION}-generic${CONFIG_SUFFIX} CONFIG_SUFFIX=${CONFIG_SUFFIX} KERNEL_OUTPUT_DIRECTORY=$OUTPUT/kernels/generic.s BUILD=$BUILD ./kernel-generic.SlackBuild)
   KERNEL_NAME=generic KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=./kernel-configs/config-${VERSION}${LOCALVERSION}-generic${CONFIG_SUFFIX} CONFIG_SUFFIX=${CONFIG_SUFFIX} KERNEL_OUTPUT_DIRECTORY=$OUTPUT/kernels/generic.s BUILD=$BUILD ./kernel-generic.SlackBuild
   if [ -r ${TMP}/${KERNEL_GENERIC_PACKAGE_NAME} ]; then
@@ -123,20 +110,6 @@ for recipe in $RECIPES ; do
   fi
   if [ "${INSTALL_PACKAGES}" = "YES" ]; then
     installpkg ${OUTPUT}/${KERNEL_GENERIC_PACKAGE_NAME} || exit 1
-  fi
-
-  # Build kernel-modules (for the just built generic kernel, but most of them
-  # will also work with the huge kernel):
-  KERNEL_MODULES_PACKAGE_NAME=$(PRINT_PACKAGE_NAME=YES KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=$TMP/package-kernel-source/usr/src/linux/.config BUILD=$BUILD ./kernel-modules.SlackBuild)
-  KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=$TMP/package-kernel-source/usr/src/linux/.config BUILD=$BUILD ./kernel-modules.SlackBuild
-  if [ -r ${TMP}/${KERNEL_MODULES_PACKAGE_NAME} ]; then
-    mv ${TMP}/${KERNEL_MODULES_PACKAGE_NAME} $OUTPUT
-  else
-    echo "kernel-modules build failed."
-    exit 1
-  fi
-  if [ "${INSTALL_PACKAGES}" = "YES" ]; then
-    installpkg ${OUTPUT}/${KERNEL_MODULES_PACKAGE_NAME} || exit 1
   fi
 
   # Build kernel-headers:

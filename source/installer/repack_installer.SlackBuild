@@ -103,7 +103,7 @@ mkdir -p $OUTPUT
   cp $SLACKROOT/isolinux/{f*.txt,message.txt} ${OUTPUT}/usbmount/
   cp ${OUTPUT}/initrd*.img ${OUTPUT}/usbmount/
   cat ${OUTPUT}/pxelinux.cfg_default |sed -e 's# kernels/# #g' -e 's#/.zImage##' \
-    -e 's#/memtest##' \
+    -e 's#/memtest##' | sed "s/nomodeset//g" \
     > ${OUTPUT}/usbmount/syslinux.cfg
 
   # Add EFI support:

@@ -43,7 +43,7 @@ set +o posix
 ################################################################################
 
 # INSTALLERVERSION is the Slackware version the installer will advertize!
-INSTALLERVERSION=${INSTALLERVERSION:-"15.0"}
+INSTALLERVERSION=${INSTALLERVERSION:-"15.0+"}
 PKGNAM=slackware-installer
 
 # Needed to find package names:
@@ -94,8 +94,10 @@ case $ARCH in
   arm*|aarch64)
     ADD_NETMODS=1         # add network modules
     ADD_PCMCIAMODS=1      # add pcmcia modules
+    ADD_ALLMODS=0         # add all the kernel modules
     ADD_MANPAGES=1
     COMPRESS_MODS=0       # already compressed in a/kernel-modules.t?z package already
+    COMPRESSSUFFIX=".xz"  # if the modules are compressed already we might need this
     DISTRODIR=${DISTRODIR:-"slackware"} # below this you find a,ap,d,..,y
     LIBDIRSUFFIX=${LIBDIRSUFFIX:-""} # the default
     RECOMPILE=1           # recompile busybox/dropbear and add new binaries
@@ -109,11 +111,13 @@ case $ARCH in
     ADD_BRICKTICK=1
     ;;
   x86_64)
-    ADD_NETMODS=1
-    ADD_PCMCIAMODS=1
+    ADD_NETMODS=0
+    ADD_PCMCIAMODS=0
+    ADD_KMS=0
+    ADD_ALLMODS=1
     ADD_MANPAGES=1
     COMPRESS_MODS=1
-    ADD_KMS=1
+    COMPRESSSUFFIX=""
     DISTRODIR=${DISTRODIR:-"slackware64"} # below this you find a,ap,d,..,y
     LIBDIRSUFFIX="64"
     RECOMPILE=1
@@ -126,11 +130,13 @@ case $ARCH in
     ADD_BRICKTICK=1
     ;;
   i686)
-    ADD_NETMODS=1
-    ADD_PCMCIAMODS=1
+    ADD_NETMODS=0
+    ADD_PCMCIAMODS=0
+    ADD_KMS=0
+    ADD_ALLMODS=1
     ADD_MANPAGES=1
     COMPRESS_MODS=1
-    ADD_KMS=1
+    COMPRESSSUFFIX=""
     DISTRODIR=${DISTRODIR:-"slackware"} # below this you find a,ap,d,..,y
     LIBDIRSUFFIX=""
     RECOMPILE=1
@@ -148,6 +154,7 @@ case $ARCH in
     ADD_MANPAGES=1        # Add preprocessed manpages
     DISTRODIR=${DISTRODIR:-"slackware"} # below this you find a,ap,d,..,y
     COMPRESS_MODS=1       # compress kernel modules
+    COMPRESSSUFFIX=""
     LIBDIRSUFFIX=""       # the default
     RECOMPILE=0           # re-use binaries from existing initrd and packages
     SPLIT_INITRD=0        # Do not create separate initrd for each kernel
@@ -195,13 +202,13 @@ case $ARCH in
     ;;
   i?86)
     # What kernel directories are in this installer?
-    KERNELS[0]=huge.s
+    KERNELS[0]=generic.s
     # The -extraversion (appended to the $KVER) for the KERNELS[*]:
     KEXTRAV[0]=""
     ;;
   x86_64)
     # What kernel directories are in this installer?
-    KERNELS[0]=huge.s
+    KERNELS[0]=generic.s
     # The -extraversion (appended to the $KVER) for the KERNELS[*]:
     KEXTRAV[0]=""
     ;;
@@ -314,8 +321,8 @@ done
 # The location of the initrd.img file
 INITRDIMG=${INITRDIMG:-"$SLACKROOT/isolinux/initrd.img"}
 
-# Wildcard expression for the kernel-modules package:
-KERNELMODPKG=${KERNELMODPKG:-"${SLACKROOT}/${DISTRODIR}/a/kernel-modules-*.t?z"}
+# Wildcard expression for the kernel-modules (now part of kernel-generic) package:
+KERNELMODPKG=${KERNELMODPKG:-"${SLACKROOT}/${DISTRODIR}/a/kernel-generic-*.t?z"}
 # PCMCIA support tools:
 PCMCIAUTILS="${SLACKROOT}/${DISTRODIR}/a/pcmciautils-*.t?z"
 # Needed by pcmciautils:
@@ -338,7 +345,6 @@ if [ $SHOWHELP -eq 0 ]; then
   fi
 
   # Determine the kernel version:
-  #KVER=$( ls -1 ${KERNELMODPKG} | head -1 | sed -e "s#.*/kernel-modules-\([^-]*\)-.*.t[gblx]z#\1#")
   KVER="$( ls -1 ${KERNELMODPKG} | head -1 | rev | cut -d- -f3 | rev | cut -d_ -f1 )"
   if [ -z "$KVER" ]; then
     echo "*** I can't determine the kernel version!"
@@ -1628,6 +1634,27 @@ rm -rf $TMP/extract-packages
 ############### Install Kernel modules into installer's filesystem #############
 #
 #
+############### Add all modules, it's just safer ;-) ###########################
+
+add_allmods()
+{
+
+echo "--- Adding all kernel modules ---"
+cd $PKG/$ARCH-installer-filesystem
+
+# Temporary extraction directory:
+rm -rf $TMP/extract-packages
+mkdir -p -m755 $TMP/extract-packages
+
+# Unpack the kernel modules (all kernels defined for this $ARCH):
+for ind in $(seq 0 $((${#KERNELS[*]} -1)) ); do
+  tar -C $TMP/extract-packages -x${VERBOSE1}f $(ls -1 ${KERNELMODPKG} | grep "${KVER}$(echo ${KEXTRAV[$ind]}| tr - _)-" ) lib
+done
+rm -rf ./lib/modules
+mv -f${VERBOSE1} $TMP/extract-packages/lib/modules ./lib/modules
+
+}
+
 ############### Add the network modules ########################################
 
 add_netmods()
@@ -1708,26 +1735,26 @@ for ind in $(seq 0 $((${#KERNELS[*]} -1)) ); do
          mv md md.orig
          rm -rf${VERBOSE1} cdrom ide md scsi
          mkdir scsi
-         mv scsi.orig/hv_storvsc.ko scsi
-         mv scsi.orig/sg.ko scsi
+         mv scsi.orig/hv_storvsc.ko$COMPRESSSUFFIX scsi
+         mv scsi.orig/sg.ko$COMPRESSSUFFIX scsi
          rm -rf${VERBOSE1} scsi.orig
          mkdir md
-         mv md.orig/dm-bufio.ko md
-         mv md.orig/dm-bio-prison.ko md
-         mv md.orig/dm-raid.ko md
-         mv md.orig/dm-snapshot.ko md
-         mv md.orig/dm-thin-pool.ko md
+         mv md.orig/dm-bufio.ko$COMPRESSSUFFIX md
+         mv md.orig/dm-bio-prison.ko$COMPRESSSUFFIX md
+         mv md.orig/dm-raid.ko$COMPRESSSUFFIX md
+         mv md.orig/dm-snapshot.ko$COMPRESSSUFFIX md
+         mv md.orig/dm-thin-pool.ko$COMPRESSSUFFIX md
          mkdir md/persistent-data
-         mv md.orig/persistent-data/dm-persistent-data.ko md/persistent-data
+         mv md.orig/persistent-data/dm-persistent-data.ko$COMPRESSSUFFIX md/persistent-data
          rm -rf${VERBOSE1} md.orig
        ;;
     esac
-    # Save loop.ko, nvme.ko, virtio_blk.ko, and zram.ko, but remove other block drivers:
+    # Save loop.ko$COMPRESSSUFFIX, nvme.ko$COMPRESSSUFFIX, virtio_blk.ko$COMPRESSSUFFIX, and zram.ko$COMPRESSSUFFIX, but remove other block drivers:
     mv block block.orig
     mkdir block
-    mv block.orig/nvme.ko block
-    mv block.orig/loop.ko block
-    mv block.orig/virtio_blk.ko block
+    mv block.orig/nvme.ko$COMPRESSSUFFIX block
+    mv block.orig/loop.ko$COMPRESSSUFFIX block
+    mv block.orig/virtio_blk.ko$COMPRESSSUFFIX block
     mv block.orig/zram block
     rm -rf${VERBOSE1} block.orig
     # Done with block directory
@@ -1740,7 +1767,7 @@ for ind in $(seq 0 $((${#KERNELS[*]} -1)) ); do
     rm -rf${VERBOSE1} staging.orig
     # Save the Hyper-V keyboard module:
     mkdir -p input.orig/serio
-    cp -a input/serio/hyperv-keyboard.ko input.orig/serio
+    cp -a input/serio/hyperv-keyboard.ko$COMPRESSSUFFIX input.orig/serio
     # Save any PCI controller modules:
     if [ -d pci/controller ]; then
       mkdir -p pci.orig/controller
@@ -1751,11 +1778,11 @@ for ind in $(seq 0 $((${#KERNELS[*]} -1)) ); do
     mv pci.orig pci 2> /dev/null
 
     if [ "$ADD_KMS" = "1" ]; then
-      # Keep video.ko and button.ko, needed by some gpu drivers.
-      # Also keep processor.ko, needed by acpi-cpufreq.
+      # Keep video.ko$COMPRESSSUFFIX and button.ko$COMPRESSSUFFIX, needed by some gpu drivers.
+      # Also keep processor.ko$COMPRESSSUFFIX, needed by acpi-cpufreq.
       mv acpi acpi.orig
       mkdir acpi
-      mv acpi.orig/{button,processor,video}.ko acpi
+      mv acpi.orig/{button,processor,video}.ko$COMPRESSSUFFIX acpi
       rm -rf${VERBOSE1} acpi.orig
 
       # Keep AGP modules:
@@ -1764,63 +1791,63 @@ for ind in $(seq 0 $((${#KERNELS[*]} -1)) ); do
       mkdir char
       mv agp.orig char/agp
 
-      # Keep hwmon.ko:
+      # Keep hwmon.ko$COMPRESSSUFFIX:
       mkdir hwmon.orig
-      mv hwmon/hwmon.ko hwmon.orig
+      mv hwmon/hwmon.ko$COMPRESSSUFFIX hwmon.orig
       rm -rf${VERBOSE1} hwmon
       mv hwmon.orig hwmon
 
-      # Keep platform/x86/mxm-wmi.ko and platform/x86/wmi.ko
+      # Keep platform/x86/mxm-wmi.ko$COMPRESSSUFFIX and platform/x86/wmi.ko$COMPRESSSUFFIX
       mkdir x86.orig
-      mv platform/x86/mxm-wmi.ko platform/x86/wmi.ko x86.orig
+      mv platform/x86/mxm-wmi.ko$COMPRESSSUFFIX platform/x86/wmi.ko$COMPRESSSUFFIX x86.orig
       rm -rf${VERBOSE1} platform
       mkdir platform
       mv x86.orig platform/x86
 
-      # Keep thermal/thermal_sys.ko:
+      # Keep thermal/thermal_sys.ko$COMPRESSSUFFIX:
       mv thermal thermal.orig
       mkdir thermal
-      mv thermal.orig/thermal_sys.ko thermal
+      mv thermal.orig/thermal_sys.ko$COMPRESSSUFFIX thermal
       rm -rf${VERBOSE1} thermal.orig
 
       # Keep some video drivers:
       mv video video.orig
       mkdir -p video/fbdev
-      mv video.orig/{sis,syscopyarea.ko,sysfillrect.ko,sysimgblt.ko} video
-      mv video.orig/fbdev/hyperv_fb.ko video/fbdev
+      mv video.orig/{sis,syscopyarea.ko$COMPRESSSUFFIX,sysfillrect.ko$COMPRESSSUFFIX,sysimgblt.ko$COMPRESSSUFFIX} video
+      mv video.orig/fbdev/hyperv_fb.ko$COMPRESSSUFFIX video/fbdev
       rm -rf${VERBOSE1} video.orig
     else
       # Save the Hyper-V framebuffer module:
       mv video video.orig
       mkdir -p video/fbdevmv
-      mv video.orig/fbdev/hyperv_fb.ko video/fbdev
+      mv video.orig/fbdev/hyperv_fb.ko$COMPRESSSUFFIX video/fbdev
       rm -rf${VERBOSE1} acpi char cpufreq hwmon platform thermal video.orig
     fi
 
     # Needed to install on MMC:
     mv mmc/host mmc/host.orig
     mkdir mmc/host
-    mv mmc/host.orig/sdhci.ko mmc/host
-    mv mmc/host.orig/sdhci-acpi.ko mmc/host
-    mv mmc/host.orig/sdhci-pci.ko mmc/host
-    mv mmc/host.orig/cqhci.ko mmc/host
+    mv mmc/host.orig/sdhci.ko$COMPRESSSUFFIX mmc/host
+    mv mmc/host.orig/sdhci-acpi.ko$COMPRESSSUFFIX mmc/host
+    mv mmc/host.orig/sdhci-pci.ko$COMPRESSSUFFIX mmc/host
+    mv mmc/host.orig/cqhci.ko$COMPRESSSUFFIX mmc/host
     rm -rf${VERBOSE1} mmc/host.orig
 
     cd usb/
-    rm -rf${VERBOSE1} atm host/hwa-hc.ko host/whci image serial wusbcore
+    rm -rf${VERBOSE1} atm host/hwa-hc.ko$COMPRESSSUFFIX host/whci image serial wusbcore
     cd ..
 
     cd net/
     rm -rf${VERBOSE1} appletalk arcnet bonding chelsio hamradio irda ixgb wimax wireless wan
     cd ..
 
-    rm -f${VERBOSE1} ieee1394/pcilynx.ko
-    rm -f${VERBOSE1} net/pcmcia/com20020_cs.ko
-    rm -f${VERBOSE1} net/plip.ko
-    rm -f${VERBOSE1} net/usb/hso.ko
-    rm -f${VERBOSE1} usb/misc/uss720.ko
-    rm -f${VERBOSE1} gpio/wm831x-gpio.ko
-    #rm -f${VERBOSE1} clocksource/scx200_hrt.ko
+    rm -f${VERBOSE1} ieee1394/pcilynx.ko$COMPRESSSUFFIX
+    rm -f${VERBOSE1} net/pcmcia/com20020_cs.ko$COMPRESSSUFFIX
+    rm -f${VERBOSE1} net/plip.ko$COMPRESSSUFFIX
+    rm -f${VERBOSE1} net/usb/hso.ko$COMPRESSSUFFIX
+    rm -f${VERBOSE1} usb/misc/uss720.ko$COMPRESSSUFFIX
+    rm -f${VERBOSE1} gpio/wm831x-gpio.ko$COMPRESSSUFFIX
+    #rm -f${VERBOSE1} clocksource/scx200_hrt.ko$COMPRESSSUFFIX
   )
 done
 
@@ -2149,8 +2176,8 @@ for KERN in ${SLACKROOT}/kernels/*.?/*zImage ; do
 done
 let USBIMG=USBIMG+777  # Add just that little extra...
 if [ $EFIBOOT -eq 1 ]; then
-  # A bit more extra space since elilo will be added...
-  let USBIMG=USBIMG+256
+  # A bit more extra space for the bootloader...
+  let USBIMG=USBIMG+1536
 fi
 
 # Generate a pxelinux.cfg/default file (used for usbboot.img too)
@@ -2175,15 +2202,19 @@ echo "--- Copying data to the USB boot disk image: ---"
 cp $SLACKROOT/isolinux/setpkg ${CWD}/usbmount/
 cp $SLACKROOT/isolinux/{f*.txt,message.txt} ${CWD}/usbmount/
 cp ${CWD}/initrd*.img ${CWD}/usbmount/
-cat ${CWD}/pxelinux.cfg_default |sed -e 's# kernels/# #g' -e 's#/.zImage##' \
-  -e 's#/memtest##' \
+cat ${CWD}/pxelinux.cfg_default \
+ | sed -e 's# kernels/# #g' -e 's#/.zImage##' -e 's#/memtest##' \
   > ${CWD}/usbmount/syslinux.cfg
 
 # Add EFI support:
 if [ $EFIBOOT -eq 1 ]; then
   cp -a ${SRCDIR}/sources/efi.${ARCH}/* ${CWD}/usbmount
-  # Make sure the Slackware and kernel version in message.txt are up to date:
-  cat ${SRCDIR}/sources/efi.${ARCH}/EFI/BOOT/message.txt | sed "s/version.*/version ${INSTALLERVERSION} \(Linux kernel $(uname -r | cut -f 1 -d -)\)\!/g" > ${CWD}/usbmount/EFI/BOOT/message.txt
+  # Edit the installer version in grub.cfg:
+  sed -i "s/%%INSTALLERVERSION%%/$INSTALLERVERSION/g" ${CWD}/usbmount/EFI/BOOT/grub.cfg
+  # Add GRUB support from the Slackware sources:
+  for file in bootx64.efi osdetect.cfg tools.cfg ; do
+    cp -a $SLACKROOT/EFI/BOOT/$file ${CWD}/usbmount/EFI/BOOT || exit 1
+  done
 fi
 
 # Older syslinux can not cope with subdirectories - let's just be safe:
@@ -2218,7 +2249,7 @@ echo "--- Creating an image for the EFI boot disk ---"
 
 # Calculate sizes:
 let EFIIMG=$( LC_ALL=C du -ck ${CWD}/initrd*.img | grep total | cut -f1 )
-for KERN in ${SLACKROOT}/kernels/huge.s/*zImage ; do
+for KERN in ${SLACKROOT}/kernels/generic.s/*zImage ; do
   let EFIIMG=EFIIMG+$( LC_ALL=C du -sk $KERN | cut -f1 )
 done
 let EFIIMG=EFIIMG+2222  # Add just that little extra...
@@ -2236,7 +2267,7 @@ rm -rf ${CWD}/efimount
 mkdir ${CWD}/efimount
 mount /dev/loop3 ${CWD}/efimount
 cp -a --verbose ${CWD}/sources/efi/* ${CWD}/efimount
-cp -a --verbose ${SLACKROOT}/kernels/huge.s/*zImage ${CWD}/efimount/EFI/BOOT/huge.s
+cp -a --verbose ${SLACKROOT}/kernels/generic.s/*zImage ${CWD}/efimount/EFI/BOOT/generic.s
 cp -a ${CWD}/initrd.img ${CWD}/efimount/EFI/BOOT/
 umount /dev/loop3
 losetup -d /dev/loop3
@@ -2490,7 +2521,12 @@ else
     add_pcmciamods
   fi
 
-  if [ $ADD_NETMODS -eq 1 -o $ADD_PCMCIAMODS -eq 1 ]; then
+  # Are we adding ALL the kernel modules?
+  if [ $ADD_ALLMODS -eq 1 ]; then
+    add_allmods
+  fi
+
+  if [ $ADD_NETMODS -eq 1 -o $ADD_PCMCIAMODS -eq 1 -o $ADD_ALLMODS -eq 1 ]; then
     # If we added modules, we also need to add network card firmware:
     # but only if specified.  The default list of firmware is useless on ARM SoC systems.
     # The TrimSlice has a RealTek card which requires firmware, but currently the firmware
@@ -2525,4 +2561,3 @@ else
   #fi
 
 fi
-

@@ -11,9 +11,44 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Wed, 11 Sep 2024 17:47:14 GMT</pubDate>
-      <lastBuildDate>Wed, 11 Sep 2024 18:35:08 GMT</lastBuildDate>
+      <pubDate>Fri, 13 Sep 2024 01:32:33 GMT</pubDate>
+      <lastBuildDate>Fri, 13 Sep 2024 02:11:00 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Fri, 13 Sep 2024 01:32:33 GMT</title>
+         <pubDate>Fri, 13 Sep 2024 01:32:33 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240913013233</link>
+         <guid isPermaLink="false">20240913013233</guid>
+         <description>
+           <![CDATA[<pre>
+a/kernel-firmware-20240912_b9daf8c-noarch-1.txz:  Upgraded.
+a/kernel-generic-6.10.10-x86_64-1.txz:  Upgraded.
+  The kernel modules are now bundled into this package.
+a/kernel-huge-6.10.9-x86_64-1.txz:  Removed.
+  So long, we won't miss you.
+  If you were actually using kernel-huge with one of the SCSI/SAS drivers that
+  were built in, you'll need to use kernel-generic and an initrd that contains
+  the needed drivers. Otherwise, just switch to kernel-generic. It'll be fine.
+  If unsure, make an initrd with geninitrd and have your bootloader use it.
+a/kernel-modules-6.10.9-x86_64-1.txz:  Removed.
+  Kernel modules are now bundled with the kernel-generic package.
+a/libblockdev-3.2.0-x86_64-1.txz:  Upgraded.
+d/kernel-headers-6.10.10-x86-1.txz:  Upgraded.
+k/kernel-source-6.10.10-noarch-1.txz:  Upgraded.
+l/librsvg-2.58.4-x86_64-1.txz:  Upgraded.
+l/protobuf-28.1-x86_64-1.txz:  Upgraded.
+l/pygobject3-3.50.0-x86_64-1.txz:  Upgraded.
+l/python-trove-classifiers-2024.9.12-x86_64-1.txz:  Upgraded.
+n/nghttp3-1.5.0-x86_64-2.txz:  Rebuilt.
+  Make sure the cmake files are installed to the correct location.
+  Thanks to fulalas.
+x/ibus-table-1.17.8-x86_64-1.txz:  Upgraded.
+isolinux/initrd.img:  Rebuilt.
+kernels/*:  Upgraded.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Wed, 11 Sep 2024 17:47:14 GMT</title>
          <pubDate>Wed, 11 Sep 2024 17:47:14 GMT</pubDate>

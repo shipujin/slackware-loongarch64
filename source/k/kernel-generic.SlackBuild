@@ -39,6 +39,17 @@ KERNEL_SOURCE=${KERNEL_SOURCE:-/usr/src/linux}
 KERNEL_CONFIG=${KERNEL_CONFIG:-/usr/src/linux/.config}
 CONFIG_SUFFIX=${CONFIG_SUFFIX:-}
 BUILD=${BUILD:-1}
+
+# The CONFIG_DEBUG_INFO_BTF_MODULES option adds a huge amount of debugging
+# data to the modules which we don't actually need. We'll strip debugging
+# information from kernel modules by default. If you are building a debug
+# kernel and wish to retain this data, export the variable below set to "0".
+STRIP_DEBUG=${STRIP_DEBUG:-1}
+
+# Let's export the variable with the name needed by the kernel's Makefiles,
+# just for good measure.
+export INSTALL_MOD_STRIP=$STRIP_DEBUG
+
 if [ ! -r "${KERNEL_CONFIG}" ]; then
   echo "Error: the KERNEL_CONFIG environment variable needs to be set to the"
   echo ".config file to be used to build this kernel. Example:"
@@ -118,6 +129,24 @@ fi
 ( cd ${KERNEL_SOURCE}
   echo "Running make oldconfig..."
   make oldconfig
+  echo "Running a preliminary make (needed to create modules.builtin.modinfo)..."
+  make $NUMJOBS || exit 1
+  echo "Building kernel modules..."
+  make $NUMJOBS modules || exit 1
+  echo "Installing kernel modules to $PKG..."
+  make INSTALL_MOD_PATH=$PKG INSTALL_MOD_STRIP=$STRIP_DEBUG modules_install || exit 1
+  # Fix build and source symlinks if they are pointing into $TMP:
+  ( cd $PKG/lib/modules/${VERSION}${LOCALVERSION}
+    for symlink in build source ; do
+      target=$(readlink $symlink)
+      if echo $target | grep -q "^$TMP/package-kernel-source/" ; then
+        rm -f $symlink
+        ln -sf $(echo $target | sed "s|$TMP/package-kernel-source/|/|g") $symlink
+      fi
+    done
+  )
+  # Make modules.dep:
+  depmod -b $PKG -a ${VERSION}${LOCALVERSION}
   echo "Building kernel..."
   make $NUMJOBS bzImage || make bzImage || exit 1
   # Output files to a directory, if requested:
@@ -147,12 +176,12 @@ cd ${KERNEL_SOURCE}
 PACKAGE_ARCH=$(cat kernel/bounds.s | grep -w "\-march=.*" | tr " " "\n" | grep -w "\-march=.*" | cut -f 2 -d = | tr - _)
 
 mkdir $PKG/install
-if [ -r $CWD/slack-desc/slack-desc.kernel-${KERNEL_NAME}.${PACKAGE_ARCH} ]; then
-  cat $CWD/slack-desc/slack-desc.kernel-${KERNEL_NAME}.${PACKAGE_ARCH} > $PKG/install/slack-desc
+if [ -r $CWD/slack-desc/slack-desc.kernel-${KERNEL_NAME} ]; then
+  cat $CWD/slack-desc/slack-desc.kernel-${KERNEL_NAME} > $PKG/install/slack-desc
 else
   cat $CWD/slack-desc/slack-desc.kernel-template | sed "s/%PACKAGE_NAME%/kernel-${KERNEL_NAME}${LOCALVERSION}/g" > $PKG/install/slack-desc
 fi
-    
+
 # Make the package:
 cd $PKG
 /sbin/makepkg -l y -c n $TMP/kernel-${KERNEL_NAME}-$(echo ${VERSION} | tr - _)$(echo ${LOCALVERSION} | tr - _)-${PACKAGE_ARCH}-$BUILD.txz

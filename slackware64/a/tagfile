@@ -54,8 +54,6 @@ jfsutils:OPT
 kbd:REC
 kernel-firmware:ADD
 kernel-generic:REC
-kernel-huge:ADD
-kernel-modules:ADD
 kmod:ADD
 lbzip2:REC
 less:ADD

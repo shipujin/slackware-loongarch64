@@ -1,3 +1,12 @@
+Thu Sep 12 21:55:48 UTC 2024
+  Since huge is gone, I guess the installer's going to be booting generic. :-)
+  On UEFI systems, use GRUB to boot the installer since elilo sucks.
+  Include all the kernel modules. It's not all that much bloat, makes the
+  installer more useful for rescue purposes, and relieves us of having to
+  trace out all the deps for the included kernel modules.
+  Handle having the kernel modules provided by kernel-generic.
+  Handle precompressed modules (but mkinitrd isn't ready for this yet).
++--------------------------+
 Sun Jul 28 20:52:21 UTC 2024
   /etc/profile: export MANPAGER="less -r" to display pages correctly.
   Also export LESSQUIET=true.
