@@ -354,6 +354,7 @@ python-editables:REC
 python-flit-core:REC
 python-future:REC
 python-glad2:REC
+python-hatch-vcs:REC
 python-hatchling:REC
 python-html5lib:REC
 python-idna:REC

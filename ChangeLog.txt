@@ -1,3 +1,35 @@
+Sat Sep 14 18:15:34 UTC 2024
+a/mkinitrd-1.4.11-x86_64-36.txz:  Rebuilt.
+  setup.01.mkinitrd (aka geninitrd): Set GENINITRD_SILENT to anything to
+  generate the initrd silently.
+l/iso-codes-4.17.0-noarch-1.txz:  Upgraded.
+l/libarchive-3.7.5-x86_64-1.txz:  Upgraded.
+  This update fixes the following security issues:
+  fix multiple vulnerabilities identified by SAST (#2251, #2256)
+  cpio: ignore out-of-range gid/uid/size/ino and harden AFIO parsing (#2258)
+  lzop: prevent integer overflow (#2174)
+  rar4: protect copy_from_lzss_window_to_unp() (#2172, CVE-2024-20696)
+  rar4: fix CVE-2024-26256 (#2269)
+  rar4: fix OOB in delta and audio filter (#2148, #2149)
+  rar4: fix out of boundary access with large files (#2179)
+  rar4: add boundary checks to rgb filter (#2210)
+  rar4: fix OOB access with unicode filenames (#2203)
+  rar5: clear 'data ready' cache on window buffer reallocs (#2265)
+  rpm: calculate huge header sizes correctly (#2158)
+  unzip: unify EOF handling (#2175)
+  util: fix out of boundary access in mktemp functions (#2160)
+  uu: stop processing if lines are too long (#2168)
+  For more information, see:
+    https://www.cve.org/CVERecord?id=CVE-2024-20696
+    https://www.cve.org/CVERecord?id=CVE-2024-26256
+  (* Security fix *)
+l/python-hatch-vcs-0.4.0-x86_64-1.txz:  Added.
+  This is needed to build urllib3-2.2.3.
+l/python-idna-3.9-x86_64-1.txz:  Upgraded.
+l/python-urllib3-2.2.3-x86_64-1.txz:  Upgraded.
+n/bind-9.20.1-x86_64-1.txz:  Upgraded.
+xap/xlockmore-5.79-x86_64-1.txz:  Upgraded.
++--------------------------+
 Fri Sep 13 21:12:03 UTC 2024
 l/orc-0.4.40-x86_64-2.txz:  Rebuilt.
   Removed extra wrong LIBDIRSUFFIX="". Thanks to ponce.

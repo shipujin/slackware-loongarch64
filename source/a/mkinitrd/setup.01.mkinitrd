@@ -26,13 +26,15 @@ LVM_OPTION="-L"
 
 # Generate the initrd:
 if [ ! -z $KERNEL_VERSION ]; then
-  dialog --title "GENERATING INITIAL RAMDISK" --infobox \
-  "Generating an initial ramdisk for use with the $KERNEL_VERSION kernel. \
+  if [ -z "$GENINITRD_SILENT" ]; then
+    dialog --title "GENERATING INITIAL RAMDISK" --infobox \
+    "Generating an initial ramdisk for use with the $KERNEL_VERSION kernel. \
 The initial ramdisk contains kernel modules needed to mount the \
 root partition, and must be regenerated whenever the kernel is updated. To \
 regenerate the initrd, select this setup script from within pkgtool, or run \
 'geninitrd' which will produce an initial ramdisk (/boot/initrd.gz) for the \
 installed kernel." 8 70
+  fi
   chroot . /usr/share/mkinitrd/mkinitrd_command_generator.sh -k $KERNEL_VERSION -a "$LVM_OPTION -o /boot/initrd-${KERNEL_VERSION}-${KERNEL_NAME}.img" | chroot . bash 1> /dev/null 2> /dev/null
 fi
 
