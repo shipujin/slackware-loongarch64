@@ -24,7 +24,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=os-prober
 VERSION=${VERSION:-$(echo $PKGNAM_*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d _ | rev)}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -67,11 +67,14 @@ rm -rf $PKGNAM-$VERSION
 tar xvf $CWD/${PKGNAM}_$VERSION.tar.?z* || exit 1
 cd $PKGNAM-$VERSION || exit 1
 
+# Don't be very very slow:
+cat $CWD/os-prober-grub2-mount-workaround.patch | patch -p1 --verbose || exit 1
+
 # Don't drop support for reiserfs.  It's still in the kernel (for now):
-zcat $CWD/os-prober.reiserfs.diff.gz | patch -p1 --verbose || exit 1
+cat $CWD/os-prober.reiserfs.diff | patch -p1 --verbose || exit 1
 
 # Fix detecting LVM2 volumes:
-zcat $CWD/os-prober.lvm2.diff.gz | patch -p1 --verbose || exit 1
+cat $CWD/os-prober.lvm2.diff | patch -p1 --verbose || exit 1
 
 # Edit the scripts to use $LIBDIRSUFFIX=64 if needed:
 if [ "$LIBDIRSUFFIX" = "64" ]; then

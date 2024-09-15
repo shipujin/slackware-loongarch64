@@ -284,8 +284,6 @@ gzip ./source/a/procps-ng/doinst.sh
 gzip ./source/a/udisks2/doinst.sh
 gzip ./source/a/sysvinit-functions/doinst.sh
 gzip ./source/a/mdadm/doinst.sh
-gzip ./source/a/os-prober/os-prober.lvm2.diff
-gzip ./source/a/os-prober/os-prober.reiserfs.diff
 gzip ./source/a/tcsh/doinst.sh
 gzip ./source/a/dcron/patches/0006-Fixed-a-bug-whereby-syncs-killed-all-waiting-jobs.patch
 gzip ./source/a/dcron/patches/0007-Update-main.c.patch
@@ -1063,3 +1061,4 @@ gzip ./source/x/ibus/doinst.sh
 gzip ./source/x/ibus/emoji-test.txt
 gzip ./source/x/xcm/xcm.udev.rules.diff
 gzip ./source/x/libva/doinst.sh
+gzip ./testing/source/k/patches-revert-i686/0001-x86-ioremap-Fix-page-aligned-size-calculation-in-__i.patch
