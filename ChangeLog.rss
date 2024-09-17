@@ -11,9 +11,29 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Mon, 16 Sep 2024 19:58:49 GMT</pubDate>
-      <lastBuildDate>Mon, 16 Sep 2024 21:01:12 GMT</lastBuildDate>
+      <pubDate>Tue, 17 Sep 2024 23:29:04 GMT</pubDate>
+      <lastBuildDate>Wed, 18 Sep 2024 00:05:24 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Tue, 17 Sep 2024 23:29:04 GMT</title>
+         <pubDate>Tue, 17 Sep 2024 23:29:04 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240917232904</link>
+         <guid isPermaLink="false">20240917232904</guid>
+         <description>
+           <![CDATA[<pre>
+a/sysklogd-2.6.2-x86_64-1.txz:  Upgraded.
+ap/lxc-6.0.2-x86_64-1.txz:  Upgraded.
+ap/vim-9.1.0736-x86_64-1.txz:  Upgraded.
+l/gjs-1.82.0-x86_64-1.txz:  Upgraded.
+  Compiled against mozjs128-128.2.0esr.
+l/mozjs115-115.15.0esr-x86_64-1.txz:  Removed.
+l/mozjs128-128.2.0esr-x86_64-1.txz:  Added.
+tcl/tcl-8.6.15-x86_64-1.txz:  Upgraded.
+tcl/tk-8.6.15-x86_64-1.txz:  Upgraded.
+xap/vim-gvim-9.1.0736-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Mon, 16 Sep 2024 19:58:49 GMT</title>
          <pubDate>Mon, 16 Sep 2024 19:58:49 GMT</pubDate>

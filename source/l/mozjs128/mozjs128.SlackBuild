@@ -23,7 +23,7 @@
 
 cd $(dirname $0) ; CWD=$(pwd)
 
-PKGNAM=mozjs115
+PKGNAM=mozjs128
 SRCNAME=firefox
 VERSION=$(basename $(ls $SRCNAME-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev) .source)
 BUILD=${BUILD:-1}
@@ -93,7 +93,6 @@ PATH=$TMP/autoconf-tmp/usr/bin:$PATH
 # Patches from Fedora:
 zcat $CWD/patches/fix-soname.patch.gz | patch -p1 --verbose || exit 1
 zcat $CWD/patches/copy-headers.patch.gz | patch -p1 --verbose || exit 1
-zcat $CWD/patches/tests-increase-timeout.patch.gz | patch -p1 --verbose || exit 1
 zcat $CWD/patches/icu_sources_data.py-Decouple-from-Mozilla-build-system.patch.gz | patch -p1 --verbose || exit 1
 zcat $CWD/patches/icu_sources_data-Write-command-output-to-our-stderr.patch.gz | patch -p1 --verbose || exit 1
 zcat $CWD/patches/emitter.patch.gz | patch -p1 --verbose || exit 1
