@@ -1,3 +1,25 @@
+Wed Sep 18 21:23:19 UTC 2024
+a/btrfs-progs-6.11-x86_64-1.txz:  Upgraded.
+a/dracut-103-x86_64-1.txz:  Added.
+  This is Red Hat's tool to generate an initramfs (aka initrd). Around here,
+  we try not to suffer from Not Invented Here Syndrome (some might say the
+  less we invent, the better ;-). It never hurts to have additional options,
+  and it even looks like our old friend David Cantrell is on the AUTHORS list.
+  I've had good luck here with:
+    dracut --hostonly --force /boot/initrd-6.10.11-generic.img
+  Thanks to Didier Spaier for convincing me to try it out.
+a/gawk-5.3.1-x86_64-1.txz:  Upgraded.
+a/kernel-generic-6.10.11-x86_64-1.txz:  Upgraded.
+a/upower-1.90.6-x86_64-1.txz:  Upgraded.
+d/kernel-headers-6.10.11-x86-1.txz:  Upgraded.
+k/kernel-source-6.10.11-noarch-1.txz:  Upgraded.
+l/libtiff-4.7.0-x86_64-1.txz:  Upgraded.
+n/curl-8.10.1-x86_64-1.txz:  Upgraded.
+x/mesa-24.2.3-x86_64-1.txz:  Upgraded.
+isolinux/initrd.img:  Rebuilt.
+kernels/*:  Upgraded.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
++--------------------------+
 Tue Sep 17 23:29:04 UTC 2024
 a/sysklogd-2.6.2-x86_64-1.txz:  Upgraded.
 ap/lxc-6.0.2-x86_64-1.txz:  Upgraded.

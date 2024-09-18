@@ -35,7 +35,8 @@ OSTYPE=0xEF
 lsblk -Ml -o parttype,name,label | \
 grep -v 'SLKins_efi$' | \
 grep -iFe "$ESPGUID" -e "$OSTYPE" | \
-sed "s,[^ ]*[ ]*,/dev/," > $TMP/SeTefipartitions
+sed "s,[^ ]*[ ]*,/dev/," | \
+cut -f 1 -d ' ' > $TMP/SeTefipartitions
 
 if [ ! -s $TMP/SeTefipartitions ]; then # No EFI partitions
   rm -f $TMP/SeTefipartitions

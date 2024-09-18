@@ -981,6 +981,7 @@ a/lzip \
 a/lzlib \
 a/mdadm \
 a/ncompress \
+a/ntfs-3g \
 a/openssl-solibs \
 a/os-prober \
 a/pam \
@@ -1084,6 +1085,7 @@ cp --remove-destination -fa${VERBOSE1} ${EXTRA_PKGS_BIN} \
         ps \
         mknod \
         mount \
+        *ntfs* \
         numfmt \
         sed \
         seq \
@@ -1181,6 +1183,7 @@ cp --remove-destination -fa${VERBOSE1} ${EXTRA_PKGS_SBIN} \
         modprobe \
         mount \
         mdadm \
+        *ntfs* \
         rdev \
         reiserfsck \
         rmmod \
@@ -1367,6 +1370,7 @@ cp  -fa${VERBOSE1} \
         liblzma*so* \
         libmount.so* \
         libnsl.so* \
+        libntfs-3g.so* \
         libpam*.so* \
         libpcre2-8.so* \
         libpopt*.so* \
@@ -2435,6 +2439,27 @@ if [ -d usr/man ]; then
       man1/nvme.1.bz2 \
       man8/dmidecode.8.bz2 \
       man8/smartctl.8.bz2 \
+      man8/ntfs-3g.8.bz2 \
+      man8/ntfs-3g.probe.8.bz2 \
+      man8/ntfscat.8.bz2 \
+      man8/ntfsclone.8.bz2 \
+      man8/ntfscluster.8.bz2 \
+      man8/ntfscmp.8.bz2 \
+      man8/ntfscp.8.bz2 \
+      man8/ntfsdecrypt.8.bz2 \
+      man8/ntfsfallocate.8.bz2 \
+      man8/ntfsfix.8.bz2 \
+      man8/ntfsinfo.8.bz2 \
+      man8/ntfslabel.8.bz2 \
+      man8/ntfsls.8.bz2 \
+      man8/ntfsprogs.8.bz2 \
+      man8/ntfsrecover.8.bz2 \
+      man8/ntfsresize.8.bz2 \
+      man8/ntfssecaudit.8.bz2 \
+      man8/ntfstruncate.8.bz2 \
+      man8/ntfsundelete.8.bz2 \
+      man8/ntfsusermap.8.bz2 \
+      man8/ntfswipe.8.bz2 \
     ; do
       mkdir -p man/$(dirname $manpage)
       cp -a man.full/$manpage man/$manpage

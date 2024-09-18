@@ -20,6 +20,7 @@ dcron:ADD
 devs:ADD
 dialog:REC
 dosfstools:REC
+dracut:REC
 e2fsprogs:ADD
 ed:REC
 efibootmgr:REC
