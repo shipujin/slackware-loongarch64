@@ -1,3 +1,33 @@
+Thu Sep 19 19:16:36 UTC 2024
+ap/ghostscript-10.04.0-x86_64-1.txz:  Upgraded.
+  This release fixes security issues:
+  For more information, see:
+    https://www.cve.org/CVERecord?id=CVE-2024-46951
+    https://www.cve.org/CVERecord?id=CVE-2024-46952
+    https://www.cve.org/CVERecord?id=CVE-2024-46953
+    https://www.cve.org/CVERecord?id=CVE-2024-46954
+    https://www.cve.org/CVERecord?id=CVE-2024-46955
+    https://www.cve.org/CVERecord?id=CVE-2024-46956
+  (* Security fix *)
+ap/man-db-2.13.0-x86_64-2.txz:  Rebuilt.
+  /etc/cron.daily/man-db: add -c to the options since it's nearly two orders
+  of magnitude faster than it used to be, and that bypasses some assumptions
+  (possibly invalid) about what to skip when updating an existing database.
+  Thanks to B Watson and Didier Spaier.
+l/LibRaw-0.21.3-x86_64-1.txz:  Upgraded.
+l/gst-plugins-bad-free-1.24.8-x86_64-1.txz:  Upgraded.
+l/gst-plugins-base-1.24.8-x86_64-1.txz:  Upgraded.
+l/gst-plugins-good-1.24.8-x86_64-1.txz:  Upgraded.
+l/gst-plugins-libav-1.24.8-x86_64-1.txz:  Upgraded.
+l/gstreamer-1.24.8-x86_64-1.txz:  Upgraded.
+l/libxml2-2.13.4-x86_64-1.txz:  Upgraded.
+l/libzip-1.11.1-x86_64-1.txz:  Upgraded.
+l/protobuf-28.2-x86_64-1.txz:  Upgraded.
+xap/mozilla-thunderbird-128.2.2esr-x86_64-1.txz:  Upgraded.
+  This is a bugfix release.
+  For more information, see:
+    https://www.mozilla.org/en-US/thunderbird/128.2.2esr/releasenotes/
++--------------------------+
 Wed Sep 18 21:23:19 UTC 2024
 a/btrfs-progs-6.11-x86_64-1.txz:  Upgraded.
 a/dracut-103-x86_64-1.txz:  Added.

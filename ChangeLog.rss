@@ -11,9 +11,47 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Wed, 18 Sep 2024 21:23:19 GMT</pubDate>
-      <lastBuildDate>Wed, 18 Sep 2024 22:41:16 GMT</lastBuildDate>
+      <pubDate>Thu, 19 Sep 2024 19:16:36 GMT</pubDate>
+      <lastBuildDate>Thu, 19 Sep 2024 20:04:30 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Thu, 19 Sep 2024 19:16:36 GMT</title>
+         <pubDate>Thu, 19 Sep 2024 19:16:36 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240919191636</link>
+         <guid isPermaLink="false">20240919191636</guid>
+         <description>
+           <![CDATA[<pre>
+ap/ghostscript-10.04.0-x86_64-1.txz:  Upgraded.
+  This release fixes security issues:
+  For more information, see:
+    https://www.cve.org/CVERecord?id=CVE-2024-46951
+    https://www.cve.org/CVERecord?id=CVE-2024-46952
+    https://www.cve.org/CVERecord?id=CVE-2024-46953
+    https://www.cve.org/CVERecord?id=CVE-2024-46954
+    https://www.cve.org/CVERecord?id=CVE-2024-46955
+    https://www.cve.org/CVERecord?id=CVE-2024-46956
+  (* Security fix *)
+ap/man-db-2.13.0-x86_64-2.txz:  Rebuilt.
+  /etc/cron.daily/man-db: add -c to the options since it's nearly two orders
+  of magnitude faster than it used to be, and that bypasses some assumptions
+  (possibly invalid) about what to skip when updating an existing database.
+  Thanks to B Watson and Didier Spaier.
+l/LibRaw-0.21.3-x86_64-1.txz:  Upgraded.
+l/gst-plugins-bad-free-1.24.8-x86_64-1.txz:  Upgraded.
+l/gst-plugins-base-1.24.8-x86_64-1.txz:  Upgraded.
+l/gst-plugins-good-1.24.8-x86_64-1.txz:  Upgraded.
+l/gst-plugins-libav-1.24.8-x86_64-1.txz:  Upgraded.
+l/gstreamer-1.24.8-x86_64-1.txz:  Upgraded.
+l/libxml2-2.13.4-x86_64-1.txz:  Upgraded.
+l/libzip-1.11.1-x86_64-1.txz:  Upgraded.
+l/protobuf-28.2-x86_64-1.txz:  Upgraded.
+xap/mozilla-thunderbird-128.2.2esr-x86_64-1.txz:  Upgraded.
+  This is a bugfix release.
+  For more information, see:
+    https://www.mozilla.org/en-US/thunderbird/128.2.2esr/releasenotes/
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Wed, 18 Sep 2024 21:23:19 GMT</title>
          <pubDate>Wed, 18 Sep 2024 21:23:19 GMT</pubDate>
