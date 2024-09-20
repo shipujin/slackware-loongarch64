@@ -10,4 +10,5 @@ config() {
   fi
   # Otherwise, we leave the .new copy for the admin to consider...
 }
-config etc/ppp/pppoe-server-options.new
+
+config etc/dracut.conf.d/elogind.conf.new

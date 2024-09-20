@@ -380,10 +380,8 @@ gzip ./source/n/bsd-finger/bsd-finger-0.17-usagi-ipv6.patch
 gzip ./source/n/bsd-finger/bsd-finger-0.17-init-realname.patch
 gzip ./source/n/ppp/radius.msdict
 gzip ./source/n/ppp/pppsetup-1.98.pppoff.diff
-gzip ./source/n/ppp/ppp.slack.diff
 gzip ./source/n/ppp/pppsetup-1.98.slack.diff
 gzip ./source/n/ppp/pppsetup-1.98.moredevs.diff
-gzip ./source/n/ppp/ppp.CVE-2015-3310.diff
 gzip ./source/n/ppp/realms
 gzip ./source/n/ppp/doinst.sh
 gzip ./source/n/ppp/options.new
@@ -461,12 +459,7 @@ gzip ./source/n/NetworkManager/patches/dhcpcd.graceful.exit.patch
 gzip ./source/n/NetworkManager/doinst.sh
 gzip ./source/n/netwatch/netwatch.phonemyself.diff
 gzip ./source/n/netwatch/netwatch.makefile.diff
-gzip ./source/n/rp-pppoe/rp-pppoe-3.14-ip-allocation.patch
-gzip ./source/n/rp-pppoe/rp-pppoe-manpages.patch
-gzip ./source/n/rp-pppoe/rp-pppoe-3.12-doc.patch
-gzip ./source/n/rp-pppoe/rp-pppoe-3.12-plugin.patch
 gzip ./source/n/rp-pppoe/doinst.sh
-gzip ./source/n/rp-pppoe/rp-pppoe-3.12-pluginpath.patch
 gzip ./source/n/newspost/newspost.getline.diff
 gzip ./source/n/openvpn/doinst.sh
 gzip ./source/n/openldap/doinst.sh

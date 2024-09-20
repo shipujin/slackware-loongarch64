@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2008, 2009, 2010, 2012, 2015, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# Copyright 2008, 2009, 2010, 2012, 2015, 2018, 2024  Patrick J. Volkerding, Sebeka, MN, USA
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -29,7 +29,7 @@ BUILD=${BUILD:-1}
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
-    i?86) export ARCH=i586 ;;
+    i?86) export ARCH=i686 ;;
     arm*) export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
        *) export ARCH=$( uname -m ) ;;
@@ -46,12 +46,10 @@ fi
 
 NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
 
-if [ "$ARCH" = "i586" ]; then
-  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
-elif [ "$ARCH" = "s390" ]; then
-  SLKCFLAGS="-O2"
+if [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=pentium4 -mtune=generic"
 elif [ "$ARCH" = "x86_64" ]; then
-  SLKCFLAGS="-O2 -fPIC"
+  SLKCFLAGS="-O2 -march=x86-64 -mtune=generic -fPIC"
 else
   SLKCFLAGS="-O2"
 fi
@@ -75,28 +73,29 @@ find . \
   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \+
 
-zcat $CWD/rp-pppoe-3.14-ip-allocation.patch.gz | patch -p1 --verbose || exit 1
-zcat $CWD/rp-pppoe-3.12-plugin.patch.gz | patch -p1 --verbose || exit 1
-zcat $CWD/rp-pppoe-3.12-pluginpath.patch.gz | patch -p1 --verbose || exit 1
-zcat $CWD/rp-pppoe-manpages.patch.gz | patch -p1 --verbose || exit 1
-
 cd src
 
 CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
 ./configure \
-  --enable-plugin=/ppp-2.4.4 \
   --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --docdir=/usr/doc/$PKGNAM-$VERSION \
   --mandir=/usr/man \
+  --infodir=/usr/info \
+  --disable-static \
+  --enable-plugin \
   --build=$ARCH-slackware-linux || exit 1
-
 make $NUMJOBS || make || exit 1
-make install docdir=/usr/doc/rp-pppoe-$VERSION DESTDIR=$PKG install || exit 1
+make install docdir=/usr/doc/rp-pppoe-$VERSION DESTDIR=$PKG || exit 1
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" \
   | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
 
 ( cd $PKG/etc/ppp
-  for config in firewall-masq firewall-standalone pppoe-server-options pppoe.conf ; do
+  for config in pppoe-server-options ; do
     mv $config ${config}.new
   done
 )

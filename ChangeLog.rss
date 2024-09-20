@@ -11,9 +11,38 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Thu, 19 Sep 2024 19:16:36 GMT</pubDate>
-      <lastBuildDate>Thu, 19 Sep 2024 20:04:30 GMT</lastBuildDate>
+      <pubDate>Fri, 20 Sep 2024 19:25:40 GMT</pubDate>
+      <lastBuildDate>Fri, 20 Sep 2024 19:58:29 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Fri, 20 Sep 2024 19:25:40 GMT</title>
+         <pubDate>Fri, 20 Sep 2024 19:25:40 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240920192540</link>
+         <guid isPermaLink="false">20240920192540</guid>
+         <description>
+           <![CDATA[<pre>
+a/dracut-103-x86_64-2.txz:  Rebuilt.
+  Include /etc/dracut.conf.d/elogind.conf to handle uaccess rules correctly.
+  Thanks to LuckyCyborg.
+l/cairo-1.18.2-x86_64-2.txz:  Rebuilt.
+  [PATCH] cff: Don't fail if no local subs.
+  Fixes printing PDFs with CUPS. Thanks to pee_bee and reddog83.
+l/glib2-2.82.1-x86_64-1.txz:  Upgraded.
+l/pipewire-1.2.4-x86_64-1.txz:  Upgraded.
+n/NetworkManager-1.48.10-x86_64-2.txz:  Rebuilt.
+  Rebuilt to pick up the new plugin directory for ppp-2.5.1.
+n/bind-9.20.2-x86_64-1.txz:  Upgraded.
+n/openssh-9.9p1-x86_64-1.txz:  Upgraded.
+  Future deprecation notice: OpenSSH plans to remove support for the DSA
+  signature algorithm in early 2025. For now, this package retains DSA
+  support, but plan accordingly.
+n/ppp-2.5.1-x86_64-1.txz:  Upgraded.
+n/rp-pppoe-4.0-x86_64-1.txz:  Upgraded.
+  Upstream has removed "ancient crufty scripts," so see HOW-TO-CONNECT in the
+  documentation if you were using those to connect previously.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Thu, 19 Sep 2024 19:16:36 GMT</title>
          <pubDate>Thu, 19 Sep 2024 19:16:36 GMT</pubDate>
