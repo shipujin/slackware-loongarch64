@@ -940,7 +940,6 @@ gzip ./source/xap/blackbox/startblackbox
 gzip ./source/xap/blackbox/xinitrc.blackbox
 gzip ./source/xap/blackbox/doinst.sh
 gzip ./source/xap/geeqie/doinst.sh
-gzip ./source/xap/geeqie/fix-build-re-docs.diff
 gzip ./source/xap/audacious/doinst.sh
 gzip ./source/xap/xscreensaver/setuid.c
 gzip ./source/xap/xscreensaver/xscreensaver.electricsheep.diff

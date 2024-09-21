@@ -11,9 +11,30 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Fri, 20 Sep 2024 19:25:40 GMT</pubDate>
-      <lastBuildDate>Fri, 20 Sep 2024 19:58:29 GMT</lastBuildDate>
+      <pubDate>Sat, 21 Sep 2024 19:10:51 GMT</pubDate>
+      <lastBuildDate>Sat, 21 Sep 2024 19:29:06 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Sat, 21 Sep 2024 19:10:51 GMT</title>
+         <pubDate>Sat, 21 Sep 2024 19:10:51 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240921191051</link>
+         <guid isPermaLink="false">20240921191051</guid>
+         <description>
+           <![CDATA[<pre>
+d/meson-1.5.2-x86_64-1.txz:  Upgraded.
+l/python-sphinx-8.0.2-x86_64-2.txz:  Rebuilt.
+  Upgraded extension modules: sphinxcontrib_applehelp-2.0,
+  sphinxcontrib_devhelp-2.0.0, sphinxcontrib_htmlhelp-2.1.0,
+  sphinxcontrib_qthelp-2.0.0, sphinxcontrib_serializinghtml-2.0.0.
+  Thanks to USUARIONUEVO.
+xap/geeqie-2.5-x86_64-1.txz:  Upgraded.
+xap/mozilla-thunderbird-128.2.3esr-x86_64-1.txz:  Upgraded.
+  This is a bugfix release.
+  For more information, see:
+    https://www.mozilla.org/en-US/thunderbird/128.2.3esr/releasenotes/
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Fri, 20 Sep 2024 19:25:40 GMT</title>
          <pubDate>Fri, 20 Sep 2024 19:25:40 GMT</pubDate>
