@@ -1,3 +1,11 @@
+Mon Sep 23 20:01:35 UTC 2024
+d/parallel-20240922-noarch-1.txz:  Upgraded.
+l/libarchive-3.7.6-x86_64-1.txz:  Upgraded.
+  This release fixes a tar regression introduced in libarchive 3.7.5.
+xap/geeqie-2.5-x86_64-2.txz:  Rebuilt.
+  -Dgq_helpdir and -Dgq_htmldir should be relative to the prefix (/usr).
+  Thanks to mickski56.
++--------------------------+
 Sat Sep 21 19:10:51 UTC 2024
 d/meson-1.5.2-x86_64-1.txz:  Upgraded.
 l/python-sphinx-8.0.2-x86_64-2.txz:  Rebuilt.
