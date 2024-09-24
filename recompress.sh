@@ -304,7 +304,6 @@ gzip ./source/a/kbd/kbd-2.6.3-backspace-1.patch
 gzip ./source/a/usb_modeswitch/device_reference.txt
 gzip ./source/a/usb_modeswitch/doinst.sh
 gzip ./source/a/bash/bash_manpages.patch
-gzip ./source/a/bash/bash.gcc14.diff
 gzip ./source/a/bash/doinst.sh
 gzip ./source/a/dbus/doinst.sh
 gzip ./source/a/dbus/rc.messagebus

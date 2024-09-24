@@ -12,3 +12,4 @@ config() {
 }
 
 config etc/dracut.conf.d/elogind.conf.new
+config etc/dracut.conf.d/omit_systemd_modules.conf.new
