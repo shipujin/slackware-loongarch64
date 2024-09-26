@@ -30,7 +30,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=boost
 VERSION=${VERSION:-$(echo $PKGNAM_*.tar.?z | rev | cut -f 3- -d . | rev | cut -f 2- -d _)}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 
 PKG_VERSION=$(echo $VERSION | tr _ .)	# Leave this alone
 NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
@@ -84,6 +84,9 @@ find . \
  -exec chmod 755 {} \+ -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \+
+
+# Avoid hardcoded /tmp/package-boost/ paths in the cmake files:
+cat $CWD/boost-1.73.0-cmakedir.patch | patch -p1 --verbose || exit 1
 
 # Fix hardcorded python:
 zcat $CWD/boost.bootstrap.python3.diff.gz | patch -p1 --verbose || exit 1

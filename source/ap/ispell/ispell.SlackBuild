@@ -24,7 +24,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=ispell
 VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -79,6 +79,9 @@ sed -i -e "s#/usr#$PKG&#g" config.sh
 
 mkdir -p $PKG/usr/{bin,lib${LIBDIRSUFFIX},man}
 make install || exit 1
+
+# Get rid of /tmp/package-ispell path in munchlist:
+sed -i "s|/tmp/package-ispell||g" $PKG/usr/bin/munchlist
 
 ( cd $PKG/usr/lib${LIBDIRSUFFIX}/ispell
   ln -sf americanmed.hash american.hash
