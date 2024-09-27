@@ -11,9 +11,29 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Thu, 26 Sep 2024 18:28:55 GMT</pubDate>
-      <lastBuildDate>Thu, 26 Sep 2024 19:02:30 GMT</lastBuildDate>
+      <pubDate>Fri, 27 Sep 2024 21:10:23 GMT</pubDate>
+      <lastBuildDate>Fri, 27 Sep 2024 22:02:35 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Fri, 27 Sep 2024 21:10:23 GMT</title>
+         <pubDate>Fri, 27 Sep 2024 21:10:23 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20240927211023</link>
+         <guid isPermaLink="false">20240927211023</guid>
+         <description>
+           <![CDATA[<pre>
+a/pkgtools-15.1-noarch-11.txz:  Rebuilt.
+  makepkg: added options --remove-rpaths, --remove-tmp-rpaths.
+  Thanks to Petri Kaukasoina for code examples.
+ap/tmux-3.5-x86_64-1.txz:  Upgraded.
+d/cmake-3.30.4-x86_64-1.txz:  Upgraded.
+l/mozilla-nss-3.105-x86_64-1.txz:  Upgraded.
+l/pipewire-1.2.5-x86_64-1.txz:  Upgraded.
+l/sof-firmware-2024.09-noarch-1.txz:  Upgraded.
+xap/audacious-4.4.1-x86_64-2.txz:  Rebuilt.
+xap/audacious-plugins-4.4.1-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Thu, 26 Sep 2024 18:28:55 GMT</title>
          <pubDate>Thu, 26 Sep 2024 18:28:55 GMT</pubDate>

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright 1994, 1998, 2008  Patrick Volkerding, Moorhead, Minnesota USA 
 # Copyright 2003  Slackware Linux, Inc.  Concord, CA USA
-# Copyright 2009, 2015, 2017, 2018, 2019  Patrick J. Volkerding, Sebeka, MN, USA
+# Copyright 2009, 2015, 2017, 2018, 2019, 2024  Patrick J. Volkerding, Sebeka, MN, USA
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -20,6 +20,16 @@
 #  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Fri Sep 27 19:50:49 UTC 2024
+# Warn about the presence of rpaths in ELF objects so that the packager can
+# decide what to do about them, if anything. They could be removed by adding
+# something to the SlackBuild to do it, or with one of these new options:
+# --remove-rpaths (remove all rpaths from ELF objects. It's possible this could
+# break some things)
+# --remove-tmp-rpaths (remove rpaths from any ELF object containing an rpath
+# that references the /tmp directory. This is likely safe to do and prevents
+# evil object attacks in /tmp)
 #
 # Mon  2 Jul 15:32:14 UTC 2018
 # Sort file lists and support SOURCE_DATE_EPOCH, for reproducibility.
@@ -102,6 +112,9 @@ options:  -l, --linkadd y|n (moves symlinks into doinst.sh: recommended)
           --xattrs Support storing extended attributes in the package. The
                resulting package will not be compatible with pkgtools
                version < 15.0.
+          --remove-rpaths (remove all rpaths from ELF objects)
+          --remove-tmp-rpaths (remove rpaths from ELF objects if we find one
+               that contains '/tmp')
 
 If these options are not set, makepkg will prompt if appropriate.
 EOF
@@ -155,6 +168,12 @@ while [ 0 ]; do
     shift 1
   elif [ "$1" = "--xattrs" ]; then
     XATTRS="--xattrs"
+    shift 1 
+  elif [ "$1" = "--remove-tmp-rpaths" ]; then
+    REMOVE_TMP_RPATHS="true"
+    shift 1 
+  elif [ "$1" = "--remove-rpaths" ]; then
+    REMOVE_RPATHS="true"
     shift 1 
   elif [ "$1" = "-h" -o "$1" = "-H" -o "$1" = "--help" -o $# = 0 ]; then
     usage
@@ -398,6 +417,30 @@ if [ $OLDROOTPERMS -ne 755 ]; then
   echo "         temporarily changing to chmod 755"
   chmod 755 .
 fi
+
+# Detect/warn/remove rpaths from ELF objects:
+find . -type f | xargs file | grep ELF | cut -f 1 -d : | while read ELFOBJ ; do
+  if objdump -p "$ELFOBJ" 2>/dev/null | grep -q R.*PATH ; then
+    if [ "$REMOVE_RPATHS" = "true" ]; then
+      echo "Removing rpath from: $ELFOBJ"
+      patchelf --remove-rpath "$ELFOBJ"
+    elif [ "$REMOVE_TMP_RPATHS" = "true" ]; then
+      if objdump -p "$ELFOBJ" 2>/dev/null | grep -q R.*PATH.*/tmp ; then
+        echo "Removing /tmp rpath from: $ELFOBJ"
+        patchelf --remove-rpath "$ELFOBJ"
+      fi
+    else # just warn:
+      if objdump -p "$ELFOBJ" 2>/dev/null | grep -q R.*PATH.*/tmp ; then
+        echo "WARNING: */tmp* rpath found in $ELFOBJ: $(objdump -p "$ELFOBJ" 2>/dev/null | grep R.*PATH)"
+        # This is important, so give a better chance to notice this:
+        sleep 10
+      else
+        echo "WARNING: rpath found in $ELFOBJ: $(objdump -p "$ELFOBJ" 2>/dev/null | grep R.*PATH)"
+      fi
+    fi
+  fi
+done
+echo
 
 echo "Creating Slackware package:  ${TARGET_NAME}/${TAR_NAME}.${EXTENSION}"
 echo

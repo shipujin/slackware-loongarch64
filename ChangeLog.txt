@@ -1,3 +1,15 @@
+Fri Sep 27 21:10:23 UTC 2024
+a/pkgtools-15.1-noarch-11.txz:  Rebuilt.
+  makepkg: added options --remove-rpaths, --remove-tmp-rpaths.
+  Thanks to Petri Kaukasoina for code examples.
+ap/tmux-3.5-x86_64-1.txz:  Upgraded.
+d/cmake-3.30.4-x86_64-1.txz:  Upgraded.
+l/mozilla-nss-3.105-x86_64-1.txz:  Upgraded.
+l/pipewire-1.2.5-x86_64-1.txz:  Upgraded.
+l/sof-firmware-2024.09-noarch-1.txz:  Upgraded.
+xap/audacious-4.4.1-x86_64-2.txz:  Rebuilt.
+xap/audacious-plugins-4.4.1-x86_64-1.txz:  Upgraded.
++--------------------------+
 Thu Sep 26 18:28:55 UTC 2024
 ap/ispell-3.4.06-x86_64-3.txz:  Rebuilt.
   Get rid of hardcoded temporary path in munchlist.

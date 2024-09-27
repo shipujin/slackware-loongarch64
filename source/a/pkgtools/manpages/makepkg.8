@@ -30,6 +30,12 @@ makepkg \- make Slackware packages.
 [
 .B --xattrs
 ]
+[
+.B --remove-rpaths
+]
+[
+.B --remove-tmp-rpaths
+]
 .BI packagename
 .SH DESCRIPTION
 .B makepkg
@@ -80,6 +86,13 @@ with pkgtools version < 15.0.
 .B --xattrs
 Support storing extended attributes in the package. The resulting package will not be
 compatible with pkgtools version < 15.0.
+.TP
+.B --remove-rpaths
+Remove all rpaths from ELF objects. By default, makepkg will warn if any are found.
+.TP
+.B --remove-tmp-rpaths
+Remove all rpaths from ELF objects containing an rpath wih the /tmp directory in it.
+Such rpaths could be a security hole.
 .SH ENVIRONMENT
 .TP
 .B SOURCE_DATE_EPOCH
