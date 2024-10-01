@@ -32,7 +32,7 @@ else
   VERSION=$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
 fi
 
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -102,6 +102,7 @@ optflags=$OPTFLAGS \
   --enable-shared \
   --enable-pthread \
   --disable-install-capi \
+  --disable-rpath \
   --build=$ARCH-slackware-linux || exit 1
 
 make $NUMJOBS || make || exit 1

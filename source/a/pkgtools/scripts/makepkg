@@ -419,7 +419,7 @@ if [ $OLDROOTPERMS -ne 755 ]; then
 fi
 
 # Detect/warn/remove rpaths from ELF objects:
-find . -type f | xargs file | grep ELF | cut -f 1 -d : | while read ELFOBJ ; do
+for ELFOBJ in $(find . -type f | xargs file | grep ' ELF ' | cut -f 1 -d :) ; do
   if objdump -p "$ELFOBJ" 2>/dev/null | grep -q R.*PATH ; then
     if [ "$REMOVE_RPATHS" = "true" ]; then
       echo "Removing rpath from: $ELFOBJ"
@@ -432,8 +432,8 @@ find . -type f | xargs file | grep ELF | cut -f 1 -d : | while read ELFOBJ ; do
     else # just warn:
       if objdump -p "$ELFOBJ" 2>/dev/null | grep -q R.*PATH.*/tmp ; then
         echo "WARNING: */tmp* rpath found in $ELFOBJ: $(objdump -p "$ELFOBJ" 2>/dev/null | grep R.*PATH)"
-        # This is important, so give a better chance to notice this:
-        sleep 10
+        # This is important, so we'll notify again after the package is built:
+        NOTIFY_INSECURE_RPATH="  WARNING: */tmp* rpath found in $ELFOBJ: $(objdump -p "$ELFOBJ" 2>/dev/null | grep R.*PATH)"
       else
         echo "WARNING: rpath found in $ELFOBJ: $(objdump -p "$ELFOBJ" 2>/dev/null | grep R.*PATH)"
       fi
@@ -503,4 +503,8 @@ fi
 
 echo
 echo "Slackware package ${TARGET_NAME}/${TAR_NAME}.${EXTENSION} created."
+if [ ! -z "$NOTIFY_INSECURE_RPATH" ]; then
+  echo "WARNING: detected at least one insecure /tmp rpath:"
+  echo $NOTIFY_INSECURE_RPATH
+fi
 echo
