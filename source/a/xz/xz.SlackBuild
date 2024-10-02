@@ -29,7 +29,7 @@ BUILD=${BUILD:-1}
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
-    i?86) export ARCH=i586 ;;
+    i?86) export ARCH=i686 ;;
     arm*) export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
        *) export ARCH=$( uname -m ) ;;
@@ -45,26 +45,11 @@ if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
 fi
 
 case "$ARCH" in
-  i586)      SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  i686)      SLKCFLAGS="-O2 -march=pentium4 -mtune=generic"
              LIBDIRSUFFIX=""
              ;;
-  s390)      SLKCFLAGS="-O2"
-             LIBDIRSUFFIX=""
-             ;;
-  powerpc)   SLKCFLAGS="-O2"
-             LIBDIRSUFFIX=""
-             ;;
-  x86_64)    SLKCFLAGS="-O2 -fPIC"
+  x86_64)    SLKCFLAGS="-O2 -march=x86-64 -mtune=generic -fPIC"
              LIBDIRSUFFIX="64"
-             ;;
-  athlon-xp) SLKCFLAGS="-march=athlon-xp -O3 -pipe -fomit-frame-pointer"
-             LIBDIRSUFFIX=""
-             ;;
-  arm)       SLKCFLAGS="-O2 -march=armv4 -mtune=xscale"
-             LIBDIRSUFFIX=""
-             ;;
-  armel)     SLKCFLAGS="-O2 -march=armv4t"
-             LIBDIRSUFFIX=""
              ;;
   *)         SLKCFLAGS="-O2"
              LIBDIRSUFFIX=""
