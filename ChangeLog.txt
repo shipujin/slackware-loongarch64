@@ -1,3 +1,28 @@
+Fri Oct  4 23:37:01 UTC 2024
+a/bash-5.2.037-x86_64-2.txz:  Rebuilt.
+  Set a default BASH_LOADABLES_PATH pointing to the bash loadables directory.
+  Thanks to Lockywolf.
+a/haveged-1.9.19-x86_64-1.txz:  Upgraded.
+a/kernel-firmware-20241004_919f79f-noarch-1.txz:  Upgraded.
+a/kernel-generic-6.10.13-x86_64-1.txz:  Upgraded.
+a/mkinitrd-1.4.11-x86_64-37.txz:  Rebuilt.
+  Upgraded to busybox-1.37.0.
+d/kernel-headers-6.10.13-x86-1.txz:  Upgraded.
+k/kernel-source-6.10.13-noarch-1.txz:  Upgraded.
+kde/krita-5.2.6-x86_64-1.txz:  Upgraded.
+kde/kstars-3.7.3-x86_64-1.txz:  Upgraded.
+kde/pulseaudio-qt-1.6.0-x86_64-1.txz:  Upgraded.
+l/gtk4-4.16.3-x86_64-1.txz:  Upgraded.
+l/libproxy-0.5.9-x86_64-1.txz:  Upgraded.
+l/nodejs-20.18.0-x86_64-1.txz:  Upgraded.
+n/dhcpcd-10.1.0-x86_64-1.txz:  Upgraded.
+isolinux/initrd.img:  Rebuilt.
+kernels/*:  Upgraded.
+testing/packages/kernel-generic-6.11.2-x86_64-1.txz:  Upgraded.
+testing/packages/kernel-headers-6.11.2-x86-1.txz:  Upgraded.
+testing/packages/kernel-source-6.11.2-noarch-1.txz:  Upgraded.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
++--------------------------+
 Thu Oct  3 18:32:43 UTC 2024
 a/hwdata-0.388-noarch-1.txz:  Upgraded.
 a/lvm2-2.03.27-x86_64-1.txz:  Upgraded.
