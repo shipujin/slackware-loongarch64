@@ -1,33 +1,33 @@
-Fri Oct  4 23:41:41 UTC 2024
+Sat Oct  5 19:20:41 UTC 2024
 
 Here is the file list for this directory.  If you are using a 
 mirror site and find missing or extra files in the disk 
 subdirectories, please have the archive administrator refresh
 the mirror.
 
-drwxr-xr-x 12 root root      4096 2024-10-04 23:37 .
+drwxr-xr-x 12 root root      4096 2024-10-05 19:17 .
 -rw-r--r--  1 root root      5767 2022-02-02 22:44 ./ANNOUNCE.15.0
 -rw-r--r--  1 root root     16617 2022-02-02 23:27 ./CHANGES_AND_HINTS.TXT
--rw-r--r--  1 root root   1162504 2024-10-03 18:37 ./CHECKSUMS.md5
--rw-r--r--  1 root root       195 2024-10-03 18:37 ./CHECKSUMS.md5.asc
+-rw-r--r--  1 root root   1162500 2024-10-04 23:42 ./CHECKSUMS.md5
+-rw-r--r--  1 root root       195 2024-10-04 23:42 ./CHECKSUMS.md5.asc
 -rw-r--r--  1 root root     17976 1994-06-10 02:28 ./COPYING
 -rw-r--r--  1 root root     35147 2007-06-30 04:21 ./COPYING3
 -rw-r--r--  1 root root     19573 2016-06-23 20:08 ./COPYRIGHT.TXT
 -rw-r--r--  1 root root       616 2006-10-02 04:37 ./CRYPTO_NOTICE.TXT
--rw-r--r--  1 root root   1194952 2024-10-04 23:37 ./ChangeLog.txt
+-rw-r--r--  1 root root   1195337 2024-10-05 19:17 ./ChangeLog.txt
 drwxr-xr-x  3 root root      4096 2013-03-20 22:17 ./EFI
-drwxr-xr-x  2 root root      4096 2024-10-04 23:36 ./EFI/BOOT
+drwxr-xr-x  2 root root      4096 2024-10-05 19:16 ./EFI/BOOT
 -rw-r--r--  1 root root   1200128 2024-09-12 20:40 ./EFI/BOOT/bootx64.efi
 -rw-r--r--  2 root root  13496832 2024-10-04 19:29 ./EFI/BOOT/generic.s
 -rw-r--r--  1 root root        78 2013-09-23 20:35 ./EFI/BOOT/grub-embedded.cfg
 -rw-r--r--  1 root root       917 2024-09-12 20:08 ./EFI/BOOT/grub.cfg
--rw-r--r--  2 root root  97628676 2024-10-04 23:35 ./EFI/BOOT/initrd.img
+-rw-r--r--  2 root root  97624204 2024-10-05 19:16 ./EFI/BOOT/initrd.img
 -rwxr-xr-x  1 root root      2504 2019-07-05 18:54 ./EFI/BOOT/make-grub.sh
 -rw-r--r--  1 root root     10722 2013-09-21 19:02 ./EFI/BOOT/osdetect.cfg
 -rw-r--r--  1 root root      1273 2013-08-12 21:08 ./EFI/BOOT/tools.cfg
--rw-r--r--  1 root root   1521385 2024-10-03 18:37 ./FILELIST.TXT
+-rw-r--r--  1 root root   1521381 2024-10-04 23:41 ./FILELIST.TXT
 -rw-r--r--  1 root root      1572 2012-08-29 18:27 ./GPG-KEY
--rw-r--r--  1 root root    916006 2024-10-04 23:40 ./PACKAGES.TXT
+-rw-r--r--  1 root root    916006 2024-10-05 19:20 ./PACKAGES.TXT
 -rw-r--r--  1 root root      8034 2022-02-02 03:36 ./README.TXT
 -rw-r--r--  1 root root      3576 2024-10-04 23:24 ./README.initrd
 -rw-r--r--  1 root root     34114 2023-12-11 20:35 ./README_CRYPT.TXT
@@ -618,12 +618,12 @@ drwxr-xr-x  2 root root      4096 2024-09-02 19:58 ./extra/xv
 -rw-r--r--  1 root root       233 2024-09-02 18:18 ./extra/xv/xv-6.0.1-x86_64-1.txt
 -rw-r--r--  1 root root   1118652 2024-09-02 18:18 ./extra/xv/xv-6.0.1-x86_64-1.txz
 -rw-r--r--  1 root root       195 2024-09-02 18:18 ./extra/xv/xv-6.0.1-x86_64-1.txz.asc
-drwxr-xr-x  3 root root      4096 2024-10-04 23:36 ./isolinux
+drwxr-xr-x  3 root root      4096 2024-10-05 19:16 ./isolinux
 -rw-r--r--  1 root root      6185 2022-02-03 06:53 ./isolinux/README.TXT
 -rw-r--r--  1 root root       788 2007-03-17 19:50 ./isolinux/README_SPLIT.TXT
 -rw-r--r--  1 root root   1474560 2024-09-12 20:40 ./isolinux/efiboot.img
 -rw-r--r--  1 root root       583 2024-09-12 20:07 ./isolinux/f2.txt
--rw-r--r--  2 root root  97628676 2024-10-04 23:35 ./isolinux/initrd.img
+-rw-r--r--  2 root root  97624204 2024-10-05 19:16 ./isolinux/initrd.img
 -rw-r--r--  1 root root        50 2003-01-18 00:02 ./isolinux/iso.sort
 -rw-r--r--  1 root root     24576 2016-05-27 20:36 ./isolinux/isolinux.bin
 -rw-r--r--  1 root root       602 2024-09-12 20:05 ./isolinux/isolinux.cfg
@@ -662,11 +662,11 @@ drwxr-xr-x  2 root root      4096 2022-02-03 07:02 ./patches
 -rw-r--r--  1 root root       575 2022-02-03 07:02 ./patches/FILE_LIST
 -rw-r--r--  1 root root        14 2022-02-03 07:02 ./patches/MANIFEST.bz2
 -rw-r--r--  1 root root       224 2022-02-03 07:02 ./patches/PACKAGES.TXT
-drwxr-xr-x 17 root root      4096 2024-10-04 23:41 ./slackware64
--rw-r--r--  1 root root    357343 2024-10-04 23:41 ./slackware64/CHECKSUMS.md5
--rw-r--r--  1 root root       195 2024-10-04 23:41 ./slackware64/CHECKSUMS.md5.asc
--rw-r--r--  1 root root    442495 2024-10-04 23:40 ./slackware64/FILE_LIST
--rw-r--r--  1 root root   4771472 2024-10-04 23:40 ./slackware64/MANIFEST.bz2
+drwxr-xr-x 17 root root      4096 2024-10-05 19:20 ./slackware64
+-rw-r--r--  1 root root    357343 2024-10-05 19:20 ./slackware64/CHECKSUMS.md5
+-rw-r--r--  1 root root       195 2024-10-05 19:20 ./slackware64/CHECKSUMS.md5.asc
+-rw-r--r--  1 root root    442495 2024-10-05 19:19 ./slackware64/FILE_LIST
+-rw-r--r--  1 root root   4780764 2024-10-05 19:19 ./slackware64/MANIFEST.bz2
 lrwxrwxrwx  1 root root        15 2009-08-23 23:34 ./slackware64/PACKAGES.TXT -> ../PACKAGES.TXT
 drwxr-xr-x  2 root root     32768 2024-10-04 23:39 ./slackware64/a
 -rw-r--r--  1 root root       327 2022-02-15 18:16 ./slackware64/a/aaa_base-15.1-x86_64-2.txt
@@ -1055,7 +1055,7 @@ drwxr-xr-x  2 root root     32768 2024-10-04 23:39 ./slackware64/a
 -rw-r--r--  1 root root       540 2024-01-15 21:54 ./slackware64/a/zoo-2.10_28-x86_64-1.txt
 -rw-r--r--  1 root root     55448 2024-01-15 21:54 ./slackware64/a/zoo-2.10_28-x86_64-1.txz
 -rw-r--r--  1 root root       163 2024-01-15 21:54 ./slackware64/a/zoo-2.10_28-x86_64-1.txz.asc
-drwxr-xr-x  2 root root     20480 2024-10-01 18:13 ./slackware64/ap
+drwxr-xr-x  2 root root     20480 2024-10-05 19:19 ./slackware64/ap
 -rw-r--r--  1 root root       291 2024-03-14 19:01 ./slackware64/ap/a2ps-4.15.6-x86_64-1.txt
 -rw-r--r--  1 root root    675492 2024-03-14 19:01 ./slackware64/ap/a2ps-4.15.6-x86_64-1.txz
 -rw-r--r--  1 root root       195 2024-03-14 19:01 ./slackware64/ap/a2ps-4.15.6-x86_64-1.txz.asc
@@ -1295,9 +1295,9 @@ drwxr-xr-x  2 root root     20480 2024-10-01 18:13 ./slackware64/ap
 -rw-r--r--  1 root root       614 2024-09-07 22:48 ./slackware64/ap/texinfo-7.1.1-x86_64-1.txt
 -rw-r--r--  1 root root   1730644 2024-09-07 22:48 ./slackware64/ap/texinfo-7.1.1-x86_64-1.txz
 -rw-r--r--  1 root root       195 2024-09-07 22:48 ./slackware64/ap/texinfo-7.1.1-x86_64-1.txz.asc
--rw-r--r--  1 root root       368 2024-09-27 17:07 ./slackware64/ap/tmux-3.5-x86_64-1.txt
--rw-r--r--  1 root root    412872 2024-09-27 17:07 ./slackware64/ap/tmux-3.5-x86_64-1.txz
--rw-r--r--  1 root root       195 2024-09-27 17:07 ./slackware64/ap/tmux-3.5-x86_64-1.txz.asc
+-rw-r--r--  1 root root       368 2024-10-05 18:07 ./slackware64/ap/tmux-3.5a-x86_64-1.txt
+-rw-r--r--  1 root root    413000 2024-10-05 18:07 ./slackware64/ap/tmux-3.5a-x86_64-1.txz
+-rw-r--r--  1 root root       195 2024-10-05 18:07 ./slackware64/ap/tmux-3.5a-x86_64-1.txz.asc
 -rw-r--r--  1 root root       543 2024-03-30 19:01 ./slackware64/ap/undervolt-0.4.0-x86_64-1.txt
 -rw-r--r--  1 root root     18824 2024-03-30 19:01 ./slackware64/ap/undervolt-0.4.0-x86_64-1.txz
 -rw-r--r--  1 root root       195 2024-03-30 19:01 ./slackware64/ap/undervolt-0.4.0-x86_64-1.txz.asc
@@ -1325,7 +1325,7 @@ drwxr-xr-x  2 root root     20480 2024-10-01 18:13 ./slackware64/ap
 -rw-r--r--  1 root root       506 2022-05-15 17:09 ./slackware64/ap/zsh-5.9-x86_64-1.txt
 -rw-r--r--  1 root root   3156392 2022-05-15 17:09 ./slackware64/ap/zsh-5.9-x86_64-1.txz
 -rw-r--r--  1 root root       163 2022-05-15 17:09 ./slackware64/ap/zsh-5.9-x86_64-1.txz.asc
-drwxr-xr-x  2 root root     20480 2024-10-04 23:40 ./slackware64/d
+drwxr-xr-x  2 root root     20480 2024-10-05 19:19 ./slackware64/d
 -rw-r--r--  1 root root       360 2024-08-05 18:02 ./slackware64/d/Cython-3.0.11-x86_64-1.txt
 -rw-r--r--  1 root root   4374784 2024-08-05 18:02 ./slackware64/d/Cython-3.0.11-x86_64-1.txz
 -rw-r--r--  1 root root       195 2024-08-05 18:02 ./slackware64/d/Cython-3.0.11-x86_64-1.txz.asc
@@ -1565,9 +1565,9 @@ drwxr-xr-x  2 root root     20480 2024-10-04 23:40 ./slackware64/d
 -rw-r--r--  1 root root   2790884 2024-02-26 19:46 ./slackware64/d/swig-4.2.1-x86_64-1.txz
 -rw-r--r--  1 root root       163 2024-02-26 19:46 ./slackware64/d/swig-4.2.1-x86_64-1.txz.asc
 -rw-r--r--  1 root root       985 2024-08-04 15:04 ./slackware64/d/tagfile
--rw-r--r--  1 root root       424 2024-10-03 18:16 ./slackware64/d/tree-sitter-0.23.2-x86_64-1.txt
--rw-r--r--  1 root root   3667316 2024-10-03 18:16 ./slackware64/d/tree-sitter-0.23.2-x86_64-1.txz
--rw-r--r--  1 root root       195 2024-10-03 18:16 ./slackware64/d/tree-sitter-0.23.2-x86_64-1.txz.asc
+-rw-r--r--  1 root root       424 2024-10-05 18:10 ./slackware64/d/tree-sitter-0.24.1-x86_64-1.txt
+-rw-r--r--  1 root root   3832652 2024-10-05 18:10 ./slackware64/d/tree-sitter-0.24.1-x86_64-1.txz
+-rw-r--r--  1 root root       195 2024-10-05 18:10 ./slackware64/d/tree-sitter-0.24.1-x86_64-1.txz.asc
 -rw-r--r--  1 root root       394 2024-04-19 17:07 ./slackware64/d/vala-0.56.17-x86_64-1.txt
 -rw-r--r--  1 root root   2304644 2024-04-19 17:07 ./slackware64/d/vala-0.56.17-x86_64-1.txz
 -rw-r--r--  1 root root       195 2024-04-19 17:07 ./slackware64/d/vala-0.56.17-x86_64-1.txz.asc
@@ -1610,7 +1610,7 @@ drwxr-xr-x  2 root root      4096 2024-10-04 23:39 ./slackware64/k
 -rw-r--r--  1 root root      1171 2024-10-04 23:24 ./slackware64/k/maketag
 -rw-r--r--  1 root root      1171 2024-10-04 23:24 ./slackware64/k/maketag.ez
 -rw-r--r--  1 root root        18 2024-10-04 23:24 ./slackware64/k/tagfile
-drwxr-xr-x  2 root root     86016 2024-10-04 23:40 ./slackware64/kde
+drwxr-xr-x  2 root root     86016 2024-10-05 19:19 ./slackware64/kde
 -rw-r--r--  1 root root       382 2024-02-15 20:27 ./slackware64/kde/akonadi-23.08.5-x86_64-1.txt
 -rw-r--r--  1 root root   2559504 2024-02-15 20:27 ./slackware64/kde/akonadi-23.08.5-x86_64-1.txz
 -rw-r--r--  1 root root       163 2024-02-15 20:27 ./slackware64/kde/akonadi-23.08.5-x86_64-1.txz.asc
@@ -2707,9 +2707,9 @@ drwxr-xr-x  2 root root     86016 2024-10-04 23:40 ./slackware64/kde
 -rw-r--r--  1 root root       387 2024-06-24 17:36 ./slackware64/kde/qca-2.3.9-x86_64-1.txt
 -rw-r--r--  1 root root    739428 2024-06-24 17:36 ./slackware64/kde/qca-2.3.9-x86_64-1.txz
 -rw-r--r--  1 root root       195 2024-06-24 17:36 ./slackware64/kde/qca-2.3.9-x86_64-1.txz.asc
--rw-r--r--  1 root root       229 2023-12-07 19:10 ./slackware64/kde/qcoro-0.10.0-x86_64-1.txt
--rw-r--r--  1 root root    135436 2023-12-07 19:10 ./slackware64/kde/qcoro-0.10.0-x86_64-1.txz
--rw-r--r--  1 root root       163 2023-12-07 19:10 ./slackware64/kde/qcoro-0.10.0-x86_64-1.txz.asc
+-rw-r--r--  1 root root       229 2024-10-05 18:05 ./slackware64/kde/qcoro-0.11.0-x86_64-1.txt
+-rw-r--r--  1 root root    154524 2024-10-05 18:05 ./slackware64/kde/qcoro-0.11.0-x86_64-1.txz
+-rw-r--r--  1 root root       195 2024-10-05 18:05 ./slackware64/kde/qcoro-0.11.0-x86_64-1.txz.asc
 -rw-r--r--  1 root root       388 2024-03-06 20:52 ./slackware64/kde/qqc2-breeze-style-5.27.11-x86_64-1.txt
 -rw-r--r-- 1 root root     90416 2024-03-06 20:52 ./slackware64/kde/qqc2-breeze-style-5.27.11-x86_64-1.txz
 -rw-r--r-- 1 root root       195 2024-03-06 20:52 ./slackware64/kde/qqc2-breeze-style-5.27.11-x86_64-1.txz.asc
@@ -2783,7 +2783,7 @@ drwxr-xr-x  2 root root     86016 2024-10-04 23:40 ./slackware64/kde
 -rw-r--r-- 1 root root       517 2024-02-15 21:47 ./slackware64/kde/zanshin-23.08.5-x86_64-1.txt
 -rw-r--r-- 1 root root    686104 2024-02-15 21:47 ./slackware64/kde/zanshin-23.08.5-x86_64-1.txz
 -rw-r--r-- 1 root root       163 2024-02-15 21:47 ./slackware64/kde/zanshin-23.08.5-x86_64-1.txz.asc
-drwxr-xr-x 2 root root    102400 2024-10-04 23:40 ./slackware64/l
+drwxr-xr-x 2 root root    102400 2024-10-05 19:19 ./slackware64/l
 -rw-r--r-- 1 root root       329 2022-03-06 20:00 ./slackware64/l/GConf-3.2.6-x86_64-8.txt
 -rw-r--r-- 1 root root    928144 2022-03-06 20:00 ./slackware64/l/GConf-3.2.6-x86_64-8.txz
 -rw-r--r-- 1 root root       163 2022-03-06 20:00 ./slackware64/l/GConf-3.2.6-x86_64-8.txz.asc
@@ -3608,9 +3608,9 @@ drwxr-xr-x 2 root root    102400 2024-10-04 23:40 ./slackware64/l
 -rw-r--r-- 1 root root       474 2021-02-13 07:18 ./slackware64/l/libwnck-2.31.0-x86_64-5.txt
 -rw-r--r-- 1 root root    384452 2021-02-13 07:18 ./slackware64/l/libwnck-2.31.0-x86_64-5.txz
 -rw-r--r-- 1 root root       163 2021-02-13 07:18 ./slackware64/l/libwnck-2.31.0-x86_64-5.txz.asc
--rw-r--r-- 1 root root       266 2024-02-19 19:06 ./slackware64/l/libwnck3-43.0-x86_64-2.txt
--rw-r--r-- 1 root root    408760 2024-02-19 19:06 ./slackware64/l/libwnck3-43.0-x86_64-2.txz
--rw-r--r-- 1 root root       163 2024-02-19 19:06 ./slackware64/l/libwnck3-43.0-x86_64-2.txz.asc
+-rw-r--r-- 1 root root       266 2024-10-05 17:48 ./slackware64/l/libwnck3-43.1-x86_64-1.txt
+-rw-r--r-- 1 root root    410956 2024-10-05 17:48 ./slackware64/l/libwnck3-43.1-x86_64-1.txz
+-rw-r--r-- 1 root root       195 2024-10-05 17:48 ./slackware64/l/libwnck3-43.1-x86_64-1.txz.asc
 -rw-r--r-- 1 root root       375 2021-02-13 07:18 ./slackware64/l/libwpd-0.10.3-x86_64-3.txt
 -rw-r--r-- 1 root root    189228 2021-02-13 07:18 ./slackware64/l/libwpd-0.10.3-x86_64-3.txz
 -rw-r--r-- 1 root root       163 2021-02-13 07:18 ./slackware64/l/libwpd-0.10.3-x86_64-3.txz.asc
@@ -4121,7 +4121,7 @@ drwxr-xr-x 2 root root    102400 2024-10-04 23:40 ./slackware64/l
 -rw-r--r-- 1 root root       403 2023-12-11 22:02 ./slackware64/l/zxing-cpp-2.2.1-x86_64-1.txt
 -rw-r--r-- 1 root root    773596 2023-12-11 22:02 ./slackware64/l/zxing-cpp-2.2.1-x86_64-1.txz
 -rw-r--r-- 1 root root       163 2023-12-11 22:02 ./slackware64/l/zxing-cpp-2.2.1-x86_64-1.txz.asc
-drwxr-xr-x 2 root root     36864 2024-10-04 23:40 ./slackware64/n
+drwxr-xr-x 2 root root     36864 2024-10-05 19:19 ./slackware64/n
 -rw-r--r-- 1 root root       357 2024-08-21 17:23 ./slackware64/n/ModemManager-1.22.0-x86_64-1.txt
 -rw-r--r-- 1 root root   1520380 2024-08-21 17:23 ./slackware64/n/ModemManager-1.22.0-x86_64-1.txz
 -rw-r--r-- 1 root root       195 2024-08-21 17:23 ./slackware64/n/ModemManager-1.22.0-x86_64-1.txz.asc
@@ -4369,9 +4369,9 @@ drwxr-xr-x 2 root root     36864 2024-10-04 23:40 ./slackware64/n
 -rw-r--r-- 1 root root       513 2021-02-13 12:14 ./slackware64/n/net-tools-20181103_0eebece-x86_64-3.txt
 -rw-r--r-- 1 root root    130856 2021-02-13 12:14 ./slackware64/n/net-tools-20181103_0eebece-x86_64-3.txz
 -rw-r--r-- 1 root root       163 2021-02-13 12:14 ./slackware64/n/net-tools-20181103_0eebece-x86_64-3.txz.asc
--rw-r--r-- 1 root root       580 2024-09-24 18:01 ./slackware64/n/netatalk-3.2.10-x86_64-1.txt
--rw-r--r-- 1 root root    782136 2024-09-24 18:01 ./slackware64/n/netatalk-3.2.10-x86_64-1.txz
--rw-r--r-- 1 root root       195 2024-09-24 18:01 ./slackware64/n/netatalk-3.2.10-x86_64-1.txz.asc
+-rw-r--r-- 1 root root       580 2024-10-05 17:57 ./slackware64/n/netatalk-4.0.0-x86_64-1.txt
+-rw-r--r-- 1 root root    608676 2024-10-05 17:57 ./slackware64/n/netatalk-4.0.0-x86_64-1.txz
+-rw-r--r-- 1 root root       195 2024-10-05 17:57 ./slackware64/n/netatalk-4.0.0-x86_64-1.txz.asc
 -rw-r--r-- 1 root root       646 2021-02-13 12:15 ./slackware64/n/netdate-bsd4-x86_64-4.txt
 -rw-r--r-- 1 root root      9020 2021-02-13 12:15 ./slackware64/n/netdate-bsd4-x86_64-4.txz
 -rw-r--r-- 1 root root       163 2021-02-13 12:15 ./slackware64/n/netdate-bsd4-x86_64-4.txz.asc
@@ -4432,9 +4432,9 @@ drwxr-xr-x 2 root root     36864 2024-10-04 23:40 ./slackware64/n
 -rw-r--r-- 1 root root       297 2024-08-27 17:16 ./slackware64/n/nghttp2-1.63.0-x86_64-1.txt
 -rw-r--r-- 1 root root    117276 2024-08-27 17:16 ./slackware64/n/nghttp2-1.63.0-x86_64-1.txz
 -rw-r--r-- 1 root root       195 2024-08-27 17:16 ./slackware64/n/nghttp2-1.63.0-x86_64-1.txz.asc
--rw-r--r-- 1 root root       280 2024-09-11 19:22 ./slackware64/n/nghttp3-1.5.0-x86_64-2.txt
--rw-r--r-- 1 root root     77260 2024-09-11 19:22 ./slackware64/n/nghttp3-1.5.0-x86_64-2.txz
--rw-r--r-- 1 root root       195 2024-09-11 19:22 ./slackware64/n/nghttp3-1.5.0-x86_64-2.txz.asc
+-rw-r--r-- 1 root root       280 2024-10-05 17:59 ./slackware64/n/nghttp3-1.6.0-x86_64-1.txt
+-rw-r--r-- 1 root root     77556 2024-10-05 17:59 ./slackware64/n/nghttp3-1.6.0-x86_64-1.txz
+-rw-r--r-- 1 root root       195 2024-10-05 17:59 ./slackware64/n/nghttp3-1.6.0-x86_64-1.txz.asc
 -rw-r--r-- 1 root root       649 2024-07-26 18:09 ./slackware64/n/nmap-7.95-x86_64-2.txt
 -rw-r--r-- 1 root root   6567236 2024-07-26 18:09 ./slackware64/n/nmap-7.95-x86_64-2.txz
 -rw-r--r-- 1 root root       195 2024-07-26 18:09 ./slackware64/n/nmap-7.95-x86_64-2.txz.asc
@@ -5807,11 +5807,11 @@ drwxr-xr-x   2 root root      4096 2024-05-05 18:37 ./slackware64/y
 -rw-r--r--   1 root root   1488844 2024-05-05 17:22 ./slackware64/y/nethack-3.6.7-x86_64-2.txz
 -rw-r--r--   1 root root       195 2024-05-05 17:22 ./slackware64/y/nethack-3.6.7-x86_64-2.txz.asc
 -rw-r--r--   1 root root        26 2020-12-30 21:55 ./slackware64/y/tagfile
-drwxr-xr-x  18 root root      4096 2024-10-04 23:41 ./source
--rw-r--r--   1 root root    626471 2024-10-04 23:41 ./source/CHECKSUMS.md5
--rw-r--r--   1 root root       195 2024-10-04 23:41 ./source/CHECKSUMS.md5.asc
--rw-r--r--   1 root root    873027 2024-10-04 23:41 ./source/FILE_LIST
--rw-r--r--   1 root root  30550330 2024-10-04 23:41 ./source/MANIFEST.bz2
+drwxr-xr-x  18 root root      4096 2024-10-05 19:20 ./source
+-rw-r--r--   1 root root    626409 2024-10-05 19:20 ./source/CHECKSUMS.md5
+-rw-r--r--   1 root root       195 2024-10-05 19:20 ./source/CHECKSUMS.md5.asc
+-rw-r--r--   1 root root    872948 2024-10-05 19:20 ./source/FILE_LIST
+-rw-r--r--   1 root root  30555162 2024-10-05 19:20 ./source/MANIFEST.bz2
 -rw-r--r--   1 root root       828 2022-02-02 04:43 ./source/README.TXT
 drwxr-xr-x 125 root root      4096 2024-10-04 19:01 ./source/a
 -rw-r--r--   1 root root       339 2023-09-28 19:06 ./source/a/FTBFSlog
@@ -7553,10 +7553,10 @@ drwxr-xr-x   2 root root      4096 2024-09-07 22:48 ./source/ap/texinfo
 -rwxr-xr-x   1 root root      4825 2024-09-07 22:48 ./source/ap/texinfo/texinfo.SlackBuild
 -rw-r--r--   1 root root       571 2019-09-24 20:23 ./source/ap/texinfo/update-info-dir.8.gz
 -rw-r--r--   1 root root       859 2019-09-24 20:26 ./source/ap/texinfo/update-info-dir.gz
-drwxr-xr-x   2 root root      4096 2024-09-27 17:06 ./source/ap/tmux
+drwxr-xr-x   2 root root      4096 2024-10-05 18:06 ./source/ap/tmux
 -rw-r--r--   1 root root       270 2017-05-24 03:36 ./source/ap/tmux/doinst.sh.gz
 -rw-r--r--   1 root root       820 2019-11-27 18:16 ./source/ap/tmux/slack-desc
--rw-r--r--   1 root root    854016 2024-09-27 07:56 ./source/ap/tmux/tmux-3.5.tar.lz
+-rw-r--r--   1 root root    854297 2024-10-05 06:01 ./source/ap/tmux/tmux-3.5a.tar.lz
 -rwxr-xr-x   1 root root      5003 2024-09-27 17:07 ./source/ap/tmux/tmux.SlackBuild
 -rw-r--r--   1 root root       203 2017-05-24 03:38 ./source/ap/tmux/tmux.conf.gz
 -rw-r--r--   1 root root        29 2020-10-30 19:31 ./source/ap/tmux/tmux.url
@@ -8059,9 +8059,9 @@ drwxr-xr-x   2 root root      4096 2024-02-26 19:45 ./source/d/swig
 -rw-r--r--   1 root root   6074038 2024-02-24 08:34 ./source/d/swig/swig-4.2.1.tar.lz
 -rwxr-xr-x   1 root root      4010 2024-01-02 19:58 ./source/d/swig/swig.SlackBuild
 -rw-r--r--   1 root root        50 2024-01-02 19:57 ./source/d/swig/swig.url
-drwxr-xr-x   2 root root      4096 2024-10-03 18:13 ./source/d/tree-sitter
+drwxr-xr-x   2 root root      4096 2024-10-05 18:08 ./source/d/tree-sitter
 -rw-r--r--   1 root root       883 2023-07-30 19:26 ./source/d/tree-sitter/slack-desc
--rw-r--r--   1 root root    617906 2024-10-01 16:34 ./source/d/tree-sitter/tree-sitter-0.23.2.tar.lz
+-rw-r--r--   1 root root    641082 2024-10-04 04:47 ./source/d/tree-sitter/tree-sitter-0.24.1.tar.lz
 -rwxr-xr-x   1 root root      4584 2024-10-03 18:13 ./source/d/tree-sitter/tree-sitter.SlackBuild
 -rw-r--r--   1 root root        43 2023-07-30 19:23 ./source/d/tree-sitter/tree-sitter.url
 drwxr-xr-x   2 root root      4096 2024-04-19 17:06 ./source/d/vala
@@ -8101,7 +8101,7 @@ drwxr-xr-x   2 root root      4096 2018-02-27 06:13 ./source/f
 -rw-r--r--   1 root root       960 2018-02-27 06:13 ./source/f/slack-desc.linux-faqs
 -rw-r--r--   1 root root       801 2018-02-27 06:13 ./source/f/slack-desc.linux-howtos
 drwxr-xr-x   3 root root      4096 2024-09-18 18:36 ./source/installer
--rw-r--r--   1 root root     52169 2024-10-04 19:05 ./source/installer/ChangeLog.txt
+-rw-r--r--   1 root root     52598 2024-10-05 19:04 ./source/installer/ChangeLog.txt
 -rw-r--r--   1 root root      6849 2018-03-11 00:53 ./source/installer/README
 -rwxr-xr-x   1 root root     82791 2024-09-18 20:12 ./source/installer/build_installer.sh
 -rwxr-xr-x   1 root root      2252 2023-12-11 20:39 ./source/installer/installer.SlackBuild
@@ -8133,8 +8133,8 @@ drwxr-xr-x   3 root root      4096 2013-03-11 21:15 ./source/installer/sources/e
 drwxr-xr-x   3 root root      4096 2013-03-11 21:15 ./source/installer/sources/efi.x86_64/EFI
 drwxr-xr-x   2 root root      4096 2024-09-10 19:21 ./source/installer/sources/efi.x86_64/EFI/BOOT
 -rw-r--r--   1 root root       893 2024-09-12 20:19 ./source/installer/sources/efi.x86_64/EFI/BOOT/grub.cfg
-drwxr-xr-x   2 root root      4096 2024-09-18 18:31 ./source/installer/sources/initrd
--rw-r--r--   1 root root    112874 2024-09-18 18:31 ./source/installer/sources/initrd/skeleton_initrd.tar.gz
+drwxr-xr-x   2 root root      4096 2024-10-05 19:01 ./source/installer/sources/initrd
+-rw-r--r--   1 root root    112879 2024-10-05 19:01 ./source/installer/sources/initrd/skeleton_initrd.tar.gz
 drwxr-xr-x   2 root root      4096 2024-09-05 16:54 ./source/installer/sources/nano
 -rw-r--r--   1 root root   1672076 2024-09-05 09:42 ./source/installer/sources/nano/nano-8.2.tar.xz
 -rw-r--r--   1 root root       833 2024-09-05 09:42 ./source/installer/sources/nano/nano-8.2.tar.xz.sig
@@ -10088,9 +10088,9 @@ drwxr-xr-x   2 root root      4096 2024-06-24 17:32 ./source/kde/qca
 -rwxr-xr-x   1 root root      4039 2024-06-24 17:35 ./source/kde/qca/qca.SlackBuild
 -rw-r--r--   1 root root        37 2020-08-01 07:36 ./source/kde/qca/qca.url
 -rw-r--r--   1 root root       841 2020-12-07 21:21 ./source/kde/qca/slack-desc
-drwxr-xr-x   2 root root      4096 2023-12-07 19:09 ./source/kde/qcoro
--rw-r--r--   1 root root    117837 2023-12-05 20:24 ./source/kde/qcoro/qcoro-0.10.0.tar.lz
--rwxr-xr-x   1 root root      3899 2024-03-14 18:32 ./source/kde/qcoro/qcoro.SlackBuild
+drwxr-xr-x   2 root root      4096 2024-10-05 18:05 ./source/kde/qcoro
+-rw-r--r--   1 root root    123876 2024-10-04 08:22 ./source/kde/qcoro/qcoro-0.11.0.tar.lz
+-rwxr-xr-x   1 root root      3685 2024-10-05 18:05 ./source/kde/qcoro/qcoro.SlackBuild
 -rw-r--r--   1 root root        35 2023-04-20 23:07 ./source/kde/qcoro/qcoro.url
 -rw-r--r--   1 root root       682 2023-04-20 23:09 ./source/kde/qcoro/slack-desc
 drwxr-xr-x   2 root root      4096 2024-07-08 17:41 ./source/kde/stellarsolver
@@ -11572,10 +11572,9 @@ drwxr-xr-x   2 root root      4096 2021-02-13 05:32 ./source/l/libwnck
 -rw-r--r--   1 root root    630792 2012-03-05 09:36 ./source/l/libwnck/libwnck-2.31.0.tar.xz
 -rwxr-xr-x   1 root root      4024 2021-02-13 05:32 ./source/l/libwnck/libwnck.SlackBuild
 -rw-r--r--   1 root root       929 2018-02-27 06:12 ./source/l/libwnck/slack-desc
-drwxr-xr-x   2 root root      4096 2024-02-19 19:06 ./source/l/libwnck3
--rw-r--r--   1 root root       877 2024-02-19 19:05 ./source/l/libwnck3/00000000.patch
--rw-r--r--   1 root root    455464 2022-09-16 13:48 ./source/l/libwnck3/libwnck-43.0.tar.xz
--rwxr-xr-x   1 root root      4653 2024-02-19 19:06 ./source/l/libwnck3/libwnck3.SlackBuild
+drwxr-xr-x   2 root root      4096 2024-10-05 17:47 ./source/l/libwnck3
+-rw-r--r--   1 root root    456492 2024-10-05 11:13 ./source/l/libwnck3/libwnck-43.1.tar.xz
+-rwxr-xr-x   1 root root      4547 2024-10-05 17:47 ./source/l/libwnck3/libwnck3.SlackBuild
 -rw-r--r--   1 root root        49 2019-05-19 02:45 ./source/l/libwnck3/libwnck3.url
 -rw-r--r--   1 root root       755 2020-11-25 21:08 ./source/l/libwnck3/slack-desc
 drwxr-xr-x   2 root root      4096 2021-08-06 05:06 ./source/l/libwpd
@@ -12597,7 +12596,7 @@ drwxr-xr-x   2 root root      4096 2023-12-11 22:02 ./source/l/zxing-cpp
 -rwxr-xr-x   1 root root      3872 2023-04-20 20:52 ./source/l/zxing-cpp/zxing-cpp.SlackBuild
 -rw-r--r--   1 root root        39 2023-04-20 20:51 ./source/l/zxing-cpp/zxing-cpp.url
 -rwxr-xr-x   1 root root     14793 2022-06-07 03:16 ./source/make_world.sh
-drwxr-xr-x 162 root root      4096 2024-09-28 18:21 ./source/n
+drwxr-xr-x 162 root root      4096 2024-10-05 17:58 ./source/n
 -rw-r--r--   1 root root       832 2024-05-20 18:05 ./source/n/FTBFSlog
 drwxr-xr-x   2 root root      4096 2024-08-21 17:03 ./source/n/ModemManager
 -rw-r--r--   1 root root   1253085 2023-10-11 12:32 ./source/n/ModemManager/ModemManager-1.22.0.tar.lz
@@ -13138,10 +13137,10 @@ drwxr-xr-x   2 root root      4096 2021-02-13 05:32 ./source/n/net-tools
 -rwxr-xr-x   1 root root      4292 2021-02-13 05:32 ./source/n/net-tools/net-tools.SlackBuild
 -rw-r--r--   1 root root       659 2017-11-12 19:13 ./source/n/net-tools/net-tools.config.h.gz
 -rw-r--r--   1 root root       970 2018-02-27 06:13 ./source/n/net-tools/slack-desc
-drwxr-xr-x   2 root root      4096 2024-09-24 18:01 ./source/n/netatalk
+drwxr-xr-x   2 root root      4096 2024-10-05 17:50 ./source/n/netatalk
 -rw-r--r--   1 root root       377 2020-02-07 01:00 ./source/n/netatalk/doinst.sh.gz
--rw-r--r--   1 root root   1961828 2024-09-24 10:01 ./source/n/netatalk/netatalk-3.2.10.tar.xz
--rwxr-xr-x   1 root root      4917 2024-08-20 17:08 ./source/n/netatalk/netatalk.SlackBuild
+-rw-r--r--   1 root root    793932 2024-09-29 12:44 ./source/n/netatalk/netatalk-4.0.0.tar.xz
+-rwxr-xr-x   1 root root      4864 2024-10-05 17:57 ./source/n/netatalk/netatalk.SlackBuild
 -rw-r--r--   1 root root        63 2023-01-13 19:51 ./source/n/netatalk/netatalk.url
 -rw-r--r--   1 root root      1009 2018-09-05 21:12 ./source/n/netatalk/rc.atalk.new
 -rw-r--r--   1 root root      1036 2018-02-27 06:13 ./source/n/netatalk/slack-desc
@@ -13326,11 +13325,11 @@ drwxr-xr-x   2 root root      4096 2024-08-27 17:15 ./source/n/nghttp2
 -rwxr-xr-x   1 root root      4392 2024-08-27 17:15 ./source/n/nghttp2/nghttp2.SlackBuild
 -rw-r--r--   1 root root       118 2024-08-27 17:15 ./source/n/nghttp2/nghttp2.url
 -rw-r--r--   1 root root       784 2018-03-26 18:26 ./source/n/nghttp2/slack-desc
-drwxr-xr-x   2 root root      4096 2024-08-24 16:58 ./source/n/nghttp3
--rw-r--r--   1 root root    391668 2024-08-24 05:07 ./source/n/nghttp3/nghttp3-1.5.0.tar.xz
--rw-r--r--   1 root root       833 2024-08-24 05:07 ./source/n/nghttp3/nghttp3-1.5.0.tar.xz.asc
--rwxr-xr-x   1 root root      4172 2024-09-11 19:21 ./source/n/nghttp3/nghttp3.SlackBuild
--rw-r--r--   1 root root       114 2024-08-24 16:57 ./source/n/nghttp3/nghttp3.url
+drwxr-xr-x   2 root root      4096 2024-10-05 17:59 ./source/n/nghttp3
+-rw-r--r--   1 root root    392480 2024-10-05 08:34 ./source/n/nghttp3/nghttp3-1.6.0.tar.xz
+-rw-r--r--   1 root root       833 2024-10-05 08:34 ./source/n/nghttp3/nghttp3-1.6.0.tar.xz.asc
+-rwxr-xr-x   1 root root      4172 2024-10-05 17:59 ./source/n/nghttp3/nghttp3.SlackBuild
+-rw-r--r--   1 root root       114 2024-10-05 17:59 ./source/n/nghttp3/nghttp3.url
 -rw-r--r--   1 root root       767 2024-07-16 17:38 ./source/n/nghttp3/slack-desc
 drwxr-xr-x   2 root root      4096 2024-07-26 18:05 ./source/n/nmap
 -rw-r--r--   1 root root   9443766 2024-04-22 20:23 ./source/n/nmap/nmap-7.95.tar.lz
@@ -15286,7 +15285,7 @@ drwxr-xr-x   2 root root      4096 2024-03-03 19:29 ./source/x/x11/src/font
 -rw-r--r--   1 root root    104644 2023-02-27 23:27 ./source/x/x11/src/font/font-arabic-misc-1.0.4.tar.xz
 -rw-r--r--   1 root root    569512 2023-02-27 23:30 ./source/x/x11/src/font/font-bh-100dpi-1.0.4.tar.xz
 -rw-r--r--   1 root root    472540 2023-02-27 23:34 ./source/x/x11/src/font/font-bh-75dpi-1.0.4.tar.xz
--rw-r--r--  1 root root    212808 2023-02-27 23:37 ./source/x/x11/src/font/font-bh-lucidatypewriter-100dpi-1.0.4.tar.xz
+-rw-r--r--   1 root root    212808 2023-02-27 23:37 ./source/x/x11/src/font/font-bh-lucidatypewriter-100dpi-1.0.4.tar.xz
 -rw-r--r--  1 root root    189952 2023-02-27 23:42 ./source/x/x11/src/font/font-bh-lucidatypewriter-75dpi-1.0.4.tar.xz
 -rw-r--r--  1 root root    372012 2023-02-27 23:44 ./source/x/x11/src/font/font-bh-ttf-1.0.4.tar.xz
 -rw-r--r--  1 root root    633212 2023-02-27 23:47 ./source/x/x11/src/font/font-bh-type1-1.0.4.tar.xz
@@ -16122,9 +16121,9 @@ drwxr-xr-x  2 root root      4096 2024-09-10 18:15 ./testing/source/k/slack-desc
 -rw-r--r--  1 root root       778 2018-02-27 06:16 ./testing/source/k/slack-desc/slack-desc.kernel-source
 -rw-r--r--  1 root root       778 2018-02-27 06:16 ./testing/source/k/slack-desc/slack-desc.kernel-source.vanilla
 -rw-r--r--  1 root root       999 2024-09-10 18:15 ./testing/source/k/slack-desc/slack-desc.kernel-template
-drwxr-xr-x  2 root root      4096 2024-10-04 23:36 ./usb-and-pxe-installers
+drwxr-xr-x  2 root root      4096 2024-10-05 19:16 ./usb-and-pxe-installers
 -rw-r--r--  1 root root     31203 2011-03-21 21:21 ./usb-and-pxe-installers/README_PXE.TXT
 -rw-r--r--  1 root root      9197 2013-09-25 04:33 ./usb-and-pxe-installers/README_USB.TXT
 -rw-r--r--  1 root root       598 2024-09-12 20:38 ./usb-and-pxe-installers/pxelinux.cfg_default
--rw-r--r--  1 root root 113501184 2024-10-04 23:35 ./usb-and-pxe-installers/usbboot.img
+-rw-r--r--  1 root root 113497088 2024-10-05 19:16 ./usb-and-pxe-installers/usbboot.img
 -rw-r--r--  1 root root     16314 2022-03-24 20:54 ./usb-and-pxe-installers/usbimg2disk.sh

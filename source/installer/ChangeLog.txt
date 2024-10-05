@@ -1,3 +1,11 @@
+Sat Oct  5 19:01:54 UTC 2024
+  It's possible that an unformatted EFI System Partition could still have
+  traces of an old filesystem (such as NTFS) that could cause it to "mount"
+  but then not function correctly. When test-mounting the partition in SeTEFI,
+  specify "-t vfat" to avoid this, and offer to format it if it will not
+  mount as vfat.
+  Thanks to Karl Magnus Kolstø for the bug report.
++--------------------------+
 Fri Oct  4 19:04:54 UTC 2024
   sources/busybox/busybox-1.18.4.tar.bz2:  Upgraded.
 +--------------------------+

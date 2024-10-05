@@ -102,13 +102,6 @@ meson setup \
   DESTDIR=$PKG $NINJA install || exit 1
 cd ..
 
-# Hmm, this went missing:
-if [ ! -r $PKG/etc/netatalk/afp.conf ]; then
-  cp -a meson-build/config/afp.conf $PKG/etc/netatalk/afp.conf
-  chown root:root $PKG/etc/netatalk/afp.conf
-  chmod 644 $PKG/etc/netatalk/afp.conf
-fi
-
 # At least make this unreadable to non-root users:
 if [ -u $PKG/usr/bin/afppasswd ]; then
   chmod 4711 $PKG/usr/bin/afppasswd
@@ -116,6 +109,11 @@ fi
 
 # Don't ship static libraries:
 rm -f $PKG/usr/lib${LIBDIRSUFFIX}/{*.a,netatalk/*.a}
+
+# Move documentation:
+mkdir -p $PKG/usr/doc
+mv $PKG/usr/share/doc/netatalk $PKG/usr/doc/netatalk-$VERSION
+rmdir $PKG/usr/share/doc $PKG/usr/share 2> /dev/null
 
 find $PKG | xargs file | grep -e "executable" -e "shared object" \
   | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
@@ -146,7 +144,7 @@ mv $PKG/etc/pam.d/netatalk $PKG/etc/pam.d/netatalk.new
 
 mkdir -p $PKG/usr/doc/netatalk-$VERSION
 cp -a \
-  AUTHORS* CONTRIBUTORS* COPYING* COPYRIGHT* NEWS* README* VERSION* \
+  CONTRIBUTORS* COPYING* COPYRIGHT* DOCKER* INSTALL* NEWS* README* SECURITY* \
   $PKG/usr/doc/netatalk-$VERSION
 cp -a $CWD/examples $PKG/usr/doc/netatalk-$VERSION
 chown -R root:root $PKG/usr/doc/netatalk-$VERSION/examples

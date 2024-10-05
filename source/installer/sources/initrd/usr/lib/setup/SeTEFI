@@ -58,13 +58,13 @@ fi
 # This file is no longer needed:
 rm -f $TMP/SeTefipartitions
 
-# See if EFI partition is formatted.  If not, offer to format it:
+# See if EFI partition is formatted as FAT32. If not, offer to format it:
 EFITMPMOUNT=$(mktemp -d)
-if ! mount $PREFERRED_EFI_PARTITION $EFITMPMOUNT 1> /dev/null 2> /dev/null ; then
+if ! mount -t vfat $PREFERRED_EFI_PARTITION $EFITMPMOUNT 1> /dev/null 2> /dev/null ; then
   # It didn't mount, so it must not be formatted:
   dialog --title "FORMAT EFI PARTITION ${PREFERRED_EFI_PARTITION}?" \
   --yesno "An EFI System Partition was found on ${PREFERRED_EFI_PARTITION}, \
-but it has not yet been formatted. Would you like to format this partition?" \
+but it is not formatted as FAT32. Would you like to format this partition?" \
 7 56
   if [ ! $? = 0 ]; then
     exit
@@ -75,7 +75,7 @@ but it has not yet been formatted. Would you like to format this partition?" \
   "Formatting EFI System Partition ${PREFERRED_EFI_PARTITION} as FAT32." 3 60
   mkfs.vfat -F 32 -s 2 ${PREFERRED_EFI_PARTITION} 1> /dev/null 2> /dev/null
   sleep 1
-  mount ${PREFERRED_EFI_PARTITION} $EFITMPMOUNT 1> /dev/null 2> /dev/null
+  mount -t vfat ${PREFERRED_EFI_PARTITION} $EFITMPMOUNT 1> /dev/null 2> /dev/null
 fi
 if [ ! -d $EFITMPMOUNT/EFI -a ! -d $EFITMPMOUNT/efi ]; then
   mkdir $EFITMPMOUNT/EFI 1> /dev/null 2> /dev/null
