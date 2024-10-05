@@ -70,14 +70,15 @@ if [ -d $CWD/fixes-$BB ]; then
 fi
 
 chown -R root:root .
-sed -e \
-  's#^CONFIG_PREFIX=.*#CONFIG_PREFIX="'$PKG'/usr/share/mkinitrd/initrd-tree"#' \
-  $CWD/busybox-dot-config > .config
+cat $CWD/busybox-dot-config > .config
 make oldconfig || exit 1
 make $NUMJOBS || make || exit 1
-
 mkdir -p $PKG/usr/share/mkinitrd/initrd-tree/{bin,sbin}
 make install || exit 1
+cd _install
+cp --remove-destination -fav * $PKG/usr/share/mkinitrd/initrd-tree
+cd ..
+
 rm -f $PKG/usr/share/mkinitrd/initrd-tree/linuxrc
 
 # Copying additional files:

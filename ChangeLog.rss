@@ -11,9 +11,21 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Sat,  5 Oct 2024 19:17:05 GMT</pubDate>
-      <lastBuildDate>Sat,  5 Oct 2024 20:02:37 GMT</lastBuildDate>
+      <pubDate>Sat,  5 Oct 2024 21:24:49 GMT</pubDate>
+      <lastBuildDate>Sat,  5 Oct 2024 22:04:35 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Sat,  5 Oct 2024 21:24:49 GMT</title>
+         <pubDate>Sat,  5 Oct 2024 21:24:49 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241005212449</link>
+         <guid isPermaLink="false">20241005212449</guid>
+         <description>
+           <![CDATA[<pre>
+isolinux/initrd.img:  Rebuilt.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Sat,  5 Oct 2024 19:17:05 GMT</title>
          <pubDate>Sat,  5 Oct 2024 19:17:05 GMT</pubDate>

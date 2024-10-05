@@ -1,3 +1,7 @@
+Sat Oct  5 21:15:53 UTC 2024
+  Ope, that last one didn't boot because of a wrong CONFIG_PREFIX in
+  busybox-dot-config. Fixed.
++--------------------------+
 Sat Oct  5 19:01:54 UTC 2024
   It's possible that an unformatted EFI System Partition could still have
   traces of an old filesystem (such as NTFS) that could cause it to "mount"
