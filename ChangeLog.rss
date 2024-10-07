@@ -11,9 +11,27 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Sat,  5 Oct 2024 21:24:49 GMT</pubDate>
-      <lastBuildDate>Sat,  5 Oct 2024 22:04:35 GMT</lastBuildDate>
+      <pubDate>Mon,  7 Oct 2024 22:37:51 GMT</pubDate>
+      <lastBuildDate>Mon,  7 Oct 2024 23:02:15 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Mon,  7 Oct 2024 22:37:51 GMT</title>
+         <pubDate>Mon,  7 Oct 2024 22:37:51 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241007223751</link>
+         <guid isPermaLink="false">20241007223751</guid>
+         <description>
+           <![CDATA[<pre>
+d/tree-sitter-0.24.2-x86_64-1.txz:  Upgraded.
+l/imagemagick-7.1.1_39-x86_64-1.txz:  Upgraded.
+l/libdeflate-1.22-x86_64-1.txz:  Upgraded.
+l/libqalculate-5.3.0-x86_64-1.txz:  Upgraded.
+l/python-build-1.2.2.post1-x86_64-1.txz:  Upgraded.
+l/python-dnspython-2.7.0-x86_64-1.txz:  Upgraded.
+l/python-sphinx_rtd_theme-3.0.0-x86_64-1.txz:  Upgraded.
+n/wireless-regdb-2024.10.07-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Sat,  5 Oct 2024 21:24:49 GMT</title>
          <pubDate>Sat,  5 Oct 2024 21:24:49 GMT</pubDate>
