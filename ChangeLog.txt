@@ -1,3 +1,21 @@
+Tue Oct  8 18:39:18 UTC 2024
+a/mkinitrd-1.4.11-x86_64-38.txz:  Rebuilt.
+  /boot/remove-orphaned-initrds: this script will remove initrds found in /boot
+  if there is no matching kernel version found. This can be run manually or
+  added as a cron job to prevent unneeded initrds from filling up /boot.
+a/pkgtools-15.1-noarch-13.txz:  Rebuilt.
+  /boot/kernel-backup: with the huge kernel gone, this script seeks to fill the
+  gap by offering an easy way to make a backup kernel that will be picked up
+  by update-grub. It does this by creating entries in the pkgtools database
+  that protect a kernel, modules, and optionally an initrd from being removed
+  when the kernel-generic package is upgraded. See the script for details.
+ap/rpm-4.20.0-x86_64-1.txz:  Upgraded.
+d/git-2.47.0-x86_64-1.txz:  Upgraded.
+l/python-MarkupSafe-3.0.1-x86_64-1.txz:  Upgraded.
+l/python-tomli-w-1.1.0-x86_64-1.txz:  Upgraded.
+n/cifs-utils-7.1-x86_64-1.txz:  Upgraded.
+n/netatalk-4.0.1-x86_64-1.txz:  Upgraded.
++--------------------------+
 Mon Oct  7 22:37:51 UTC 2024
 d/tree-sitter-0.24.2-x86_64-1.txz:  Upgraded.
 l/imagemagick-7.1.1_39-x86_64-1.txz:  Upgraded.

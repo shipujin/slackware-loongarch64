@@ -11,9 +11,35 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Mon,  7 Oct 2024 22:37:51 GMT</pubDate>
-      <lastBuildDate>Mon,  7 Oct 2024 23:02:15 GMT</lastBuildDate>
+      <pubDate>Tue,  8 Oct 2024 18:39:18 GMT</pubDate>
+      <lastBuildDate>Tue,  8 Oct 2024 19:00:32 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Tue,  8 Oct 2024 18:39:18 GMT</title>
+         <pubDate>Tue,  8 Oct 2024 18:39:18 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241008183918</link>
+         <guid isPermaLink="false">20241008183918</guid>
+         <description>
+           <![CDATA[<pre>
+a/mkinitrd-1.4.11-x86_64-38.txz:  Rebuilt.
+  /boot/remove-orphaned-initrds: this script will remove initrds found in /boot
+  if there is no matching kernel version found. This can be run manually or
+  added as a cron job to prevent unneeded initrds from filling up /boot.
+a/pkgtools-15.1-noarch-13.txz:  Rebuilt.
+  /boot/kernel-backup: with the huge kernel gone, this script seeks to fill the
+  gap by offering an easy way to make a backup kernel that will be picked up
+  by update-grub. It does this by creating entries in the pkgtools database
+  that protect a kernel, modules, and optionally an initrd from being removed
+  when the kernel-generic package is upgraded. See the script for details.
+ap/rpm-4.20.0-x86_64-1.txz:  Upgraded.
+d/git-2.47.0-x86_64-1.txz:  Upgraded.
+l/python-MarkupSafe-3.0.1-x86_64-1.txz:  Upgraded.
+l/python-tomli-w-1.1.0-x86_64-1.txz:  Upgraded.
+n/cifs-utils-7.1-x86_64-1.txz:  Upgraded.
+n/netatalk-4.0.1-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Mon,  7 Oct 2024 22:37:51 GMT</title>
          <pubDate>Mon,  7 Oct 2024 22:37:51 GMT</pubDate>

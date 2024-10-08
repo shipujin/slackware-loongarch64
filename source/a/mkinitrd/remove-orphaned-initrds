@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Copyright 2024  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# This script removes initrds in the /boot directory if there's no kernel
+# in /boot with the same version. This keeps unused initrds from accumulating
+# and filling up the filesystem.
+
+# Usage: Run without any options to clean up initrd orphans:
+#
+# ./remove-orphaned-initrds
+#
+# To see what would be removed without actually removing anything:
+#
+# ./remove-orphaned-initrds --dry-run
+#
+# This script is suitable to run as a periodic cron job (perhaps weekly).
+
+ORPHANS_FOUND=false
+
+cd /boot
+for initrd in initrd-*-*.img ; do
+  INITRD_VERSION="$(echo $initrd | cut -f 2 -d -)"
+  if ! /bin/ls vmlinuz-* | grep -q -- "-${INITRD_VERSION}-" ; then
+    ORPHANS_FOUND=true
+    if [ "$1" = "--dry-run" ]; then
+      echo "Would remove: $initrd"
+    else
+      echo "Removing: $initrd"
+      rm -f $initrd
+    fi
+  fi
+done
+if [ "$ORPHANS_FOUND" = "false" ]; then
+  echo "No orphaned initrds found in /boot."
+fi

@@ -1,0 +1,180 @@
+#!/bin/bash
+
+# Copyright 2024  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# This script creates a virtual installed package named
+# kernel-backup-${KERNEL_VERSION}-${ARCH}-${BUILD}, which
+# consists of a backup of /boot/vmlinuz-${KERNEL_VERSION}-generic
+# to /boot/vmlinuz-${KERNEL_VERSION}-backup, and the modules that
+# go with this kernel. If there's a matching initrd already created,
+# we'll include that too. Otherwise, we'll assume you don't want one
+# or that you'll manage it yourself outside of the installed backup
+# package.
+#
+# By default, it makes a backup of the kernel pointed to by
+# /boot/vmlinuz-generic. Once backed up, this kernel can be added to
+# your bootloader as a fallback kernel, and removing or upgrading the
+# original kernel-generic package will not remove it. But, you can
+# remove the kernel-backup package later with removepkg if you wish.
+#
+# The $KERNEL_FILE doesn't need to have any particular naming scheme.
+# You could point at /usr/src/linux/arch/x86/boot/bzImage for all this
+# script cares. The kernel modules do need to be installed first though.
+
+BUILD=${BUILD:-1}
+
+# This is the kernel to use (may be a symlink):
+KERNEL_FILE=${KERNEL_FILE:-/boot/vmlinuz-generic}
+
+# This is the kernel name for the backup kernel:
+BACKUP_NAME=${BACKUP_NAME:-backup}
+
+# If this is a symlink, find the actual file:
+if [ -L $KERNEL_FILE ]; then
+  KERNEL_FILE=$(readlink -f $KERNEL_FILE)
+fi
+
+# Find the kernel version:
+if [ -r $KERNEL_FILE ]; then
+  KERNEL_VERSION=$(strings $KERNEL_FILE | grep '([^ ]*@[^ ]*) #' | cut -f1 -d' ')
+else
+  echo "ERROR: $KERNEL_FILE not found."
+  exit 1
+fi
+
+# We require the modules for this kernel version to be installed:
+if [ ! -d /lib/modules/${KERNEL_VERSION} ]; then
+  echo "ERROR: directory /lib/modules/${KERNEL_VERSION} does not exist."
+  echo "Refusing to back up a kernel without modules."
+  exit 1
+fi
+
+# Guess the $ARCH:
+if file /bin/bash | grep -wq x86-64 ; then
+  ARCH="x86_64"
+elif file /bin/bash | grep -wq 80386 ; then
+  ARCH="i686"
+else
+  ARCH="$(uname -m)"
+fi
+
+# Make a backup of the kernel in /boot:
+rm -f /boot/vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME}
+cp -a $KERNEL_FILE /boot/vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME}
+
+# Make an unversioned symlink:
+rm -f /boot/vmlinuz-${BACKUP_NAME}
+ln -sf vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME} /boot/vmlinuz-${BACKUP_NAME}
+
+# If there is an initrd for this kernel version, we will assume that's
+# the one we should use:
+if /bin/ls /boot/initrd-${KERNEL_VERSION}-*.img 1> /dev/null 2> /dev/null ; then
+  # Pick the newest one:
+  cp -a $(/bin/ls -t /boot/initrd-${KERNEL_VERSION}-*.img | grep -v /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img | head -n 1) /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img
+  INITBLURB="Backed up $(/bin/ls -t /boot/initrd-${KERNEL_VERSION}-*.img | grep -v /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img | head -n 1)  as /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img."
+else
+  INITBLURB="Not including an initrd because a matching version was not found."
+fi
+
+# OK, an initrd could be made automatically if you don't have one, but that's
+# not really this script's job. ;-) If you don't already have one, we will
+# assume that's because you don't use one, and don't want one.
+#else
+#  # Make an initrd for this:
+#  sh /usr/share/mkinitrd/mkinitrd_command_generator.sh -k ${KERNEL_VERSION} -a "-L -o /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img" | bash 1> /dev/null 2> /dev/null
+#fi
+
+# Make an initrd symlink if we backed up an initrd:
+if [ -f /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img ]; then
+  rm -f /boot/initrd-${BACKUP_NAME}.img
+  ln -sf initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img /boot/initrd-${BACKUP_NAME}.img
+fi
+
+# Some shortcuts to avoid redundancy:
+PACKAGE_NAME="kernel-${BACKUP_NAME}-${KERNEL_VERSION}-${ARCH}-${BUILD}"
+PACKAGES_ENTRY=/var/lib/pkgtools/packages/${PACKAGE_NAME}
+SCRIPTS_ENTRY=/var/lib/pkgtools/scripts/${PACKAGE_NAME}
+
+# Now we need to make a "virtual" package. We'll start with the "pkgtools/packages/" entry:
+cat << EOF > $PACKAGES_ENTRY
+PACKAGE NAME:     ${PACKAGE_NAME}
+COMPRESSED PACKAGE SIZE:     93M
+UNCOMPRESSED PACKAGE SIZE:     444M
+PACKAGE LOCATION: ./${PACKAGE_NAME}
+PACKAGE DESCRIPTION:
+kernel-${BACKUP_NAME}: kernel-${BACKUP_NAME} (backup of ${KERNEL_FILE})
+kernel-${BACKUP_NAME}:
+kernel-${BACKUP_NAME}: This is a Linux kernel with built-in support for SATA, NVMe, and most
+kernel-${BACKUP_NAME}: commonly used filesystems, as well as a large collection of loadable
+kernel-${BACKUP_NAME}: kernel modules.
+kernel-${BACKUP_NAME}:
+kernel-${BACKUP_NAME}: It is recommended to use an initrd with this kernel for best results.
+kernel-${BACKUP_NAME}: For more information about creating an initrd, see the README.initrd
+kernel-${BACKUP_NAME}: file in the /boot directory.
+kernel-${BACKUP_NAME}:
+kernel-${BACKUP_NAME}:
+FILE LIST:
+./
+boot/
+EOF
+echo boot/vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME} >> $PACKAGES_ENTRY
+if [ -f /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img ]; then
+  echo boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img >> $PACKAGES_ENTRY
+fi
+echo "lib/" >> $PACKAGES_ENTRY
+echo "lib/modules/" >> $PACKAGES_ENTRY
+# First the files:
+find /lib/modules/${KERNEL_VERSION} -type f | cut -b2- > ${PACKAGES_ENTRY}-tmp
+# Then the directories:
+find /lib/modules/${KERNEL_VERSION} -type d | cut -b2- | sed "s|$|/|" >> ${PACKAGES_ENTRY}-tmp
+cat ${PACKAGES_ENTRY}-tmp | sort >> $PACKAGES_ENTRY
+rm -f ${PACKAGES_ENTRY}-tmp
+
+# Finally, store the symlinks in the "pkgtools/scripts/" entry:
+make_install_script() {
+  TAB="$(echo -e "\t")"
+  COUNT=1
+  while :; do
+   LINE="$(sed -n "$COUNT p" $1)"
+   if [ "$LINE" = "" ]; then
+    break
+   fi
+   LINKGOESIN="$(echo "$LINE" | cut -f 1 -d "$TAB")"
+   LINKGOESIN="$(dirname "$LINKGOESIN")"
+   LINKNAMEIS="$(echo "$LINE" | cut -f 1 -d "$TAB")"
+   LINKNAMEIS="$(basename "$LINKNAMEIS")"
+   LINKPOINTSTO="$(echo "$LINE" | cut -f 2 -d "$TAB")"
+   echo "( cd $LINKGOESIN ; rm -rf $LINKNAMEIS )"
+   echo "( cd $LINKGOESIN ; ln -sf $LINKPOINTSTO $LINKNAMEIS )"
+   COUNT=$(expr $COUNT + 1)
+  done
+}
+rm -f ${SCRIPTS_ENTRY}
+find /boot -name vmlinuz-${BACKUP_NAME} -printf "%p\t%l\n" | cut -b2- | LC_COLLATE=C sort | sed 's,^\./,,; s,[ "#$&\x27()*;<>?[\\`{|~],\\&,g;' | make_install_script >> ${SCRIPTS_ENTRY}
+find /boot -name initrd-${BACKUP_NAME}.img -printf "%p\t%l\n" | cut -b2- | LC_COLLATE=C sort | sed 's,^\./,,; s,[ "#$&\x27()*;<>?[\\`{|~],\\&,g;' | make_install_script >> ${SCRIPTS_ENTRY}
+find /lib/modules/${KERNEL_VERSION} -type l -printf "%p\t%l\n" | cut -b2- | LC_COLLATE=C sort | sed 's,^\./,,; s,[ "#$&\x27()*;<>?[\\`{|~],\\&,g;' | make_install_script >> ${SCRIPTS_ENTRY}
+
+echo "Backed up ${KERNEL_FILE} as /boot/vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME}."
+echo "Backed up kernel modules in /lib/modules/${KERNEL_VERSION}/"
+if [ ! -z "$INITBLURB" ]; then
+  echo $INITBLURB
+fi
+echo "Installed as package ${PACKAGE_NAME}."
