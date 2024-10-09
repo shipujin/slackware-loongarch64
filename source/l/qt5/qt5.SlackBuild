@@ -63,7 +63,6 @@ if [ "$ARCH" = "i686" ]; then
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
   SLKCFLAGS="-O2 -march=x86-64 -mtune=generic -fPIC"
-  SLKLDFLAGS=""
   SLKLDFLAGS="-L/usr/lib64"
   LIBDIRSUFFIX="64"
 else

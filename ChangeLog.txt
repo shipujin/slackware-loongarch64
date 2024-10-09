@@ -1,3 +1,31 @@
+Wed Oct  9 21:09:16 UTC 2024
+a/dracut-104-x86_64-1.txz:  Upgraded.
+d/cmake-3.30.5-x86_64-1.txz:  Upgraded.
+d/subversion-1.14.4-x86_64-1.txz:  Upgraded.
+l/mozjs128-128.3.1esr-x86_64-1.txz:  Upgraded.
+l/openexr-3.3.1-x86_64-1.txz:  Upgraded.
+l/python-charset-normalizer-3.4.0-x86_64-1.txz:  Upgraded.
+x/fcitx5-5.1.11-x86_64-1.txz:  Upgraded.
+x/fcitx5-anthy-5.1.5-x86_64-1.txz:  Upgraded.
+x/fcitx5-chinese-addons-5.1.7-x86_64-1.txz:  Upgraded.
+x/fcitx5-hangul-5.1.5-x86_64-1.txz:  Upgraded.
+x/fcitx5-kkc-5.1.5-x86_64-1.txz:  Upgraded.
+x/fcitx5-m17n-5.1.2-x86_64-1.txz:  Upgraded.
+x/fcitx5-qt-5.1.7-x86_64-1.txz:  Upgraded.
+x/fcitx5-unikey-5.1.5-x86_64-1.txz:  Upgraded.
+x/libime-1.1.9-x86_64-1.txz:  Upgraded.
+xap/mozilla-firefox-128.3.1esr-x86_64-1.txz:  Upgraded.
+  This update contains a critical security fix:
+  Use-after-free in Animation timeline.
+  "An attacker was able to achieve code execution in the content process by
+  exploiting a use-after-free in Animation timelines. We have had reports of
+  this vulnerability being exploited in the wild."
+  For more information, see:
+    https://www.mozilla.org/en-US/firefox/128.3.1/releasenotes/
+    https://www.mozilla.org/security/advisories/mfsa2024-51/
+    https://www.cve.org/CVERecord?id=CVE-2024-9680
+  (* Security fix *)
++--------------------------+
 Tue Oct  8 18:39:18 UTC 2024
 a/mkinitrd-1.4.11-x86_64-38.txz:  Rebuilt.
   /boot/remove-orphaned-initrds: this script will remove initrds found in /boot

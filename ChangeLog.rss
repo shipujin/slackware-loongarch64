@@ -11,9 +11,45 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Tue,  8 Oct 2024 18:39:18 GMT</pubDate>
-      <lastBuildDate>Tue,  8 Oct 2024 19:00:32 GMT</lastBuildDate>
+      <pubDate>Wed,  9 Oct 2024 21:09:16 GMT</pubDate>
+      <lastBuildDate>Wed,  9 Oct 2024 22:57:59 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Wed,  9 Oct 2024 21:09:16 GMT</title>
+         <pubDate>Wed,  9 Oct 2024 21:09:16 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241009210916</link>
+         <guid isPermaLink="false">20241009210916</guid>
+         <description>
+           <![CDATA[<pre>
+a/dracut-104-x86_64-1.txz:  Upgraded.
+d/cmake-3.30.5-x86_64-1.txz:  Upgraded.
+d/subversion-1.14.4-x86_64-1.txz:  Upgraded.
+l/mozjs128-128.3.1esr-x86_64-1.txz:  Upgraded.
+l/openexr-3.3.1-x86_64-1.txz:  Upgraded.
+l/python-charset-normalizer-3.4.0-x86_64-1.txz:  Upgraded.
+x/fcitx5-5.1.11-x86_64-1.txz:  Upgraded.
+x/fcitx5-anthy-5.1.5-x86_64-1.txz:  Upgraded.
+x/fcitx5-chinese-addons-5.1.7-x86_64-1.txz:  Upgraded.
+x/fcitx5-hangul-5.1.5-x86_64-1.txz:  Upgraded.
+x/fcitx5-kkc-5.1.5-x86_64-1.txz:  Upgraded.
+x/fcitx5-m17n-5.1.2-x86_64-1.txz:  Upgraded.
+x/fcitx5-qt-5.1.7-x86_64-1.txz:  Upgraded.
+x/fcitx5-unikey-5.1.5-x86_64-1.txz:  Upgraded.
+x/libime-1.1.9-x86_64-1.txz:  Upgraded.
+xap/mozilla-firefox-128.3.1esr-x86_64-1.txz:  Upgraded.
+  This update contains a critical security fix:
+  Use-after-free in Animation timeline.
+  "An attacker was able to achieve code execution in the content process by
+  exploiting a use-after-free in Animation timelines. We have had reports of
+  this vulnerability being exploited in the wild."
+  For more information, see:
+    https://www.mozilla.org/en-US/firefox/128.3.1/releasenotes/
+    https://www.mozilla.org/security/advisories/mfsa2024-51/
+    https://www.cve.org/CVERecord?id=CVE-2024-9680
+  (* Security fix *)
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Tue,  8 Oct 2024 18:39:18 GMT</title>
          <pubDate>Tue,  8 Oct 2024 18:39:18 GMT</pubDate>
