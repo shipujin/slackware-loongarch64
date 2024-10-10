@@ -79,6 +79,7 @@ cd build
   cmake \
     -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
     -DCMAKE_INSTALL_MANDIR=/usr/man \
     -DCMAKE_BUILD_TYPE=Release \
     ..

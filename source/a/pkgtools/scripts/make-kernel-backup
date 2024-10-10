@@ -39,6 +39,12 @@
 # You could point at /usr/src/linux/arch/x86/boot/bzImage for all this
 # script cares. The kernel modules do need to be installed first though.
 
+# If /etc/default/make-kernel-backup exists, source it to set initial values
+# for BUILD, KERNEL_FILE, BACKUP_NAME, and MAKE_SYMLINKS:
+if [ -r /etc/default/make-kernel-backup ]; then
+  . /etc/default/make-kernel-backup
+fi
+
 BUILD=${BUILD:-1}
 
 # This is the kernel to use (may be a symlink):
@@ -47,9 +53,20 @@ KERNEL_FILE=${KERNEL_FILE:-/boot/vmlinuz-generic}
 # This is the kernel name for the backup kernel:
 BACKUP_NAME=${BACKUP_NAME:-backup}
 
+# Do we want to make unversioned symlinks to the backup kernel and (if used)
+# initrd? With the default BACKUP_NAME, these would be named vmlinuz-backup
+# and initrd-backup.img.
+MAKE_SYMLINKS=${MAKE_SYMLINKS:-true}
+
 # If this is a symlink, find the actual file:
 if [ -L $KERNEL_FILE ]; then
   KERNEL_FILE=$(readlink -f $KERNEL_FILE)
+fi
+
+# Is this a Linux kernel?
+if ! file $KERNEL_FILE | grep -q "Linux kernel" ; then
+  echo "ERROR: $KERNEL_FILE does not appear to be a Linux kernel."
+  exit 1
 fi
 
 # Find the kernel version:
@@ -80,9 +97,11 @@ fi
 rm -f /boot/vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME}
 cp -a $KERNEL_FILE /boot/vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME}
 
-# Make an unversioned symlink:
-rm -f /boot/vmlinuz-${BACKUP_NAME}
-ln -sf vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME} /boot/vmlinuz-${BACKUP_NAME}
+if [ "$MAKE_SYMLINKS" = "true" ]; then
+  # Make an unversioned symlink:
+  rm -f /boot/vmlinuz-${BACKUP_NAME}
+  ln -sf vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME} /boot/vmlinuz-${BACKUP_NAME}
+fi
 
 # If there is an initrd for this kernel version, we will assume that's
 # the one we should use:
@@ -102,10 +121,12 @@ fi
 #  sh /usr/share/mkinitrd/mkinitrd_command_generator.sh -k ${KERNEL_VERSION} -a "-L -o /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img" | bash 1> /dev/null 2> /dev/null
 #fi
 
-# Make an initrd symlink if we backed up an initrd:
-if [ -f /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img ]; then
-  rm -f /boot/initrd-${BACKUP_NAME}.img
-  ln -sf initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img /boot/initrd-${BACKUP_NAME}.img
+if [ "$MAKE_SYMLINKS" = "true" ]; then
+  # Make an initrd symlink if we backed up an initrd:
+  if [ -f /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img ]; then
+    rm -f /boot/initrd-${BACKUP_NAME}.img
+    ln -sf initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img /boot/initrd-${BACKUP_NAME}.img
+  fi
 fi
 
 # Some shortcuts to avoid redundancy:

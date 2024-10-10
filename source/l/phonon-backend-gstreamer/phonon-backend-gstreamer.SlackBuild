@@ -99,6 +99,7 @@ cd cmake-build
     -DMAN_INSTALL_DIR=/usr/man \
     -DSYSCONF_INSTALL_DIR=/etc \
     -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
     .. || exit 1
   make $NUMJOBS || make || exit 1
   make install DESTDIR=$PKG || exit 1

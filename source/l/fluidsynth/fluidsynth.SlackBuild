@@ -87,7 +87,7 @@ cd build
     -DCMAKE_C_FLAGS="$SLKCFLAGS" \
     -DCMAKE_CXX_FLAGS="$SLKCFLAGS" \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DLIB_SUFFIX="$LIBDIRSUFFIX" \
+    -DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
     -DCMAKE_INSTALL_MANDIR=/usr/man \
     -Denable-ladspa=ON \
     .. || exit 1

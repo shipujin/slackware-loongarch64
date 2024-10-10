@@ -11,9 +11,46 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Wed,  9 Oct 2024 21:09:16 GMT</pubDate>
-      <lastBuildDate>Wed,  9 Oct 2024 22:57:59 GMT</lastBuildDate>
+      <pubDate>Thu, 10 Oct 2024 22:42:17 GMT</pubDate>
+      <lastBuildDate>Thu, 10 Oct 2024 23:59:50 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Thu, 10 Oct 2024 22:42:17 GMT</title>
+         <pubDate>Thu, 10 Oct 2024 22:42:17 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241010224217</link>
+         <guid isPermaLink="false">20241010224217</guid>
+         <description>
+           <![CDATA[<pre>
+a/hostname-3.24-x86_64-1.txz:  Upgraded.
+a/kernel-firmware-20241010_c410e4c-noarch-1.txz:  Upgraded.
+a/kernel-generic-6.10.14-x86_64-1.txz:  Upgraded.
+a/mkinitrd-1.4.11-x86_64-39.txz:  Rebuilt.
+  Symlink /boot/remove-orphaned-initrds into /usr/sbin to get it in the $PATH.
+a/pkgtools-15.1-noarch-14.txz:  Rebuilt.
+  Renamed kernel-backup to make-kernel-backup.
+  We'll leave it in /boot where it's more likely to be noticed, but also
+  add a symlink in /usr/sbin so that it's in the $PATH.
+  Support /etc/default/make-kernel-backup.
+  Test to see if $KERNEL_FILE is actually a Linux kernel.
+d/kernel-headers-6.10.14-x86-1.txz:  Upgraded.
+k/kernel-source-6.10.14-noarch-1.txz:  Upgraded.
+l/python-sphinx-8.1.0-x86_64-1.txz:  Upgraded.
+l/python-sphinx_rtd_theme-3.0.1-x86_64-1.txz:  Upgraded.
+n/c-ares-1.34.1-x86_64-1.txz:  Upgraded.
+xap/mozilla-thunderbird-128.3.1esr-x86_64-1.txz:  Upgraded.
+  This release contains security fixes and improvements.
+  For more information, see:
+    https://www.mozilla.org/en-US/thunderbird/128.3.1esr/releasenotes/
+  (* Security fix *)
+isolinux/initrd.img:  Rebuilt.
+kernels/*:  Upgraded.
+testing/packages/kernel-generic-6.11.3-x86_64-1.txz:  Upgraded.
+testing/packages/kernel-headers-6.11.3-x86-1.txz:  Upgraded.
+testing/packages/kernel-source-6.11.3-noarch-1.txz:  Upgraded.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Wed,  9 Oct 2024 21:09:16 GMT</title>
          <pubDate>Wed,  9 Oct 2024 21:09:16 GMT</pubDate>

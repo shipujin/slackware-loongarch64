@@ -98,7 +98,7 @@ cd cmake-build
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_MANDIR=/usr/man \
     -DCMAKE_INSTALL_DOCDIR=/usr/doc/$PKGNAM-$VERSION \
-    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+    -DCMAKE_INSTALL_LIBDIR=lib${LIBDIRSUFFIX} \
     -DBUILD_TESTS=OFF \
     .. || exit 1
   make $NUMJOBS || make || exit 1

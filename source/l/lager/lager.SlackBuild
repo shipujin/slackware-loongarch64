@@ -95,6 +95,7 @@ cd cmake-build
     -DCMAKE_C_FLAGS="$SLKCFLAGS" \
     -DCMAKE_CXX_FLAGS="$SLKCFLAGS" \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR="lib$LIBDIRSUFFIX" \
     -Dlager_BUILD_TESTS=OFF \
     -Dlager_BUILD_EXAMPLES=OFF \
     .. || exit 1
