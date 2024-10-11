@@ -1,3 +1,10 @@
+Fri Oct 11 02:11:18 UTC 2024
+a/kernel-firmware-20241010_d553152-noarch-1.txz:  Upgraded.
+  Hey folks, sorry about the missing firmware. I've made some changes to the
+  build script to prevent any future occurrences.
+isolinux/initrd.img:  Rebuilt.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
++--------------------------+
 Thu Oct 10 22:42:17 UTC 2024
 a/hostname-3.24-x86_64-1.txz:  Upgraded.
 a/kernel-firmware-20241010_c410e4c-noarch-1.txz:  Upgraded.

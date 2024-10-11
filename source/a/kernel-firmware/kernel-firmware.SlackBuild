@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2011, 2016, 2018, 2023  Patrick J. Volkerding, Sebeka, MN, USA
+# Copyright 2011, 2016, 2018, 2023, 2024  Patrick J. Volkerding, Sebeka, MN, USA
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -58,7 +58,6 @@ git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.
 # Better determine these the same way as above.
 DATE="$(lynx -dump -width=256 https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=HEAD | grep "   committer " | head -n 1 | rev | cut -f 3 -d ' ' | rev | tr -d -)"
 HEADISAT="$(lynx -dump -width=256 https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=HEAD | grep "    commit   " | head -n 1 | cut -f 2 -d ] | cut -b 1-7)"
-find . -name ".git*" -exec rm -rf "{}" \+
 chown -R root:root .
 mkdir -p lib/firmware
 
@@ -70,16 +69,16 @@ case $COMPRESSION in
 esac
 ( cd linux-firmware
   echo "Running make DESTDIR=$PKG ${INSTALLTARGET}..."
-  make DESTDIR=$PKG $INSTALLTARGET 2> /dev/null
-)
+  make DESTDIR=$PKG $INSTALLTARGET 2> /dev/null || exit 1
+) || exit 1
 
 # Install documentation:
 ( cd linux-firmware
   mkdir -p $PKG/usr/doc/kernel-firmware-${DATE}_${HEADISAT}
-  cp -a README $PKG/usr/doc/kernel-firmware-${DATE}_${HEADISAT}/README.linux-firmware
-  cp -a WHENCE $PKG/usr/doc/kernel-firmware-${DATE}_${HEADISAT}/WHENCE.linux-firmware
   cp -a GPL* LICEN* \
     $PKG/usr/doc/kernel-firmware-${DATE}_${HEADISAT}
+  cp -a README.md $PKG/usr/doc/kernel-firmware-${DATE}_${HEADISAT}/README.linux-firmware
+  cp -a WHENCE $PKG/usr/doc/kernel-firmware-${DATE}_${HEADISAT}/WHENCE.linux-firmware
   cp -a amd-ucode/README $PKG/usr/doc/kernel-firmware-${DATE}_${HEADISAT}/README.amd-ucode
   cp -a isci/README $PKG/usr/doc/kernel-firmware-${DATE}_${HEADISAT}/README.isci
   cp -a carl9170fw/COPYRIGHT $PKG/usr/doc/kernel-firmware-${DATE}_${HEADISAT}/COPYRIGHT.carl9170fw

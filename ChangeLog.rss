@@ -11,9 +11,24 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Thu, 10 Oct 2024 22:42:17 GMT</pubDate>
-      <lastBuildDate>Thu, 10 Oct 2024 23:59:50 GMT</lastBuildDate>
+      <pubDate>Fri, 11 Oct 2024 02:11:18 GMT</pubDate>
+      <lastBuildDate>Fri, 11 Oct 2024 03:07:08 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Fri, 11 Oct 2024 02:11:18 GMT</title>
+         <pubDate>Fri, 11 Oct 2024 02:11:18 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241011021118</link>
+         <guid isPermaLink="false">20241011021118</guid>
+         <description>
+           <![CDATA[<pre>
+a/kernel-firmware-20241010_d553152-noarch-1.txz:  Upgraded.
+  Hey folks, sorry about the missing firmware. I've made some changes to the
+  build script to prevent any future occurrences.
+isolinux/initrd.img:  Rebuilt.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Thu, 10 Oct 2024 22:42:17 GMT</title>
          <pubDate>Thu, 10 Oct 2024 22:42:17 GMT</pubDate>
