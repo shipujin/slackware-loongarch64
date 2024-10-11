@@ -11,9 +11,23 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Fri, 11 Oct 2024 02:11:18 GMT</pubDate>
-      <lastBuildDate>Fri, 11 Oct 2024 03:07:08 GMT</lastBuildDate>
+      <pubDate>Fri, 11 Oct 2024 17:48:50 GMT</pubDate>
+      <lastBuildDate>Fri, 11 Oct 2024 18:31:11 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Fri, 11 Oct 2024 17:48:50 GMT</title>
+         <pubDate>Fri, 11 Oct 2024 17:48:50 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241011174850</link>
+         <guid isPermaLink="false">20241011174850</guid>
+         <description>
+           <![CDATA[<pre>
+ap/vim-9.1.0774-x86_64-1.txz:  Upgraded.
+d/tree-sitter-0.24.3-x86_64-1.txz:  Upgraded.
+l/libuv-1.49.1-x86_64-1.txz:  Upgraded.
+xap/vim-gvim-9.1.0774-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Fri, 11 Oct 2024 02:11:18 GMT</title>
          <pubDate>Fri, 11 Oct 2024 02:11:18 GMT</pubDate>
