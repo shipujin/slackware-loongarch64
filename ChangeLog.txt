@@ -1,3 +1,16 @@
+Sat Oct 12 19:16:04 UTC 2024
+a/hostname-3.25-x86_64-1.txz:  Upgraded.
+d/ninja-1.12.1-x86_64-2.txz:  Rebuilt.
+  Generate and include manual.html.
+d/perl-5.40.0-x86_64-2.txz:  Rebuilt.
+  Upgraded: DBI-1.645, IO-Socket-SSL-2.089, Template-Toolkit-3.102, URI-5.30.
+  Added: Path-Tiny-0.146. (Needed by Moo, thanks to Andypoo)
+kde/fcitx5-configtool-5.1.7-x86_64-1.txz:  Upgraded.
+l/python-sphinx-8.1.1-x86_64-1.txz:  Upgraded.
+l/python-trove-classifiers-2024.10.12-x86_64-1.txz:  Upgraded.
+l/qt6-6.7.3_20240920_90e86aee-x86_64-1.txz:  Upgraded.
+x/wayland-protocols-1.38-noarch-1.txz:  Upgraded.
++--------------------------+
 Fri Oct 11 17:48:50 UTC 2024
 ap/vim-9.1.0774-x86_64-1.txz:  Upgraded.
 d/tree-sitter-0.24.3-x86_64-1.txz:  Upgraded.

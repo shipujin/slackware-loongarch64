@@ -27,12 +27,12 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=perl
 VERSION=5.40.0
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
-    i?86) export ARCH=i586 ;;
+    i?86) export ARCH=i686 ;;
     arm*) export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
        *) export ARCH=$( uname -m ) ;;
@@ -62,13 +62,13 @@ DEVELCHECKLIB=1.16
 # https://metacpan.org/release/DBD-mysql
 DBDMYSQL=4.052
 # https://metacpan.org/release/DBI
-DBI=1.643
+DBI=1.645
 # https://metacpan.org/pod/Locale::gettext
 GETTEXT=1.07
 # https://metacpan.org/release/TermReadKey
 TERMREADKEY=2.38
-# https://metacpan.org/release/URI
-URI=5.28
+# https://metacpan.org/pod/URI
+URI=5.30
 # https://metacpan.org/release/XML-Parser
 XMLPARSER=2.47
 # https://metacpan.org/release/XML-Simple
@@ -78,7 +78,7 @@ AUTHENSASL=2.1700
 # https://metacpan.org/release/MIME-Base64
 MIMEBASE64=3.16
 # https://metacpan.org/release/IO-Socket-SSL
-IOSOCKETSSL=2.085
+IOSOCKETSSL=2.089
 # https://metacpan.org/release/Net-SSLeay
 NETSSLEAY=1.94
 # https://metacpan.org/release/libnet
@@ -88,7 +88,7 @@ PARSEYAPP=1.21
 # https://metacpan.org/release/Path-Tiny (freecell-solver)
 PATHTINY=0.146
 # https://metacpan.org/release/Template-Toolkit (freecell-solver)
-TEMPLATETOOLKIT=3.101
+TEMPLATETOOLKIT=3.102
 # https://metacpan.org/release/Moo (freecell-solver)
 MOO=2.005005
 # https://metacpan.org/pod/Module::Runtime (freecell-solver)
@@ -99,19 +99,18 @@ SUBQUOTE=2.006008
 JSON=4.10
 # https://metacpan.org/pod/IO::Tty (mosh)
 IOTTY=1.20
+# https://metacpan.org/pod/Role::Tiny (Moo)
+ROLETINY=2.002004
 
-if [ "$ARCH" = "i486" ]; then
-  SLKCFLAGS="-O2 -march=i486 -mcpu=i686"
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "i586" ]; then
-  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "s390" ]; then
-  SLKCFLAGS="-O2"
+if [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=pentium4 -mtune=generic"
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
-  SLKCFLAGS="-O2 -fPIC"
+  SLKCFLAGS="-O2 -march=x86-64 -mtune=generic -fPIC"
   LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
 fi
 
 # Since perl will be unavailable for a while, REQUIRE_GLOBAL_LOCK.
@@ -508,6 +507,20 @@ make install DESTDIR=$PKG || exit 1
     mkdir -p $PKG/usr/doc/perl-$VERSION/IO-Tty-${IOTTY}
     cp -a README* $PKG/usr/doc/perl-$VERSION/IO-Tty-${IOTTY}
     chmod 644 $PKG/usr/doc/perl-$VERSION/IO-Tty-${IOTTY}/*
+  ) || exit 1
+  ( tar xzvf $CWD/Role-Tiny-${ROLETINY}.tar.gz
+    cd Role-Tiny-${ROLETINY}
+    chown -R root:root .
+    echo y | perl Makefile.PL INSTALLDIRS=vendor
+    make || exit 1
+    if [ "$MAKETEST" = "yes" ]; then
+      make test || exit 1
+    fi
+    make install || exit 1
+    make install DESTDIR=$PKG || exit 1
+    mkdir -p $PKG/usr/doc/perl-$VERSION/Role-Tiny-${ROLETINY}
+    cp -a README* $PKG/usr/doc/perl-$VERSION/Role-Tiny-${ROLETINY}
+    chmod 644 $PKG/usr/doc/perl-$VERSION/Role-Tiny-${ROLETINY}/*
   ) || exit 1
 ) || exit 1
 
