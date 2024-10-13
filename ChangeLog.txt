@@ -1,10 +1,34 @@
+Sun Oct 13 19:49:05 UTC 2024
+a/dracut-105-x86_64-1.txz:  Upgraded.
+a/sysvinit-scripts-15.1-noarch-22.txz:  Rebuilt.
+  rc.6: add a hash -r after unmounting local partitions in case any directories
+  in the $PATH have gone away. Thanks to yars.
+l/libarchive-3.7.7-x86_64-1.txz:  Upgraded.
+  This update fixes bug and the following security issues:
+  gzip: prevent a hang when processing a malformed gzip inside a gzip.
+  tar: don't crash on truncated tar archives.
+  tar: fix two leaks in tar header parsing.
+  (* Security fix *)
+l/python-sphinx-8.1.2-x86_64-1.txz:  Upgraded.
+l/python-trove-classifiers-2024.10.13-x86_64-1.txz:  Upgraded.
+x/bdftopcf-1.1.2-x86_64-1.txz:  Upgraded.
+x/fonttosfnt-1.2.4-x86_64-1.txz:  Upgraded.
+x/xcmsdb-1.0.7-x86_64-1.txz:  Upgraded.
+x/xf86-video-mach64-6.10.0-x86_64-1.txz:  Upgraded.
+x/xf86-video-mga-2.1.0-x86_64-1.txz:  Upgraded.
+x/xf86-video-r128-6.13.0-x86_64-1.txz:  Upgraded.
+x/xkbprint-1.0.7-x86_64-1.txz:  Upgraded.
+x/xmag-1.0.8-x86_64-1.txz:  Upgraded.
+x/xtrans-1.5.1-noarch-1.txz:  Upgraded.
+x/xwud-1.0.7-x86_64-1.txz:  Upgraded.
++--------------------------+
 Sat Oct 12 19:16:04 UTC 2024
 a/hostname-3.25-x86_64-1.txz:  Upgraded.
 d/ninja-1.12.1-x86_64-2.txz:  Rebuilt.
   Generate and include manual.html.
 d/perl-5.40.0-x86_64-2.txz:  Rebuilt.
   Upgraded: DBI-1.645, IO-Socket-SSL-2.089, Template-Toolkit-3.102, URI-5.30.
-  Added: Path-Tiny-0.146. (Needed by Moo, thanks to Andypoo)
+  Added: Role-Tiny-2.002004. (Needed by Moo, thanks to Andypoo)
 kde/fcitx5-configtool-5.1.7-x86_64-1.txz:  Upgraded.
 l/python-sphinx-8.1.1-x86_64-1.txz:  Upgraded.
 l/python-trove-classifiers-2024.10.12-x86_64-1.txz:  Upgraded.
