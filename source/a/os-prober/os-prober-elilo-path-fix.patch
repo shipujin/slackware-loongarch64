@@ -1,0 +1,11 @@
+--- ./os-probes/mounted/x86/efi/10elilo.orig	2024-08-28 05:16:14.000000000 -0500
++++ ./os-probes/mounted/x86/efi/10elilo	2024-10-14 12:46:50.878946131 -0500
+@@ -10,7 +10,7 @@
+ elilo=`find $1 -name "elilo.efi"`
+ if [ -n "$elilo" ]; then
+ 	bdir="${elilo%/*}"
+-	bdir="${elilo##*/}"
++	bdir="${bdir##*/}"
+ 	long="ELILO Boot Manager"
+ 	short="ELILO"
+ 	path=${bdir}/elilo.efi

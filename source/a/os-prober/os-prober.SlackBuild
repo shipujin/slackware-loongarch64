@@ -24,7 +24,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=os-prober
 VERSION=${VERSION:-$(echo $PKGNAM_*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d _ | rev)}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -75,6 +75,9 @@ cat $CWD/os-prober.reiserfs.diff | patch -p1 --verbose || exit 1
 
 # Fix detecting LVM2 volumes:
 cat $CWD/os-prober.lvm2.diff | patch -p1 --verbose || exit 1
+
+# Fix the path that's generated for elilo.efi:
+cat $CWD/os-prober-elilo-path-fix.patch | patch -p1 --verbose || exit 1
 
 # Edit the scripts to use $LIBDIRSUFFIX=64 if needed:
 if [ "$LIBDIRSUFFIX" = "64" ]; then

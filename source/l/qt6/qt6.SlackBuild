@@ -32,7 +32,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=qt6
 VERSION=$(ls qt-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 PKGSRC=$(echo $VERSION | cut -d - -f 1)
 PKGVER=$(echo $VERSION | tr - _)
 
@@ -156,6 +156,10 @@ popd
 # Fix build with ffmpeg-7:
 pushd qtwebengine/src/3rdparty/chromium
   cat $CWD/patches/qtwebengine-ffmpeg-7.patch | patch -p1 --verbose || exit 1
+popd
+
+pushd qtdeclarative
+  cat $CWD/patches/0a1d8fb26d1e89c82a0d35dd728d7e928a94d197.patch | patch -p1 --verbose || exit 1
 popd
 
 # Previously we didn't have a protobuf package in Slackware.
