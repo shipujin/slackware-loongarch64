@@ -24,7 +24,7 @@
 PKGNAM=SPIRV-LLVM-Translator
 
 # Pull a stable branch + patches
-BRANCH=${1:-llvm_release_130}
+BRANCH=${1:-llvm_release_190}
 
 # Clear download area:
 rm -rf ${PKGNAM}

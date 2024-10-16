@@ -31,7 +31,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=qt5
 VERSION=$(ls qt-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 PKGSRC=$(echo $VERSION | cut -d - -f 1)
 PKGVER=$(echo $VERSION | tr - _)
 
@@ -137,6 +137,11 @@ cd - 1>/dev/null
 # Fix build with recent ninja:
 zcat $CWD/patches/qtwebengine.ninja1.12.patch.gz | patch -p1 --verbose || exit 1
 
+# Fix linking with LLVM 19:
+cd qttools
+  zcat $CWD/0001-Link-against-libclang-cpp.so-instead-of-the-clang-co.patch.gz | patch -p1 --verbose || exit 1
+cd - 1>/dev/null
+
 # CMake generates wrong -isystem /usr/include compilations flags with Qt5::Gui
 # and for it breaks KWin compilation with:
 # /usr/include/c++/9.1.0/cstdlib:75:15: fatal error: stdlib.h: No such file or directory
@@ -225,9 +230,7 @@ export QT_PLUGIN_PATH="${QTDIR}/qtbase/plugins"
   
 # Sometimes a failure happens when parallelizing make.  Try again if make fails,
 # but make a failure the second time around (single threaded) a fatal error:
-#### DEBUG
-make $NUMJOBS || exit 1
-#make $NUMJOBS || make || exit 1
+make $NUMJOBS || make || exit 1
 make install INSTALL_ROOT=$PKG || exit 1
 
 # Strip binaries:

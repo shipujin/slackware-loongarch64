@@ -32,7 +32,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=qt6
 VERSION=$(ls qt-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 PKGSRC=$(echo $VERSION | cut -d - -f 1)
 PKGVER=$(echo $VERSION | tr - _)
 
@@ -158,6 +158,13 @@ pushd qtwebengine/src/3rdparty/chromium
   cat $CWD/patches/qtwebengine-ffmpeg-7.patch | patch -p1 --verbose || exit 1
 popd
 
+# Fix build with llvm19:
+pushd qttools
+  cat $CWD/patches/4a368a06afa5929d8674d2e94c2d7cbd6ad85d4e.patch | patch -p1 --verbose || exit 1
+  cat $CWD/patches/687fc1601863ae7a67897bc3590b33bd3bdcc3bc.patch | patch -p1 --verbose || exit 1
+popd
+
+# [PATCH] ListView: fix countChanged not being emitted in certain cases.
 pushd qtdeclarative
   cat $CWD/patches/0a1d8fb26d1e89c82a0d35dd728d7e928a94d197.patch | patch -p1 --verbose || exit 1
 popd
