@@ -21,10 +21,10 @@
 #
 
 # This script installs the elilo boot loader, the kernel, and optionally
-# an initrd into the EFI System Partition.  A boot menu entry can also be
-# installed using efibootmgr.  The kernel used will be whatever the symlink
-# /boot/vmlinuz points to, and if /boot/initrd.gz exists, that will be 
-# installed as the initrd.
+# an initrd into the EFI System Partition. A boot menu entry can also be
+# installed using efibootmgr. The kernel used will be whatever the symlink
+# /boot/vmlinuz-generic points to, and if /boot/initrd-generic.img exists,
+# that will be installed as the initrd.
 #
 # The EFI System Partition is expected to be mounted on /boot/efi before
 # running this script.
@@ -99,9 +99,9 @@ else
 fi
 
 # There better be a kernel:
-if [ ! -r $T_PX/boot/vmlinuz ]; then
+if [ ! -r $T_PX/boot/vmlinuz-generic ]; then
   if [ "$T_PX" = "/" ]; then
-    echo "ERROR:  No kernel found at /boot/vmlinuz."
+    echo "ERROR:  No kernel found at /boot/vmlinuz-generic."
   fi
   exit
 fi
@@ -133,19 +133,19 @@ timeout=1
 #
 EOF
 cp -a $T_PX/boot/elilo-x86_64.efi $T_PX/boot/efi/EFI/Slackware/elilo.efi 1> /dev/null 2> /dev/null
-if [ -r $T_PX/boot/initrd.gz ]; then
+if [ -r $T_PX/boot/initrd-generic.img ]; then
   cp $T_PX/boot/vmlinuz-generic $T_PX/boot/efi/EFI/Slackware/vmlinuz 1> /dev/null 2> /dev/null
   touch -r $T_PX/boot/vmlinuz-generic $T_PX/boot/efi/EFI/Slackware/vmlinuz
-  cp $T_PX/boot/initrd.gz $T_PX/boot/efi/EFI/Slackware 1> /dev/null 2> /dev/null
-  touch -r $T_PX/boot/initrd.gz $T_PX/boot/efi/EFI/Slackware/initrd.gz
+  cp $T_PX/boot/initrd-generic.img $T_PX/boot/efi/EFI/Slackware/initrd.gz 1> /dev/null 2> /dev/null
+  touch -r $T_PX/boot/initrd-generic.img $T_PX/boot/efi/EFI/Slackware/initrd.gz
   cat << EOF >> $T_PX/boot/efi/EFI/Slackware/elilo.conf
 image=vmlinuz
         label=vmlinuz
         initrd=initrd.gz
 EOF
 else
-  cp $T_PX/boot/vmlinuz-huge $T_PX/boot/efi/EFI/Slackware/vmlinuz 1> /dev/null 2> /dev/null
-  touch -r $T_PX/boot/vmlinuz-huge $T_PX/boot/efi/EFI/Slackware/vmlinuz
+  cp $T_PX/boot/vmlinuz-generic $T_PX/boot/efi/EFI/Slackware/vmlinuz 1> /dev/null 2> /dev/null
+  touch -r $T_PX/boot/vmlinuz-generic $T_PX/boot/efi/EFI/Slackware/vmlinuz
   cat << EOF >> $T_PX/boot/efi/EFI/Slackware/elilo.conf
 image=vmlinuz
         label=vmlinuz

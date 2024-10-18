@@ -1,3 +1,41 @@
+Fri Oct 18 22:51:09 UTC 2024
+a/elilo-3.16-x86_64-17.txz:  Rebuilt.
+  eliloconfig: adapt to new naming and lack of huge kernel. Thanks to gildbg.
+ap/cups-browsed-2.1.0-x86_64-1.txz:  Upgraded.
+  Removed support for legacy CUPS browsing and for LDAP
+  Legacy CUPS browsing is not needed any more and, our implementation
+  accepting any UDP packet on port 631, causes vulnerabilities, and
+  our LDAP support is does not comly with RFC 7612 and is therefore
+  limited. Fixes CVE-2024-47176 and CVE-2024-47850
+  Default `BrowseRemoteProtocols` should not include `cups` protocol
+  Works around CVE-2024-47176, the fix is the complete removal of
+  legacy CUPS Browsing functionality.
+  For more information, see:
+    https://www.cve.org/CVERecord?id=CVE-2024-47176
+    https://www.cve.org/CVERecord?id=CVE-2024-47850
+  (* Security fix *)
+l/dav1d-1.5.0-x86_64-1.txz:  Upgraded.
+l/gvfs-1.56.1-x86_64-1.txz:  Upgraded.
+l/libcupsfilters-2.1.0-x86_64-1.txz:  Upgraded.
+  `cfGetPrinterAttributes5()`: Validate response attributes before return
+  The IPP print destination which we are querying can be corrupted or
+  forged, so validate the response to strenghten security. Fixes
+  CVE-2024-47076.
+  For more information, see:
+    https://www.cve.org/CVERecord?id=CVE-2024-47076
+  (* Security fix *)
+l/libppd-2.1.0-x86_64-1.txz:  Upgraded.
+  Prevent PPD generation based on invalid IPP response
+  Overtaken from CUPS 2.x: Validate IPP attributes in PPD generator,
+  refactor make-and-model code, PPDize preset and template names,
+  quote PPD localized strings. Fixes CVE-2024-47175.
+  For more information, see:
+    https://www.cve.org/CVERecord?id=CVE-2024-47175
+  (* Security fix *)
+l/python-MarkupSafe-3.0.2-x86_64-1.txz:  Upgraded.
+l/python-psutil-6.1.0-x86_64-1.txz:  Upgraded.
+x/fcitx5-qt-5.1.8-x86_64-1.txz:  Upgraded.
++--------------------------+
 Thu Oct 17 23:18:46 UTC 2024
 a/kernel-firmware-20241017_8dbcf94-noarch-1.txz:  Upgraded.
 a/kernel-generic-6.11.4-x86_64-1.txz:  Upgraded.
