@@ -1,3 +1,12 @@
+Sat Oct 19 21:31:17 UTC 2024
+a/xfsprogs-6.11.0-x86_64-1.txz:  Upgraded.
+ap/itstool-2.0.7-x86_64-3.txz:  Rebuilt.
+  [PATCH] Fix handling of untranslated nodes.
+  Thanks to Willy Sudiarto Raharjo.
+l/elfutils-0.192-x86_64-1.txz:  Upgraded.
+l/libuv-1.49.2-x86_64-1.txz:  Upgraded.
+xfce/elementary-xfce-0.20-noarch-1.txz:  Upgraded.
++--------------------------+
 Fri Oct 18 22:51:09 UTC 2024
 a/elilo-3.16-x86_64-17.txz:  Rebuilt.
   eliloconfig: adapt to new naming and lack of huge kernel. Thanks to gildbg.

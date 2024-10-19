@@ -11,9 +11,26 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Fri, 18 Oct 2024 22:51:09 GMT</pubDate>
-      <lastBuildDate>Fri, 18 Oct 2024 23:29:36 GMT</lastBuildDate>
+      <pubDate>Sat, 19 Oct 2024 21:31:17 GMT</pubDate>
+      <lastBuildDate>Sat, 19 Oct 2024 22:05:40 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Sat, 19 Oct 2024 21:31:17 GMT</title>
+         <pubDate>Sat, 19 Oct 2024 21:31:17 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241019213117</link>
+         <guid isPermaLink="false">20241019213117</guid>
+         <description>
+           <![CDATA[<pre>
+a/xfsprogs-6.11.0-x86_64-1.txz:  Upgraded.
+ap/itstool-2.0.7-x86_64-3.txz:  Rebuilt.
+  [PATCH] Fix handling of untranslated nodes.
+  Thanks to Willy Sudiarto Raharjo.
+l/elfutils-0.192-x86_64-1.txz:  Upgraded.
+l/libuv-1.49.2-x86_64-1.txz:  Upgraded.
+xfce/elementary-xfce-0.20-noarch-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Fri, 18 Oct 2024 22:51:09 GMT</title>
          <pubDate>Fri, 18 Oct 2024 22:51:09 GMT</pubDate>
