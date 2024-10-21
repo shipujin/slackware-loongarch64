@@ -35,7 +35,7 @@ SYSTEM_LLVM=${SYSTEM_LLVM:-NO}
 # Bootstrap variables (might not be kept updated for latest Rust):
 RSTAGE0_VERSION=${RSTAGE0_VERSION:-1.81.0}
 RSTAGE0_DIR=${RSTAGE0_DIR:-2024-09-05}
-CSTAGE0_VERSION=${CSTAGE0_VERSION:-1.81.1}
+CSTAGE0_VERSION=${CSTAGE0_VERSION:-1.81.0}
 CSTAGE0_DIR=${CSTAGE0_DIR:-$RSTAGE0_DIR}
 
 # Automatically determine the architecture we're building on:

@@ -11,9 +11,30 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Sun, 20 Oct 2024 19:11:02 GMT</pubDate>
-      <lastBuildDate>Sun, 20 Oct 2024 19:28:51 GMT</lastBuildDate>
+      <pubDate>Mon, 21 Oct 2024 19:11:58 GMT</pubDate>
+      <lastBuildDate>Mon, 21 Oct 2024 19:30:10 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Mon, 21 Oct 2024 19:11:58 GMT</title>
+         <pubDate>Mon, 21 Oct 2024 19:11:58 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241021191158</link>
+         <guid isPermaLink="false">20241021191158</guid>
+         <description>
+           <![CDATA[<pre>
+d/meson-1.6.0-x86_64-1.txz:  Upgraded.
+kde/okteta-0.26.18-x86_64-1.txz:  Upgraded.
+l/gjs-1.82.1-x86_64-1.txz:  Upgraded.
+l/gspell-1.14.0-x86_64-1.txz:  Added.
+  Pan has switched to this instead of gtkspell3.
+  Nothing else in Slackware uses gtkspell3 -- perhaps it should be removed?
+l/vte-0.78.1-x86_64-1.txz:  Upgraded.
+n/nghttp2-1.64.0-x86_64-1.txz:  Upgraded.
+x/ibus-m17n-1.4.33-x86_64-1.txz:  Upgraded.
+xap/pan-0.161-x86_64-1.txz:  Upgraded.
+xfce/mousepad-0.6.3-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Sun, 20 Oct 2024 19:11:02 GMT</title>
          <pubDate>Sun, 20 Oct 2024 19:11:02 GMT</pubDate>

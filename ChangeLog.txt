@@ -1,3 +1,16 @@
+Mon Oct 21 19:11:58 UTC 2024
+d/meson-1.6.0-x86_64-1.txz:  Upgraded.
+kde/okteta-0.26.18-x86_64-1.txz:  Upgraded.
+l/gjs-1.82.1-x86_64-1.txz:  Upgraded.
+l/gspell-1.14.0-x86_64-1.txz:  Added.
+  Pan has switched to this instead of gtkspell3.
+  Nothing else in Slackware uses gtkspell3 -- perhaps it should be removed?
+l/vte-0.78.1-x86_64-1.txz:  Upgraded.
+n/nghttp2-1.64.0-x86_64-1.txz:  Upgraded.
+x/ibus-m17n-1.4.33-x86_64-1.txz:  Upgraded.
+xap/pan-0.161-x86_64-1.txz:  Upgraded.
+xfce/mousepad-0.6.3-x86_64-1.txz:  Upgraded.
++--------------------------+
 Sun Oct 20 19:11:02 UTC 2024
 l/fluidsynth-2.3.7-x86_64-1.txz:  Upgraded.
 n/netatalk-4.0.2-x86_64-1.txz:  Upgraded.
