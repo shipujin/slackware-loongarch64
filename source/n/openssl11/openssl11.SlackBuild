@@ -35,7 +35,7 @@ BUILD=${BUILD:-1}
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
-    i?86) export ARCH=i586 ;;
+    i?86) export ARCH=i686 ;;
     arm*) export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
        *) export ARCH=$( uname -m ) ;;
@@ -78,6 +78,7 @@ find . -name "*.pod" -exec sed -i "s/^\=item \([0-9]\)\(\ \|$\)/\=item C<\1>/g" 
 cat $CWD/0001-openssl-1.1.1x_CVE-2023-5678_CVE-2024-0727.patch | patch -p1 --verbose || exit 1
 cat $CWD/0002-openssl-1.1.1y_CVE-2024-2511_CVE-2024-4741.patch | patch -p1 --verbose || exit 1
 cat $CWD/0003-openssl-1.1.1za_CVE-2024-5535.patch | patch -p1 --verbose || exit 1
+cat $CWD/0004-openssl-1.1.1zb_CVE_2024_9143.patch | patch -p1 --verbose || exit 1
 
 ## For openssl-1.1.x, don't try to change the soname.
 ## Use .so.1, not .so.1.0.0:
@@ -88,8 +89,8 @@ if [ "$ARCH" = "i586" ]; then
   sed -i "/linux-elf/s/fomit-frame-pointer/fomit-frame-pointer -march=i586 -mtune=i686/g" Configure
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "i686" ]; then
-  # Build with -march=i686 -mtune=i686:
-  sed -i "/linux-elf/s/fomit-frame-pointer/fomit-frame-pointer -march=i686 -mtune=i686/g" Configure
+  # Build with -march=pentium4 -mtune=generic:
+  sed -i "/linux-elf/s/fomit-frame-pointer/fomit-frame-pointer -march=pentium4 -mtune=generic/g" Configure
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
   LIBDIRSUFFIX="64"

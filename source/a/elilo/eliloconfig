@@ -23,8 +23,8 @@
 # This script installs the elilo boot loader, the kernel, and optionally
 # an initrd into the EFI System Partition. A boot menu entry can also be
 # installed using efibootmgr. The kernel used will be whatever the symlink
-# /boot/vmlinuz-generic points to, and if /boot/initrd-generic.img exists,
-# that will be installed as the initrd.
+# /boot/vmlinuz-generic points to, and if /boot/initrd-generic.img (or the
+# traditional /boot/initrd.gz) exists, that will be installed as the initrd.
 #
 # The EFI System Partition is expected to be mounted on /boot/efi before
 # running this script.
@@ -133,11 +133,16 @@ timeout=1
 #
 EOF
 cp -a $T_PX/boot/elilo-x86_64.efi $T_PX/boot/efi/EFI/Slackware/elilo.efi 1> /dev/null 2> /dev/null
-if [ -r $T_PX/boot/initrd-generic.img ]; then
+if [ -r $T_PX/boot/initrd-generic.img -o -r $T_PX/boot/initrd.gz ]; then
   cp $T_PX/boot/vmlinuz-generic $T_PX/boot/efi/EFI/Slackware/vmlinuz 1> /dev/null 2> /dev/null
   touch -r $T_PX/boot/vmlinuz-generic $T_PX/boot/efi/EFI/Slackware/vmlinuz
-  cp $T_PX/boot/initrd-generic.img $T_PX/boot/efi/EFI/Slackware/initrd.gz 1> /dev/null 2> /dev/null
-  touch -r $T_PX/boot/initrd-generic.img $T_PX/boot/efi/EFI/Slackware/initrd.gz
+  if [ -r $T_PX/boot/initrd-generic.img ]; then
+    cp $T_PX/boot/initrd-generic.img $T_PX/boot/efi/EFI/Slackware/initrd.gz 1> /dev/null 2> /dev/null
+    touch -r $T_PX/boot/initrd-generic.img $T_PX/boot/efi/EFI/Slackware/initrd.gz
+  else # we know from the previous test that /boot/initrd.gz exists:
+    cp $T_PX/boot/initrd.gz $T_PX/boot/efi/EFI/Slackware/initrd.gz 1> /dev/null 2> /dev/null
+    touch -r $T_PX/boot/initrd $T_PX/boot/efi/EFI/Slackware/initrd.gz
+  fi
   cat << EOF >> $T_PX/boot/efi/EFI/Slackware/elilo.conf
 image=vmlinuz
         label=vmlinuz
