@@ -1,3 +1,11 @@
+Wed Oct 23 19:39:39 UTC 2024
+a/openssl-solibs-3.4.0-x86_64-1.txz:  Upgraded.
+l/pipewire-1.2.6-x86_64-1.txz:  Upgraded.
+l/protobuf-28.3-x86_64-1.txz:  Upgraded.
+n/epic5-3.0.1-x86_64-1.txz:  Upgraded.
+n/openssl-3.4.0-x86_64-1.txz:  Upgraded.
+extra/tigervnc/tigervnc-1.14.1-x86_64-1.txz:  Upgraded.
++--------------------------+
 Tue Oct 22 23:55:03 UTC 2024
 a/elilo-3.16-x86_64-18.txz:  Rebuilt.
   eliloconfig: if we don't find initrd-generic.img, try to fall back on

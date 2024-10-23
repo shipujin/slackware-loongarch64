@@ -80,8 +80,8 @@ fi
 zcat $CWD/0024-load-legacy-prov.patch.gz | patch -p1 --verbose || exit 1
 
 mkdir -p $PKG1/usr/doc/openssl-$VERSION
-cp -a ACKNOWLEDGEMENTS* AUTHORS* CHANGES* CONTRIBUTING* FAQ* INSTALL* \
-  LICENSE* NEWS* NOTES* README* doc \
+cp -a ACKNOWLEDGEMENTS* AUTHORS* CHANGES* CODE-OF-CONDUCT* CONTRIBUTING* FAQ* \
+  HACKING* INSTALL* LICENSE* NEWS* NOTES* README* SUPPORT* VERSION* doc \
   $PKG1/usr/doc/openssl-$VERSION
 find $PKG1/usr/doc/openssl-$VERSION -type d -exec chmod 755 {} \+
 find $PKG1/usr/doc/openssl-$VERSION -type f -exec chmod 644 {} \+
