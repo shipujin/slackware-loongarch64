@@ -1,3 +1,23 @@
+Fri Oct 25 18:13:16 UTC 2024
+a/mkinitrd-1.4.11-x86_64-40.txz:  Rebuilt.
+  remove-orphaned-initrds: also remove dangling initrd symlinks.
+l/glib2-2.82.2-x86_64-2.txz:  Rebuilt.
+  Removed useless symlinks. Thanks to marav.
+l/mozilla-nss-3.106-x86_64-1.txz:  Upgraded.
+x/xterm-395-x86_64-1.txz:  Upgraded.
++--------------------------+
+Thu Oct 24 18:41:39 UTC 2024
+l/gtkspell3-3.0.10-x86_64-1.txz:  Removed.
+l/netpbm-11.08.01-x86_64-1.txz:  Upgraded.
+n/ntp-4.2.8p18-x86_64-6.txz:  Rebuilt.
+  OpenSSL upstream says that major versions are ABI backwards compatible,
+  so stop warning in the logs and stderr that they might not be.
+  Thanks to USUARIONUEVO.
+n/php-8.3.13-x86_64-1.txz:  Upgraded.
+  This is a bugfix release.
+  For more information, see:
+    https://www.php.net/ChangeLog-8.php#8.3.13
++--------------------------+
 Wed Oct 23 19:39:39 UTC 2024
 a/openssl-solibs-3.4.0-x86_64-1.txz:  Upgraded.
 l/pipewire-1.2.6-x86_64-1.txz:  Upgraded.

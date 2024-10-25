@@ -8,12 +8,12 @@
               |-----handy-ruler------------------------------------------------------|
 %PACKAGE_NAME%: %PACKAGE_NAME% (Linux kernel/modules)
 %PACKAGE_NAME%:
-%PACKAGE_NAME%: This is a Linux kernel with built-in support for SATA, NVMe, and most
-%PACKAGE_NAME%: commonly used filesystems, as well as a large collection of loadable
-%PACKAGE_NAME%: kernel modules.
+%PACKAGE_NAME%: This is the %PACKAGE_NAME% Linux kernel and modules.
 %PACKAGE_NAME%:
-%PACKAGE_NAME%: It is recommended to use an initrd with this kernel for best results.
-%PACKAGE_NAME%: For more information about creating an initrd, see the README.initrd
-%PACKAGE_NAME%: file in the /boot directory.
+%PACKAGE_NAME%:
+%PACKAGE_NAME%:
+%PACKAGE_NAME%:
+%PACKAGE_NAME%:
+%PACKAGE_NAME%:
 %PACKAGE_NAME%:
 %PACKAGE_NAME%:

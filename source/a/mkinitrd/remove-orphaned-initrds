@@ -38,6 +38,9 @@ ORPHANS_FOUND=false
 
 cd /boot
 for initrd in initrd-*-*.img ; do
+  if [ ! -r $initrd ]; then
+    continue
+  fi
   INITRD_VERSION="$(echo $initrd | cut -f 2 -d -)"
   if ! /bin/ls vmlinuz-* | grep -q -- "-${INITRD_VERSION}-" ; then
     ORPHANS_FOUND=true
@@ -52,3 +55,12 @@ done
 if [ "$ORPHANS_FOUND" = "false" ]; then
   echo "No orphaned initrds found in /boot."
 fi
+# Also handle initrd symlinks:
+for dangling_symlink in $(find . -name "initrd-*.img" -xtype l) $(find . -name "initrd.gz" -xtype l) ; do
+  if [ "$1" = "--dry-run" ]; then
+    echo "Would remove: $dangling_symlink"
+  else
+    echo "Removing: $dangling_symlink"
+    rm -f $dangling_symlink
+  fi
+done

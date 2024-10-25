@@ -25,9 +25,14 @@
 # It needs to be run once on 64-bit (uname -m = x86_64) and once on IA32
 # (uname -m = i586 or i686).
 
+# In spite of this being named "build-all-kernels.sh", you don't have to build
+# all the packages or all the kernels that there are configs for. Set the
+# variables below to tune this for your needs.
+
 cd $(dirname $0) ; CWD=$(pwd)
 
 BUILD=${BUILD:-1}
+
 if [ -z "$VERSION" ]; then
   # Get the filename of the newest kernel tarball:
   KERNEL_SOURCE_FILE="$(/bin/ls -t linux-*.tar.?z | head -n 1 )"
@@ -39,12 +44,42 @@ if [ -z "$VERSION" ]; then
 fi
 TMP=${TMP:-/tmp}
 
+# If you don't want to build the kernel source package, set this to anything
+# other than "yes":
+BUILD_KERNEL_SOURCE_PACKAGE=${BUILD_KERNEL_SOURCE_PACKAGE:-yes}
+
+# If you don't want to build the kernel package(s), set this to "no".
+# If you only want to build one kernel package, set this to the name of the
+# kernel (i.e. "generic").
+# To build kernel packages for every available config, set to "yes".
+BUILD_KERNEL_PACKAGE=${BUILD_KERNEL_PACKAGE:-yes}
+
+# Build the kernel-headers package?
+BUILD_KERNEL_HEADERS_PACKAGE=${BUILD_KERNEL_HEADERS_PACKAGE:-yes}
+
+# Where should we find the kernel config files?
+KERNEL_CONFIGDIR=${KERNEL_CONFIGDIR:-./kernel-configs}
+
+# Make KERNEL_CONFIGDIR an absolute path:
+KERNEL_CONFIGDIR=$(realpath $KERNEL_CONFIGDIR)
+export KERNEL_CONFIGDIR
+
 # By default, install the packages as we build them and update the initrd.
 INSTALL_PACKAGES=${INSTALL_PACKAGES:-YES}
 
 # Clean kernels before building them. Not doing so quit working some time
 # after 4.19.x.
 export KERNEL_CLEAN=YES
+
+# Set this to true if you'd like to write the .config back to its source
+# after running "make oldconfig". This ensures that the config file is the
+# exact one used to build, and is sorted properly.
+REGEN_CONFIG=${REGEN_CONFIG:-true}
+export REGEN_CONFIG
+
+# We'll figure this out if you build the kernel-source package, otherwise
+# you better set it if it'll be needed to match the .config filename.
+LOCALVERSION=${LOCALVERSION:-}
 
 # A list of recipes for build may be passed in the $RECIPES variable, otherwise
 # we have defaults based on uname -m:
@@ -67,17 +102,16 @@ for recipe in $RECIPES ; do
   if [ "$recipe" = "x86_64" ]; then
     # Recipe for x86_64:
     export CONFIG_SUFFIX=".x64"
-    #unset LOCALVERSION
     OUTPUT=${OUTPUT:-${TMP}/output-x86_64-${VERSION}}
   elif [ "$recipe" = "IA32" ]; then
     # Recipe for IA32:
     export CONFIG_SUFFIX=".ia32"
-    #unset LOCALVERSION
     OUTPUT=${OUTPUT:-${TMP}/output-ia32-${VERSION}}
   else
     echo "Error: recipe ${recipe} not implemented"
     exit 1
   fi
+  mkdir -p $OUTPUT
 
   echo
   echo "*************************************************"
@@ -85,44 +119,93 @@ for recipe in $RECIPES ; do
   echo "*************************************************"
   echo
 
-  # Build kernel-source package:
-  KERNEL_SOURCE_PACKAGE_NAME=$(PRINT_PACKAGE_NAME=YES KERNEL_CONFIG="config-${VERSION}${LOCALVERSION}-generic${CONFIG_SUFFIX}" VERSION=$VERSION BUILD=$BUILD ./kernel-source.SlackBuild)
-  KERNEL_CONFIG="config-${VERSION}${LOCALVERSION}-generic${CONFIG_SUFFIX}" VERSION=$VERSION BUILD=$BUILD ./kernel-source.SlackBuild
-  mkdir -p $OUTPUT
-  mv ${TMP}/${KERNEL_SOURCE_PACKAGE_NAME} $OUTPUT || exit 1
-  if [ "${INSTALL_PACKAGES}" = "YES" ]; then
-    installpkg ${OUTPUT}/${KERNEL_SOURCE_PACKAGE_NAME} || exit 1
+  if [ "$BUILD_KERNEL_SOURCE_PACKAGE" = "yes" ]; then
+    # Build kernel-source package.
+    # Does a generic config file exist? If not, we'll use the first one we see with the proper ${CONFIG_SUFFIX}.
+    if [ -r $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-generic${CONFIG_SUFFIX} ]; then
+      KERNEL_CONFIG="config-${VERSION}${LOCALVERSION}-generic${CONFIG_SUFFIX}"
+    elif [ -r $(/bin/ls $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} | head -n 1 2> /dev/null) ]; then
+      KERNEL_CONFIG=$(basename $(/bin/ls $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} | head -n 1 2> /dev/null))
+    else
+      echo "ERROR: no suitable config file found for ${CONFIG_SUFFIX}"
+      exit 1
+    fi
+    export KERNEL_CONFIG
+
+    # Set the LOCALVERSION from this .config:
+    LOCALVERSION=$(cat $KERNEL_CONFIGDIR/$KERNEL_CONFIG | grep "^CONFIG_LOCALVERSION=" | cut -f 2 -d = | tr -d \")
+
+    # Set the name for this kernel:
+    # the name will be the FINAL dash delimited segment, minus the $CONFIG_SUFFIX.
+    # NOTE: KERNEL_NAME is *not* allowed to contain a dash!
+    KERNEL_NAME="$(echo $KERNEL_CONFIG | rev | cut -f 1 -d - | rev | cut -f 1 -d .)"
+    export KERNEL_NAME
+
+    # Build:
+    KERNEL_SOURCE_PACKAGE_NAME=$(PRINT_PACKAGE_NAME=YES VERSION=$VERSION BUILD=$BUILD ./kernel-source.SlackBuild)
+    VERSION=$VERSION BUILD=$BUILD ./kernel-source.SlackBuild
+    mv ${TMP}/${KERNEL_SOURCE_PACKAGE_NAME} $OUTPUT || exit 1
+    if [ "${INSTALL_PACKAGES}" = "YES" ]; then
+      installpkg ${OUTPUT}/${KERNEL_SOURCE_PACKAGE_NAME} || exit 1
+    fi
+  else # otherwise, still stage the sources in $TMP/package-kernel-source:
+    ONLY_STAGE_KERNEL_SOURCE=yes VERSION=$VERSION BUILD=$BUILD ./kernel-source.SlackBuild
+    # Set the LOCALVERSION from this .config:
+    LOCALVERSION=$(cat $TMP/package-kernel-source/usr/src/linux-*/.config | grep "^CONFIG_LOCALVERSION=" | cut -f 2 -d = | tr -d \")
+    # Set the name for this kernel. Since we just rewrote the .config, it will be the newest one:
+    KERNEL_NAME="$(/bin/ls -t $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} | head -n 1 | rev | cut -f 1 -d - | rev | cut -f 1 -d .)"
+    export KERNEL_NAME
   fi
 
-  # Build kernel-generic+modules package:
-  # We will build in the just-built kernel tree. First, let's put back the
-  # symlinks:
-  ( cd $TMP/package-kernel-source
-    sh install/doinst.sh
-  )
-  KERNEL_GENERIC_PACKAGE_NAME=$(PRINT_PACKAGE_NAME=YES KERNEL_NAME=generic KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=./kernel-configs/config-${VERSION}${LOCALVERSION}-generic${CONFIG_SUFFIX} CONFIG_SUFFIX=${CONFIG_SUFFIX} KERNEL_OUTPUT_DIRECTORY=$OUTPUT/kernels/generic.s BUILD=$BUILD ./kernel-generic.SlackBuild)
-  KERNEL_NAME=generic KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=./kernel-configs/config-${VERSION}${LOCALVERSION}-generic${CONFIG_SUFFIX} CONFIG_SUFFIX=${CONFIG_SUFFIX} KERNEL_OUTPUT_DIRECTORY=$OUTPUT/kernels/generic.s BUILD=$BUILD ./kernel-generic.SlackBuild
-  if [ -r ${TMP}/${KERNEL_GENERIC_PACKAGE_NAME} ]; then
-    mv ${TMP}/${KERNEL_GENERIC_PACKAGE_NAME} $OUTPUT
-  else
-    echo "kernel-generic build failed."
-    exit 1
-  fi
-  if [ "${INSTALL_PACKAGES}" = "YES" ]; then
-    installpkg ${OUTPUT}/${KERNEL_GENERIC_PACKAGE_NAME} || exit 1
-  fi
+  # Build kernel+modules package(s) for every config file with a matching $CONFIG_SUFFIX:
+  for configfile in $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} ; do
 
+    # Let's start by determining the name of this kernel:
+    KERNEL_NAME="$(echo $configfile | rev | cut -f 1 -d - | rev | cut -f 1 -d .)"
+    export KERNEL_NAME
+
+    # Are we building this kernel?
+    if [ ! "$BUILD_KERNEL_PACKAGE" = "yes" ]; then
+      if ! "$BUILD_KERNEL_PACKAGE" = "$KERNEL_NAME" ]; then
+        continue
+      fi
+    fi
+
+    # We will build in the just-built kernel tree. First, let's put back the
+    # symlinks:
+    ( cd $TMP/package-kernel-source
+      sh install/doinst.sh 2> /dev/null
+    )
+
+    KERNEL_GENERIC_PACKAGE_NAME=$(PRINT_PACKAGE_NAME=YES KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=$KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-${KERNEL_NAME}${CONFIG_SUFFIX} CONFIG_SUFFIX=${CONFIG_SUFFIX} KERNEL_OUTPUT_DIRECTORY=$OUTPUT/kernels/${KERNEL_NAME}.s BUILD=$BUILD ./kernel-generic.SlackBuild)
+
+    KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=$KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-${KERNEL_NAME}${CONFIG_SUFFIX} CONFIG_SUFFIX=${CONFIG_SUFFIX} KERNEL_OUTPUT_DIRECTORY=$OUTPUT/kernels/${KERNEL_NAME}.s BUILD=$BUILD ./kernel-generic.SlackBuild
+
+    if [ -r ${TMP}/${KERNEL_GENERIC_PACKAGE_NAME} ]; then
+      mv ${TMP}/${KERNEL_GENERIC_PACKAGE_NAME} $OUTPUT
+    else
+      echo "kernel-${KERNEL_NAME} build failed."
+      exit 1
+    fi
+    if [ "${INSTALL_PACKAGES}" = "YES" ]; then
+      installpkg ${OUTPUT}/${KERNEL_GENERIC_PACKAGE_NAME} || exit 1
+    fi
+
+  done # building kernel+modules package(s).
+
+  if [ "$BUILD_KERNEL_HEADERS_PACKAGE" = "yes" ]; then
   # Build kernel-headers:
-  KERNEL_HEADERS_PACKAGE_NAME=$(PRINT_PACKAGE_NAME=YES KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux BUILD=$BUILD ./kernel-headers.SlackBuild)
-  KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux BUILD=$BUILD ./kernel-headers.SlackBuild
-  if [ -r ${TMP}/${KERNEL_HEADERS_PACKAGE_NAME} ]; then
-    mv ${TMP}/${KERNEL_HEADERS_PACKAGE_NAME} $OUTPUT
-  else
-    echo "kernel-headers build failed."
-    exit 1
-  fi
-  if [ "${INSTALL_PACKAGES}" = "YES" ]; then
-    upgradepkg --reinstall --install-new ${OUTPUT}/${KERNEL_HEADERS_PACKAGE_NAME} || exit 1
+    KERNEL_HEADERS_PACKAGE_NAME=$(PRINT_PACKAGE_NAME=YES KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux BUILD=$BUILD ./kernel-headers.SlackBuild)
+    KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux BUILD=$BUILD ./kernel-headers.SlackBuild
+    if [ -r ${TMP}/${KERNEL_HEADERS_PACKAGE_NAME} ]; then
+      mv ${TMP}/${KERNEL_HEADERS_PACKAGE_NAME} $OUTPUT
+    else
+      echo "kernel-headers build failed."
+      exit 1
+    fi
+    if [ "${INSTALL_PACKAGES}" = "YES" ]; then
+      upgradepkg --reinstall --install-new ${OUTPUT}/${KERNEL_HEADERS_PACKAGE_NAME} || exit 1
+    fi
   fi
 
   # Update initrd:

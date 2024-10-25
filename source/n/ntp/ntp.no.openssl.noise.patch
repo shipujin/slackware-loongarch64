@@ -1,0 +1,19 @@
+--- ./libntp/ssl_init.c.orig	2024-05-07 06:21:21.000000000 -0500
++++ ./libntp/ssl_init.c	2024-10-24 12:25:07.982689766 -0500
+@@ -68,12 +68,14 @@
+ 	v = OpenSSL_version_num();
+ 	if ((v ^ OPENSSL_VERSION_NUMBER) & ~0xff0L) {
+ 		LIB_GETBUF(buf);
++                /* When running against OpenSSL 3, ABI is guaranteed compatible
++                so let's avoid this noise. */
+ 		snprintf(buf, LIB_BUFLENGTH, 
+ 			 "OpenSSL version mismatch."
+ 			 "Built against %lx, you have %lx\n",
+ 			 (u_long)OPENSSL_VERSION_NUMBER, v);
+-		msyslog(LOG_WARNING, "%s", buf);
+-		fputs(buf, stderr);
++		/* msyslog(LOG_WARNING, "%s", buf); */
++		/* fputs(buf, stderr); */
+ 	}
+ 	INIT_SSL();
+ }

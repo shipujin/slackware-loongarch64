@@ -24,7 +24,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=glib2
 VERSION=${VERSION:-$(echo glib-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 
 NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
 
@@ -142,13 +142,6 @@ cp -a \
   $PKG/usr/doc/glib-$VERSION
   rm -f $PKG/usr/doc/glib-$VERSION/README.{in,win32}
 
-# Make links to the documentation in /usr/share/gtk-doc/:
-( cd $PKG/usr/doc/glib-$VERSION
-  for dir in $PKG/usr/share/gtk-doc/html/* ; do
-    ln -s /usr/share/gtk-doc/html/$(basename $dir) .
-  done
-)
-
 # If there's a ChangeLog, installing at least part of the recent history
 # is useful, but don't let it get totally out of control:
 if [ -r ChangeLog ]; then
@@ -170,4 +163,3 @@ zcat $CWD/doinst.sh.gz | sed "s,@LIBDIR@,/usr/lib${LIBDIRSUFFIX}," > $PKG/instal
 
 cd $PKG
 /sbin/makepkg -l y -c n --prepend $TMP/glib2-$VERSION-$ARCH-$BUILD.txz
-
