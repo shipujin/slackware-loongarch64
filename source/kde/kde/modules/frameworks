@@ -65,7 +65,8 @@ kded
 kio
 knewstuff
 kparts
-kdewebkit
+# obsolete:
+#kdewebkit
 kdesignerplugin
 kdeclarative
 kcmutils

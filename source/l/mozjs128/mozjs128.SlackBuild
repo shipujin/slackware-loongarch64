@@ -26,7 +26,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 PKGNAM=mozjs128
 SRCNAME=firefox
 VERSION=$(basename $(ls $SRCNAME-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev) .source)
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -111,6 +111,7 @@ autoconf-2.13
 
 CFLAGS+="$SLKCFLAGS -fno-delete-null-pointer-checks -fno-strict-aliasing -fno-tree-vrp " \
 CXXFLAGS+="$SLKCFLAGS -fno-delete-null-pointer-checks -fno-strict-aliasing -fno-tree-vrp " \
+LDFLAGS="-Wl,--copy-dt-needed-entries" \
 ./configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
@@ -122,6 +123,7 @@ CXXFLAGS+="$SLKCFLAGS -fno-delete-null-pointer-checks -fno-strict-aliasing -fno-
   --disable-tests \
   --disable-strip \
   --with-intl-api \
+  --enable-linker=bfd \
   --enable-readline \
   --enable-shared-js \
   --enable-optimize \

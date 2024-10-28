@@ -1,7 +1,6 @@
 GConf:REC
 Imath:REC
 LibRaw:REC
-M2Crypto:REC
 Mako:REC
 PyQt-builder:REC
 PyQt5:REC
@@ -394,7 +393,6 @@ python-zipp:REC
 python2-pycairo:REC
 qrencode:REC
 qt5:REC
-qt5-webkit:REC
 qt6:REC
 qtkeychain:REC
 quazip:REC

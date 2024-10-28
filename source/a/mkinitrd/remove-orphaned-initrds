@@ -37,12 +37,17 @@
 ORPHANS_FOUND=false
 
 cd /boot
-for initrd in initrd-*-*.img ; do
+for initrd in initrd-*.img ; do
   if [ ! -r $initrd ]; then
     continue
   fi
-  INITRD_VERSION="$(echo $initrd | cut -f 2 -d -)"
-  if ! /bin/ls vmlinuz-* | grep -q -- "-${INITRD_VERSION}-" ; then
+  # We are not removing symlinks here. We'll remove dangling ones later on.
+  if [ -L $initrd ]; then
+    continue
+  fi
+  # Find the identifying portion of the initrd's filename:
+  IDENTIFIER="$(basename $(echo $initrd | cut -f 2- -d -) .img)"
+  if [ ! -r vmlinuz-${IDENTIFIER} ]; then
     ORPHANS_FOUND=true
     if [ "$1" = "--dry-run" ]; then
       echo "Would remove: $initrd"

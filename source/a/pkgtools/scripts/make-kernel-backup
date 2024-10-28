@@ -40,7 +40,8 @@
 # script cares. The kernel modules do need to be installed first though.
 
 # If /etc/default/make-kernel-backup exists, source it to set initial values
-# for BUILD, KERNEL_FILE, BACKUP_NAME, and MAKE_SYMLINKS:
+# for for any of:
+# BUILD, KERNEL_FILE, BACKUP_NAME, and MAKE_SYMLINKS:
 if [ -r /etc/default/make-kernel-backup ]; then
   . /etc/default/make-kernel-backup
 fi
@@ -49,6 +50,14 @@ BUILD=${BUILD:-1}
 
 # This is the kernel to use (may be a symlink):
 KERNEL_FILE=${KERNEL_FILE:-/boot/vmlinuz-generic}
+
+# In case this is a symlink, find the real file:
+KERNEL_FILE=$(readlink -f $KERNEL_FILE)
+
+# Find the identifying string so that we can match with an existing initrd.
+# If KERNEL_FILE is just a bzImage or some such, we won't try to find an
+# initrd.
+IDENTIFIER=$(echo $(basename $KERNEL_FILE) | cut -f 2- -d -)
 
 # This is the kernel name for the backup kernel:
 BACKUP_NAME=${BACKUP_NAME:-backup}
@@ -105,10 +114,9 @@ fi
 
 # If there is an initrd for this kernel version, we will assume that's
 # the one we should use:
-if /bin/ls /boot/initrd-${KERNEL_VERSION}-*.img 1> /dev/null 2> /dev/null ; then
-  # Pick the newest one:
-  cp -a $(/bin/ls -t /boot/initrd-${KERNEL_VERSION}-*.img | grep -v /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img | head -n 1) /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img
-  INITBLURB="Backed up $(/bin/ls -t /boot/initrd-${KERNEL_VERSION}-*.img | grep -v /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img | head -n 1)  as /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img."
+if [ -r /boot/initrd-${IDENTIFIER}.img ]; then
+  cp -a /boot/initrd-${IDENTIFIER}.img /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img
+  INITBLURB="Backed up /boot/initrd-${IDENTIFIER}.img as /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img."
 else
   INITBLURB="Not including an initrd because a matching version was not found."
 fi
@@ -130,7 +138,7 @@ if [ "$MAKE_SYMLINKS" = "true" ]; then
 fi
 
 # Some shortcuts to avoid redundancy:
-PACKAGE_NAME="kernel-${BACKUP_NAME}-${KERNEL_VERSION}-${ARCH}-${BUILD}"
+PACKAGE_NAME="kernel-${BACKUP_NAME}-$(echo ${KERNEL_VERSION} | tr - _)-${ARCH}-${BUILD}"
 PACKAGES_ENTRY=/var/lib/pkgtools/packages/${PACKAGE_NAME}
 SCRIPTS_ENTRY=/var/lib/pkgtools/scripts/${PACKAGE_NAME}
 

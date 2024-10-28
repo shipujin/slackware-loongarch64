@@ -1,3 +1,90 @@
+Mon Oct 28 21:22:48 UTC 2024
+a/aaa_libraries-15.1-x86_64-34.txz:  Rebuilt.
+  Upgraded: libcap.so.2.71, libelf-0.192.so, liblzma.so.5.6.3,
+  libcares.so.2.19.1, libexpat.so.1.9.3, libglib-2.0.so.0.8200.2,
+  libgmodule-2.0.so.0.8200.2, libgobject-2.0.so.0.8200.2,
+  libgthread-2.0.so.0.8200.2, libisl.so.23.4.0, libjson-c.so.5.4.0,
+  libpng16.so.16.44.0, libtiff.so.6.1.0, libtiffxx.so.6.1.0,
+  libunistring.so.5.2.0.
+  Removed: libboost_*.so.1.85.0.
+  Added (temporarily): libicudata.so.74.2, libicui18n.so.74.2,
+  libicuio.so.74.2, libicutest.so.74.2, libicutu.so.74.2,
+  libicuuc.so.74.2.
+a/mkinitrd-1.4.11-x86_64-41.txz:  Rebuilt.
+  remove-orphaned-initrds: simplify matching - initrd-${FOO}.img is considered
+  orphaned if there is no vmlinuz-${FOO} (the contents of $FOO are arbitrary).
+a/pkgtools-15.1-noarch-15.txz:  Rebuilt.
+  make-kernel-backup: if we are backing up vmlinuz-${FOO}, then also back up
+  initrd-${FOO}.img if it exists. Don't try to match specific fields.
+a/xfsprogs-6.11.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+ap/mpg123-1.32.8-x86_64-1.txz:  Upgraded.
+ap/sqlite-3.46.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+d/mercurial-6.8.2-x86_64-1.txz:  Upgraded.
+d/python-pip-24.3.1-x86_64-1.txz:  Upgraded.
+kde/kdeplasma-addons-5.27.11-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+kde/kdewebkit-5.116.0-x86_64-1.txz:  Removed.
+  Mothing uses this. Obsolete.
+kde/konsole-23.08.5-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+kde/plasma-workspace-5.27.11.1-x86_64-3.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+l/M2Crypto-0.42.0-x86_64-1.txz:  Removed.
+  Nothing in Slackware has needed this since crda was removed, and very little
+  elsewhere does. Thanks to lucabon.
+l/babl-0.1.110-x86_64-1.txz:  Upgraded.
+l/boost-1.86.0-x86_64-3.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+l/desktop-file-utils-0.28-x86_64-1.txz:  Upgraded.
+l/gspell-1.14.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+l/harfbuzz-10.0.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+l/icu4c-76.1-x86_64-1.txz:  Upgraded.
+  Shared library .so-version bump.
+l/libcap-2.71-x86_64-1.txz:  Upgraded.
+l/libical-3.0.18-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+l/libqalculate-5.3.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+l/liburing-2.8-x86_64-1.txz:  Upgraded.
+l/libvisio-0.1.8-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+l/mozjs128-128.3.1esr-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+l/nodejs-20.18.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+l/qt5-5.15.15_20241016_9f395e3b-x86_64-1.txz:  Upgraded.
+  Compiled against icu4c-76.1.
+l/qt5-webkit-5.212.0_alpha4-x86_64-13.txz:  Removed.
+  Nothing uses this except kdewebkit, and nothing uses that.
+  Plus it is unmaintained, obsolete, and likely full of holes.
+l/qt6-6.7.3_20240920_90e86aee-x86_64-4.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+l/vte-0.78.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+n/dovecot-2.3.21.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+n/netatalk-4.0.3-x86_64-1.txz:  Upgraded.
+n/php-8.3.13-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+n/postfix-3.9.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+n/samba-4.21.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+n/tin-2.6.3-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+t/texlive-2024.240409-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+extra/brltty/brltty-6.7-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+extra/sendmail/sendmail-8.18.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
+extra/sendmail/sendmail-cf-8.18.1-noarch-2.txz:  Rebuilt.
+  Recompiled against icu4c-76.1.
++--------------------------+
 Fri Oct 25 18:13:16 UTC 2024
 a/mkinitrd-1.4.11-x86_64-40.txz:  Rebuilt.
   remove-orphaned-initrds: also remove dangling initrd symlinks.
