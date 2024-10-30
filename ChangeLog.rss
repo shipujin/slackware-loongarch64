@@ -11,9 +11,106 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Mon, 28 Oct 2024 21:22:48 GMT</pubDate>
-      <lastBuildDate>Mon, 28 Oct 2024 22:11:50 GMT</lastBuildDate>
+      <pubDate>Wed, 30 Oct 2024 21:03:27 GMT</pubDate>
+      <lastBuildDate>Wed, 30 Oct 2024 22:24:47 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Wed, 30 Oct 2024 21:03:27 GMT</title>
+         <pubDate>Wed, 30 Oct 2024 21:03:27 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241030210327</link>
+         <guid isPermaLink="false">20241030210327</guid>
+         <description>
+           <![CDATA[<pre>
+ap/vim-9.1.0821-x86_64-1.txz:  Upgraded.
+d/llvm-19.1.3-x86_64-1.txz:  Upgraded.
+d/python-setuptools-75.3.0-x86_64-1.txz:  Upgraded.
+l/PyQt5-5.15.11-x86_64-2.txz:  Rebuilt.
+  Recompiled to drop the QtWebKit and QtWebKitWidgets bindings.
+  Thanks to jloco.
+l/libclc-19.1.3-x86_64-1.txz:  Upgraded.
+l/libnl3-3.11.0-x86_64-1.txz:  Upgraded.
+l/lz4-1.10.0-x86_64-2.txz:  Rebuilt.
+  Make sure liblz4.pc uses lib${LIBDIRSUFFIX}. Thanks to af7567.
+l/mozjs128-128.4.0esr-x86_64-1.txz:  Upgraded.
+n/dovecot-2.3.21.1-x86_64-3.txz:  Rebuilt.
+  Recompiled using --with-lua. Thanks to Luigi Trovato.
+n/fetchmail-6.5.0-x86_64-1.txz:  Upgraded.
+n/gnupg2-2.4.6-x86_64-1.txz:  Upgraded.
+x/xf86-input-wacom-1.2.3-x86_64-1.txz:  Upgraded.
+x/xorg-server-21.1.14-x86_64-1.txz:  Upgraded.
+  This update fixes a security issue:
+  By providing a modified bitmap, a heap-based buffer overflow may occur.
+  This may lead to local privilege escalation if the server is run as root
+  or remote code execution (e.g. x11 over ssh).
+  This vulnerability was discovered by:
+  Jan-Niklas Sohn working with Trend Micro Zero Day Initiative
+  For more information, see:
+    https://lists.x.org/archives/xorg-announce/2024-October/003545.html
+    https://www.cve.org/CVERecord?id=CVE-2024-9632
+  (* Security fix *)
+x/xorg-server-xephyr-21.1.14-x86_64-1.txz:  Upgraded.
+x/xorg-server-xnest-21.1.14-x86_64-1.txz:  Upgraded.
+x/xorg-server-xvfb-21.1.14-x86_64-1.txz:  Upgraded.
+x/xorg-server-xwayland-24.1.4-x86_64-1.txz:  Upgraded.
+  This update fixes a security issue:
+  By providing a modified bitmap, a heap-based buffer overflow may occur.
+  This may lead to local privilege escalation if the server is run as root
+  or remote code execution (e.g. x11 over ssh).
+  This vulnerability was discovered by:
+  Jan-Niklas Sohn working with Trend Micro Zero Day Initiative
+  For more information, see:
+    https://lists.x.org/archives/xorg-announce/2024-October/003545.html
+    https://www.cve.org/CVERecord?id=CVE-2024-9632
+  (* Security fix *)
+xap/mozilla-firefox-128.4.0esr-x86_64-1.txz:  Upgraded.
+  This update contains security fixes and improvements.
+  For more information, see:
+    https://www.mozilla.org/en-US/firefox/128.4.0/releasenotes/
+    https://www.mozilla.org/security/advisories/mfsa2024-56/
+    https://www.cve.org/CVERecord?id=CVE-2024-10458
+    https://www.cve.org/CVERecord?id=CVE-2024-10459
+    https://www.cve.org/CVERecord?id=CVE-2024-10460
+    https://www.cve.org/CVERecord?id=CVE-2024-10461
+    https://www.cve.org/CVERecord?id=CVE-2024-10462
+    https://www.cve.org/CVERecord?id=CVE-2024-10463
+    https://www.cve.org/CVERecord?id=CVE-2024-10464
+    https://www.cve.org/CVERecord?id=CVE-2024-10465
+    https://www.cve.org/CVERecord?id=CVE-2024-10466
+    https://www.cve.org/CVERecord?id=CVE-2024-10467
+  (* Security fix *)
+xap/mozilla-thunderbird-128.4.0esr-x86_64-1.txz:  Upgraded.
+  This release contains security fixes and improvements.
+  For more information, see:
+    https://www.mozilla.org/en-US/thunderbird/128.4.0esr/releasenotes/
+    https://www.mozilla.org/en-US/security/advisories/mfsa2024-58/
+    https://www.cve.org/CVERecord?id=CVE-2024-10458
+    https://www.cve.org/CVERecord?id=CVE-2024-10459
+    https://www.cve.org/CVERecord?id=CVE-2024-10460
+    https://www.cve.org/CVERecord?id=CVE-2024-10461
+    https://www.cve.org/CVERecord?id=CVE-2024-10462
+    https://www.cve.org/CVERecord?id=CVE-2024-10463
+    https://www.cve.org/CVERecord?id=CVE-2024-10464
+    https://www.cve.org/CVERecord?id=CVE-2024-10465
+    https://www.cve.org/CVERecord?id=CVE-2024-10466
+    https://www.cve.org/CVERecord?id=CVE-2024-10467
+  (* Security fix *)
+xap/vim-gvim-9.1.0821-x86_64-1.txz:  Upgraded.
+xap/xaos-4.3.3-x86_64-1.txz:  Upgraded.
+extra/tigervnc/tigervnc-1.14.1-x86_64-2.txz:  Rebuilt.
+  Rebuilt against xorg-server-21.1.14.
+  This update fixes a security issue:
+  By providing a modified bitmap, a heap-based buffer overflow may occur.
+  This may lead to local privilege escalation if the server is run as root
+  or remote code execution (e.g. x11 over ssh).
+  This vulnerability was discovered by:
+  Jan-Niklas Sohn working with Trend Micro Zero Day Initiative
+  For more information, see:
+    https://lists.x.org/archives/xorg-announce/2024-October/003545.html
+    https://www.cve.org/CVERecord?id=CVE-2024-9632
+  (* Security fix *)
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Mon, 28 Oct 2024 21:22:48 GMT</title>
          <pubDate>Mon, 28 Oct 2024 21:22:48 GMT</pubDate>
@@ -48,7 +145,7 @@ d/python-pip-24.3.1-x86_64-1.txz:  Upgraded.
 kde/kdeplasma-addons-5.27.11-x86_64-2.txz:  Rebuilt.
   Recompiled against icu4c-76.1.
 kde/kdewebkit-5.116.0-x86_64-1.txz:  Removed.
-  Mothing uses this. Obsolete.
+  Nothing uses this. Obsolete.
 kde/konsole-23.08.5-x86_64-2.txz:  Rebuilt.
   Recompiled against icu4c-76.1.
 kde/plasma-workspace-5.27.11.1-x86_64-3.txz:  Rebuilt.

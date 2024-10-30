@@ -24,9 +24,9 @@
 cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=xaos
-SRCNAM=XaoS
-VERSION=${VERSION:-$(echo $SRCNAM-*.tar.?z | cut -f 2 -d -)}
-BUILD=${BUILD:-2}
+SRCNAM=XaoS-release
+VERSION=${VERSION:-$(echo $SRCNAM-*.tar.?z | rev | cut -f 3- -d . | rev | cut -f 3 -d -)}
+BUILD=${BUILD:-1}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
