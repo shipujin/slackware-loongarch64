@@ -54,24 +54,6 @@ KERNEL_FILE=${KERNEL_FILE:-/boot/vmlinuz-generic}
 # In case this is a symlink, find the real file:
 KERNEL_FILE=$(readlink -f $KERNEL_FILE)
 
-# Find the identifying string so that we can match with an existing initrd.
-# If KERNEL_FILE is just a bzImage or some such, we won't try to find an
-# initrd.
-IDENTIFIER=$(echo $(basename $KERNEL_FILE) | cut -f 2- -d -)
-
-# This is the kernel name for the backup kernel:
-BACKUP_NAME=${BACKUP_NAME:-backup}
-
-# Do we want to make unversioned symlinks to the backup kernel and (if used)
-# initrd? With the default BACKUP_NAME, these would be named vmlinuz-backup
-# and initrd-backup.img.
-MAKE_SYMLINKS=${MAKE_SYMLINKS:-true}
-
-# If this is a symlink, find the actual file:
-if [ -L $KERNEL_FILE ]; then
-  KERNEL_FILE=$(readlink -f $KERNEL_FILE)
-fi
-
 # Is this a Linux kernel?
 if ! file $KERNEL_FILE | grep -q "Linux kernel" ; then
   echo "ERROR: $KERNEL_FILE does not appear to be a Linux kernel."
@@ -85,6 +67,14 @@ else
   echo "ERROR: $KERNEL_FILE not found."
   exit 1
 fi
+
+# This is the kernel name for the backup kernel:
+BACKUP_NAME=${BACKUP_NAME:-backup}
+
+# Do we want to make unversioned symlinks to the backup kernel and (if used)
+# initrd? With the default BACKUP_NAME, these would be named vmlinuz-backup
+# and initrd-backup.img.
+MAKE_SYMLINKS=${MAKE_SYMLINKS:-true}
 
 # We require the modules for this kernel version to be installed:
 if [ ! -d /lib/modules/${KERNEL_VERSION} ]; then
@@ -102,38 +92,35 @@ else
   ARCH="$(uname -m)"
 fi
 
-# Make a backup of the kernel in /boot:
-rm -f /boot/vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME}
-cp -a $KERNEL_FILE /boot/vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME}
-
 if [ "$MAKE_SYMLINKS" = "true" ]; then
   # Make an unversioned symlink:
   rm -f /boot/vmlinuz-${BACKUP_NAME}
-  ln -sf vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME} /boot/vmlinuz-${BACKUP_NAME}
+  ln -sf vmlinuz-${KERNEL_VERSION} /boot/vmlinuz-${BACKUP_NAME}
 fi
 
-# If there is an initrd for this kernel version, we will assume that's
-# the one we should use:
-if [ -r /boot/initrd-${IDENTIFIER}.img ]; then
-  cp -a /boot/initrd-${IDENTIFIER}.img /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img
-  INITBLURB="Backed up /boot/initrd-${IDENTIFIER}.img as /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img."
-else
-  INITBLURB="Not including an initrd because a matching version was not found."
-fi
+### ACTUALLY, it is better to not include this, since the initrds are
+### not normally part of some other package that might get removed
+## If there is an initrd for this kernel version, we will assume that's
+## the one we should use:
+#if [ -r /boot/initrd-${KERNEL_VERSION}.img ]; then
+#  INITBLURB="Backed up /boot/initrd-${KERNEL_VERSION}.img."
+#else
+#  INITBLURB="Not including an initrd because a matching version was not found."
+#fi
 
 # OK, an initrd could be made automatically if you don't have one, but that's
 # not really this script's job. ;-) If you don't already have one, we will
 # assume that's because you don't use one, and don't want one.
 #else
 #  # Make an initrd for this:
-#  sh /usr/share/mkinitrd/mkinitrd_command_generator.sh -k ${KERNEL_VERSION} -a "-L -o /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img" | bash 1> /dev/null 2> /dev/null
+#  sh /usr/share/mkinitrd/mkinitrd_command_generator.sh -k ${KERNEL_VERSION} -a "-L -o /boot/initrd-${KERNEL_VERSION}.img" | bash 1> /dev/null 2> /dev/null
 #fi
 
 if [ "$MAKE_SYMLINKS" = "true" ]; then
-  # Make an initrd symlink if we backed up an initrd:
-  if [ -f /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img ]; then
+  # Make an initrd symlink if there is an initrd:
+  if [ -f /boot/initrd-${KERNEL_VERSION}.img ]; then
     rm -f /boot/initrd-${BACKUP_NAME}.img
-    ln -sf initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img /boot/initrd-${BACKUP_NAME}.img
+    ln -sf initrd-${KERNEL_VERSION}.img /boot/initrd-${BACKUP_NAME}.img
   fi
 fi
 
@@ -151,23 +138,23 @@ PACKAGE LOCATION: ./${PACKAGE_NAME}
 PACKAGE DESCRIPTION:
 kernel-${BACKUP_NAME}: kernel-${BACKUP_NAME} (backup of ${KERNEL_FILE})
 kernel-${BACKUP_NAME}:
-kernel-${BACKUP_NAME}: This is a Linux kernel with built-in support for SATA, NVMe, and most
-kernel-${BACKUP_NAME}: commonly used filesystems, as well as a large collection of loadable
-kernel-${BACKUP_NAME}: kernel modules.
+kernel-${BACKUP_NAME}: This is a backup of ${KERNEL_FILE} and modules.
 kernel-${BACKUP_NAME}:
-kernel-${BACKUP_NAME}: It is recommended to use an initrd with this kernel for best results.
-kernel-${BACKUP_NAME}: For more information about creating an initrd, see the README.initrd
-kernel-${BACKUP_NAME}: file in the /boot directory.
+kernel-${BACKUP_NAME}:
+kernel-${BACKUP_NAME}:
+kernel-${BACKUP_NAME}:
+kernel-${BACKUP_NAME}:
+kernel-${BACKUP_NAME}:
 kernel-${BACKUP_NAME}:
 kernel-${BACKUP_NAME}:
 FILE LIST:
 ./
 boot/
 EOF
-echo boot/vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME} >> $PACKAGES_ENTRY
-if [ -f /boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img ]; then
-  echo boot/initrd-${KERNEL_VERSION}-${BACKUP_NAME}.img >> $PACKAGES_ENTRY
-fi
+echo boot/vmlinuz-${KERNEL_VERSION} >> $PACKAGES_ENTRY
+#if [ -f /boot/initrd-${KERNEL_VERSION}.img ]; then
+#  echo boot/initrd-${KERNEL_VERSION}.img >> $PACKAGES_ENTRY
+#fi
 echo "lib/" >> $PACKAGES_ENTRY
 echo "lib/modules/" >> $PACKAGES_ENTRY
 # First the files:
@@ -197,11 +184,11 @@ make_install_script() {
   done
 }
 rm -f ${SCRIPTS_ENTRY}
-find /boot -name vmlinuz-${BACKUP_NAME} -printf "%p\t%l\n" | cut -b2- | LC_COLLATE=C sort | sed 's,^\./,,; s,[ "#$&\x27()*;<>?[\\`{|~],\\&,g;' | make_install_script >> ${SCRIPTS_ENTRY}
-find /boot -name initrd-${BACKUP_NAME}.img -printf "%p\t%l\n" | cut -b2- | LC_COLLATE=C sort | sed 's,^\./,,; s,[ "#$&\x27()*;<>?[\\`{|~],\\&,g;' | make_install_script >> ${SCRIPTS_ENTRY}
+find /boot -type l -name vmlinuz-${BACKUP_NAME} -printf "%p\t%l\n" | cut -b2- | LC_COLLATE=C sort | sed 's,^\./,,; s,[ "#$&\x27()*;<>?[\\`{|~],\\&,g;' | make_install_script >> ${SCRIPTS_ENTRY}
+find /boot -type l -name initrd-${BACKUP_NAME}.img -printf "%p\t%l\n" | cut -b2- | LC_COLLATE=C sort | sed 's,^\./,,; s,[ "#$&\x27()*;<>?[\\`{|~],\\&,g;' | make_install_script >> ${SCRIPTS_ENTRY}
 find /lib/modules/${KERNEL_VERSION} -type l -printf "%p\t%l\n" | cut -b2- | LC_COLLATE=C sort | sed 's,^\./,,; s,[ "#$&\x27()*;<>?[\\`{|~],\\&,g;' | make_install_script >> ${SCRIPTS_ENTRY}
 
-echo "Backed up ${KERNEL_FILE} as /boot/vmlinuz-${KERNEL_VERSION}-${BACKUP_NAME}."
+echo "Backed up ${KERNEL_FILE}."
 echo "Backed up kernel modules in /lib/modules/${KERNEL_VERSION}/"
 if [ ! -z "$INITBLURB" ]; then
   echo $INITBLURB

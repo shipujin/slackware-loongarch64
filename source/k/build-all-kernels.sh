@@ -121,26 +121,21 @@ for recipe in $RECIPES ; do
 
   if [ "$BUILD_KERNEL_SOURCE_PACKAGE" = "yes" ]; then
     # Build kernel-source package.
-    # Does a generic config file exist? If not, we'll use the first one we see with the proper ${CONFIG_SUFFIX}.
-    if [ -r $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-generic${CONFIG_SUFFIX} ]; then
-      KERNEL_CONFIG="config-${VERSION}${LOCALVERSION}-generic${CONFIG_SUFFIX}"
-    elif [ -r $(/bin/ls $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} | head -n 1 2> /dev/null) ]; then
-      KERNEL_CONFIG=$(basename $(/bin/ls $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} | head -n 1 2> /dev/null))
+    # Does a generic config file exist?
+    # A generic config is defined here as one that does not use a LOCALVERSION.
+    # If we don't see that, we'll look for this version plus any LOCALVERSION.
+    # If that doesn't match, we take the newest config with the proper $CONFIG_SUFFIX.
+    if [ -r $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX} ]; then
+      KERNEL_CONFIG="config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}"
+    elif [ -r "$(/bin/ls -t $KERNEL_CONFIGDIR/config-${VERSION}*${CONFIG_SUFFIX} | head -n 1 2> /dev/null)" ]; then
+      KERNEL_CONFIG="$(basename $(/bin/ls $KERNEL_CONFIGDIR/config-${VERSION}*${CONFIG_SUFFIX} | head -n 1 2> /dev/null))"
+    elif [ -r "$(/bin/ls -t $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} | head -n 1 2> /dev/null)" ]; then
+      KERNEL_CONFIG="$(basename $(/bin/ls $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} | head -n 1 2> /dev/null))"
     else
       echo "ERROR: no suitable config file found for ${CONFIG_SUFFIX}"
       exit 1
     fi
     export KERNEL_CONFIG
-
-    # Set the LOCALVERSION from this .config:
-    LOCALVERSION=$(cat $KERNEL_CONFIGDIR/$KERNEL_CONFIG | grep "^CONFIG_LOCALVERSION=" | cut -f 2 -d = | tr -d \")
-
-    # Set the name for this kernel:
-    # the name will be the FINAL dash delimited segment, minus the $CONFIG_SUFFIX.
-    # NOTE: KERNEL_NAME is *not* allowed to contain a dash!
-    KERNEL_NAME="$(echo $KERNEL_CONFIG | rev | cut -f 1 -d - | rev | cut -f 1 -d .)"
-    export KERNEL_NAME
-
     # Build:
     KERNEL_SOURCE_PACKAGE_NAME=$(PRINT_PACKAGE_NAME=YES VERSION=$VERSION BUILD=$BUILD ./kernel-source.SlackBuild)
     VERSION=$VERSION BUILD=$BUILD ./kernel-source.SlackBuild
@@ -149,21 +144,31 @@ for recipe in $RECIPES ; do
       installpkg ${OUTPUT}/${KERNEL_SOURCE_PACKAGE_NAME} || exit 1
     fi
   else # otherwise, still stage the sources in $TMP/package-kernel-source:
+    echo "Not building kernel-source package."
+    sleep 2
     ONLY_STAGE_KERNEL_SOURCE=yes VERSION=$VERSION BUILD=$BUILD ./kernel-source.SlackBuild
-    # Set the LOCALVERSION from this .config:
-    LOCALVERSION=$(cat $TMP/package-kernel-source/usr/src/linux-*/.config | grep "^CONFIG_LOCALVERSION=" | cut -f 2 -d = | tr -d \")
-    # Set the name for this kernel. Since we just rewrote the .config, it will be the newest one:
-    KERNEL_NAME="$(/bin/ls -t $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} | head -n 1 | rev | cut -f 1 -d - | rev | cut -f 1 -d .)"
-    export KERNEL_NAME
   fi
 
   # Build kernel+modules package(s) for every config file with a matching $CONFIG_SUFFIX:
   for configfile in $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} ; do
 
-    # Let's start by determining the name of this kernel:
-    KERNEL_NAME="$(echo $configfile | rev | cut -f 1 -d - | rev | cut -f 1 -d .)"
-    export KERNEL_NAME
+    # Set the LOCALVERSION from this .config:
+    LOCALVERSION=$(cat $configfile | grep "^CONFIG_LOCALVERSION=" | cut -f 2 -d = | tr -d \")
 
+    # Set the name for this kernel.
+    # If there's no LOCALVERSION, the name is "generic".
+    # Otherwise, it is the LOCALVERSION minus any leading dash.
+    if [ -z "$LOCALVERSION" ]; then
+      KERNEL_NAME=generic
+    else
+      KERNEL_NAME=$LOCALVERSION
+      # If there's a leading dash, remove it:
+      if [ "$(echo $KERNEL_NAME | cut -b 1)" = "-" ]; then
+        KERNEL_NAME="$(echo $KERNEL_NAME | cut -b 2-)"
+      fi
+    fi
+    export KERNEL_NAME
+ 
     # Are we building this kernel?
     if [ ! "$BUILD_KERNEL_PACKAGE" = "yes" ]; then
       if ! "$BUILD_KERNEL_PACKAGE" = "$KERNEL_NAME" ]; then
@@ -177,9 +182,9 @@ for recipe in $RECIPES ; do
       sh install/doinst.sh 2> /dev/null
     )
 
-    KERNEL_GENERIC_PACKAGE_NAME=$(PRINT_PACKAGE_NAME=YES KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=$KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-${KERNEL_NAME}${CONFIG_SUFFIX} CONFIG_SUFFIX=${CONFIG_SUFFIX} KERNEL_OUTPUT_DIRECTORY=$OUTPUT/kernels/${KERNEL_NAME}.s BUILD=$BUILD ./kernel-generic.SlackBuild)
+    KERNEL_GENERIC_PACKAGE_NAME=$(PRINT_PACKAGE_NAME=YES KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=$KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX} CONFIG_SUFFIX=${CONFIG_SUFFIX} KERNEL_OUTPUT_DIRECTORY=$OUTPUT/kernels/${KERNEL_NAME}.s BUILD=$BUILD ./kernel-generic.SlackBuild)
 
-    KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=$KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-${KERNEL_NAME}${CONFIG_SUFFIX} CONFIG_SUFFIX=${CONFIG_SUFFIX} KERNEL_OUTPUT_DIRECTORY=$OUTPUT/kernels/${KERNEL_NAME}.s BUILD=$BUILD ./kernel-generic.SlackBuild
+    KERNEL_SOURCE=$TMP/package-kernel-source/usr/src/linux KERNEL_CONFIG=$KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX} CONFIG_SUFFIX=${CONFIG_SUFFIX} KERNEL_OUTPUT_DIRECTORY=$OUTPUT/kernels/${KERNEL_NAME}.s BUILD=$BUILD ./kernel-generic.SlackBuild
 
     if [ -r ${TMP}/${KERNEL_GENERIC_PACKAGE_NAME} ]; then
       mv ${TMP}/${KERNEL_GENERIC_PACKAGE_NAME} $OUTPUT
@@ -210,16 +215,30 @@ for recipe in $RECIPES ; do
 
   # Update initrd:
   if [ "${INSTALL_PACKAGES}" = "YES" ]; then
-    INITRD_VERSION="$(grep "Kernel Configuration" $TMP/package-kernel-source/usr/src/linux/.config | cut -f 3 -d ' ')"
-    INITRD_LOCALVERSION="$(cat $TMP/package-kernel-source/usr/src/linux/.config 2> /dev/null | grep CONFIG_LOCALVERSION= | cut -f 2 -d = | tr -d \")"
     if [ -r /etc/mkinitrd.conf ]; then
-      mkinitrd -F /etc/mkinitrd.conf -k ${INITRD_VERSION}${INITRD_LOCALVERSION}
+      mkinitrd -F /etc/mkinitrd.conf -k ${VERSION}${LOCALVERSION} -o /boot/initrd-${VERSION}${LOCALVERSION}.img
     else # try this?
-      sh /usr/share/mkinitrd/mkinitrd_command_generator.sh -k ${INITRD_VERSION}${INITRD_LOCALVERSION} -a "-o /boot/initrd-${INITRD_VERSION}${INITRD_LOCALVERSION}-generic.img" | sed "s/-c -k/-k/g" | bash
-      if [ -r /boot/initrd-${INITRD_VERSION}${INITRD_LOCALVERSION}-generic.img ]; then
-        # Good old compat symlink :-)
-        ln -sf initrd-${INITRD_VERSION}${INITRD_LOCALVERSION}-generic.img /boot/initrd.gz
-      fi
+      sh /usr/share/mkinitrd/mkinitrd_command_generator.sh -k ${VERSION}${LOCALVERSION} -a "-o /boot/initrd-${VERSION}${LOCALVERSION}.img" | sed "s/-c -k/-k/g" | bash
+    fi
+    if [ -r /boot/initrd-${VERSION}${LOCALVERSION}.img ]; then
+      # Make unversioned initrd symlink(s):
+      ( cd /boot
+        for kernelsymlink in vmlinuz-* ; do
+          # Skip if it isn't a symlink:
+          if [ ! -L $kernelsymlink ]; then
+            continue
+          fi
+          # If it matches the kernel version we used, then make a symlink for the initrd:
+          KERNEL_VERSION="$(strings $kernelsymlink | grep '([^ ]*@[^ ]*) #' | cut -f1 -d' ')"
+          if [ "$KERNEL_VERSION" = "${VERSION}${LOCALVERSION}" ];  then
+            # Make symlink for the initrd:
+            KERNEL_NAME="$(echo $kernelsymlink | cut -f 2- -d -)"
+            ln -sf initrd-${VERSION}${LOCALVERSION}.img initrd-${KERNEL_NAME}.img
+          fi
+        done
+      )
+      # Good old compat symlink :-)
+      ln -sf initrd-${VERSION}${LOCALVERSION}.img /boot/initrd.gz
     fi
   fi
 

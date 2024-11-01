@@ -143,11 +143,11 @@ if [ -z "${KERNEL_CONFIG}" ]; then # figure out the best matching .config
   elif [ "$ARCH" = "i686" ]; then
     CONFIG_SUFFIX=".ia32"
   fi
-  if [ -r "$KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-${KERNEL_NAME}${CONFIG_SUFFIX}" ]; then
+  if [ -r "$KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}" ]; then
     # Exact match!
-    KERNEL_CONFIG="config-${VERSION}${LOCALVERSION}-${KERNEL_NAME}${CONFIG_SUFFIX}"
-  else # no exact match, so find newest with the same name:
-    FIND_MATCH="$(/bin/ls -t $KERNEL_CONFIGDIR/config-*${KERNEL_NAME}${CONFIG_SUFFIX} 2> /dev/null | head -n 1)"
+    KERNEL_CONFIG="config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}"
+  else # no exact match, so find newest with the same LOCALVERSION:
+    FIND_MATCH="$(/bin/ls -t $KERNEL_CONFIGDIR/config-*${LOCALVERSION}${CONFIG_SUFFIX} 2> /dev/null | head -n 1)"
     if [ -r "${FIND_MATCH}" ]; then
       KERNEL_CONFIG="$(basename ${FIND_MATCH})"
       unset FIND_MATCH
@@ -156,28 +156,28 @@ if [ -z "${KERNEL_CONFIG}" ]; then # figure out the best matching .config
       if [ "$ARCH" = "x86_64" ]; then
         echo "WARNING:"
         echo "Tried and did not find:"
-        echo "  $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-${KERNEL_NAME}${CONFIG_SUFFIX}"
+        echo "  $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}"
         echo "Also could not match this fallback:"
-        echo "  $KERNEL_CONFIGDIR/config-*-${KERNEL_NAME}${CONFIG_SUFFIX}"
+        echo "  $KERNEL_CONFIGDIR/config-*-${LOCALVERSION}${CONFIG_SUFFIX}"
         KERNEL_CONFIGDIR=$PKG/usr/src/linux/arch/x86/configs
         KERNEL_CONFIG=x86_64_defconfig
         KERNEL_NAME=defconfig
         echo "Falling back on $KERNEL_CONFIGDIR/$KERNEL_CONFIG because we couldn't find anything better."
-        sleep 10
+        sleep 2
       elif uname -m | grep -q i.86 ; then
         echo "WARNING:"
         echo "Tried and did not find:"
-        echo "  $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-${KERNEL_NAME}${CONFIG_SUFFIX}"
+        echo "  $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}"
         echo "Also could not match this fallback:"
-        echo "  $KERNEL_CONFIGDIR/config-*-${KERNEL_NAME}${CONFIG_SUFFIX}"
+        echo "  $KERNEL_CONFIGDIR/config-*-${LOCALVERSION}${CONFIG_SUFFIX}"
         KERNEL_CONFIGDIR=$PKG/usr/src/linux/arch/x86/configs
         KERNEL_CONFIG=i386_defconfig
         KERNEL_NAME=defconfig
         echo "Falling back on $KERNEL_CONFIGDIR/$KERNEL_CONFIG because we couldn't find anything better."
-        sleep 10
+        sleep 2
       else
         echo "Error: no matching .config file could be found for this kernel. Tried:"
-        echo "  $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-${KERNEL_NAME}${CONFIG_SUFFIX} (not found)" 
+        echo "  $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX} (not found)" 
         exit 1
       fi
     fi 
@@ -226,7 +226,7 @@ echo "Untarring $CWD/linux-${VERSION}.tar.?z in $PKG/usr/src..."
 ( cd $PKG/usr/src/linux-*
   echo "Making oldconfig..."
   make oldconfig
-  if [ ! -r $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-${KERNEL_NAME}${CONFIG_SUFFIX} ]; then
+  if [ ! -r $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX} ]; then
     # If you care about saving the original unregenerated unrenamed config
     # file, set SAVE_ORIGINAL_KERNEL_CONFIG to something. This might cause
     # your kernels to be built twice...
@@ -234,14 +234,16 @@ echo "Untarring $CWD/linux-${VERSION}.tar.?z in $PKG/usr/src..."
       echo "Removing original .config $KERNEL_CONFIGDIR/${KERNEL_CONFIG}"
       rm -v -f $KERNEL_CONFIGDIR/${KERNEL_CONFIG}
     fi
-    echo "Saving new .config as: $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-${KERNEL_NAME}${CONFIG_SUFFIX}"
-    cp -a .config $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}-${KERNEL_NAME}${CONFIG_SUFFIX}
+    echo "Saving new .config as: $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}"
+    cp -a .config $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}
+  fi
 
-    # If we see ONLY_STAGE_KERNEL_SOURCE=yes, then we don't want to build this.
-    # We're just setting it up for use by the other SlackBuilds.
-    if [ "$ONLY_STAGE_KERNEL_SOURCE" = "yes" ]; then
-      exit 0
-    fi
+  # If we see ONLY_STAGE_KERNEL_SOURCE=yes, then we don't want to build this.
+  # We're just setting it up for use by the other SlackBuilds.
+  if [ "$ONLY_STAGE_KERNEL_SOURCE" = "yes" ]; then
+    echo "Done staging the kernel-source."
+    sleep 2
+    exit 0
   fi
 
   # If CONFIG_PREEMPT=y and CONFIG_PREEMPT_DYNAMIC=y, then set a default preempt
@@ -289,12 +291,11 @@ cd $PKG/usr/src/linux-*
 # linux-4.14.tar.xz will have 4.14.0 as the version in the Makefile:
 PACKAGE_VERSION=$(grep "^VERSION = " Makefile | rev | cut -f 1 -d ' ' | rev).$(grep "^PATCHLEVEL = " Makefile | rev | cut -f 1 -d ' ' | rev).$(grep "^SUBLEVEL = " Makefile | rev | cut -f 1 -d ' ' | rev)$(grep "^EXTRAVERSION = " Makefile | rev | cut -f 1 -d ' ' | rev)
 
-## This might be a bit too harsh... ;-)
-## The .config we built with is irrelevant, but set KEEPCONFIG to anything
-## if you want to keep it:
-#if [ -z "$KEEPCONFIG" ]; then
-#  rm .config*
-#fi
+# The .config we built with is irrelevant, but set KEEPCONFIG to anything
+# if you want to keep it:
+if [ -z "$KEEPCONFIG" ]; then
+  rm .config*
+fi
 
 # Make sure the directory and symlink are properly named:
 cd ..
