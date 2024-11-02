@@ -1,3 +1,13 @@
+Sat Nov  2 04:27:03 UTC 2024
+k/kernel-source-6.11.6-noarch-2.txz:  Rebuilt.
+  When cleaning up, only remove non-executable ELF objects. Some binaries are
+  needed for building out of tree modules. Thanks to Daedra.
+l/SDL2-2.30.9-x86_64-1.txz:  Upgraded.
+l/gtk4-4.16.5-x86_64-1.txz:  Upgraded.
+l/libvpx-1.15.0-x86_64-1.txz:  Upgraded.
+l/qt5-5.15.15_20241031_933cb170-x86_64-1.txz:  Upgraded.
+n/bluez-5.79-x86_64-1.txz:  Upgraded.
++--------------------------+
 Fri Nov  1 21:13:31 UTC 2024
 a/kernel-firmware-20241101_376de1f-noarch-1.txz:  Upgraded.
 a/kernel-generic-6.11.6-x86_64-1.txz:  Upgraded.
