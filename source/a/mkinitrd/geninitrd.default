@@ -1,7 +1,8 @@
 # Default options for generating the initrd:
 
 # This variable defines the kernel that the initrd should be made for.
-# If it is not defined, then we use the newest kernel we find in /boot.
+# If it is not defined, then we use $1 that was given to geninitrd.
+# As a last resort, we'll use the newest kernel we find in /boot.
 #KERNEL=/boot/vmlinuz-generic
 
 # In addition to the initrd with a name like initrd-6.11.6.img,
@@ -13,3 +14,12 @@ GENINITRD_NAMED_SYMLINK=true
 # should we make a compatibility symlink named initrd.gz?
 # GRUB doesn't require this, but lilo and elilo might.
 GENINITRD_INITRD_GZ_SYMLINK=true
+
+# Which initrd generating tool should we use?
+# The supported options are mkinitrd_command_generator.sh,
+# mkinitrd (falls back to mkinitrd_command_generator.sh if
+# there is no /etc/mkinitrd.conf), or dracut.
+GENERATOR=mkinitrd
+
+# If we are using dracut, we'll use these options:
+DRACUT_OPTS="--force --hostonly"

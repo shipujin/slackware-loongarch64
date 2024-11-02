@@ -1,6 +1,13 @@
 #!/bin/sh
 #BLURB="Generate an initrd for the kernel"
 
+# To generate an initrd automatically, just run "geninitrd".
+# If KERNEL_SYMLINK is defined and points to a kernel, we'll use that.
+# Otherwise, if KERNEL is defined and points to a kernel, we'll use that.
+# Otherwise, if $1 is defined and points to a kernel, we'll use that.
+# Example: geninitrd /boot/vmlinuz-6.11.6
+# If none of these are true, we'll use the newest kernel we find in /boot.
+
 # Load defaults:
 if [ -r etc/default/geninitrd ]; then
   . etc/default/geninitrd
@@ -10,8 +17,20 @@ fi
 KERNEL=$KERNEL_SYMLINK
 
 if [ -z "$KERNEL" ]; then
-  # If we weren't told anything else, then use the newest kernel:
-  KERNEL="$(find /boot -name "vmlinuz-*" -type f | xargs ls -t | head -n 1)"
+  # If we were not passed $KERNEL, maybe we got the kernel as $1:
+  if [ ! -z "$1" ]; then
+    KERNEL=$1
+  else
+    # If we weren't told anything else, then use the newest kernel:
+    KERNEL="$(find /boot -name "vmlinuz-*" -type f | xargs ls -t | head -n 1)"
+  fi
+fi
+
+# If we don't see $KERNEL, try looking in /boot:
+if [ ! -r $KERNEL ]; then
+  if [ -r boot/$KERNEL ]; then
+    KERNEL=boot/$KERNEL
+  fi
 fi
 
 # In case this is a symlink, get the real file:
@@ -32,18 +51,43 @@ fi
 # Sometimes mkinitrd_command_generator.sh does not detect LVM properly. Until I
 # get to the bottom of that, it's safer to just always include LVM support.
 LVM_OPTION="-L"
+# Ditto on RAID:
+RAID_OPTION="-R"
+
+# This could be set to dracut in /etc/default/geninitrd:
+GENERATOR=${GENERATOR:-mkinitrd}
+
+# If we asked for mkinitrd, but do not have /etc/mkinitrd.conf, then fall
+# back on mkinitrd_command_generator.sh instead:
+if [ "$GENERATOR" = "mkinitrd" -a ! -r etc/mkinitrd.conf ]; then
+  GENERATOR=mkinitrd_command_generator.sh
+fi
 
 # Generate the initrd:
 if [ -z "$GENINITRD_SILENT" ]; then
   dialog --title "GENERATING INITIAL RAMDISK" --infobox \
-  "Generating an initial ramdisk for use with the $KERNEL_VERSION kernel. \
+  "Generating an initial ramdisk for use with the $KERNEL_VERSION kernel (using $GENERATOR). \
 The initial ramdisk contains kernel modules needed to mount the \
 root partition, and must be regenerated whenever the kernel is updated. To \
 regenerate the initrd, select this setup script from within pkgtool, or run \
-'geninitrd' which will produce an initial ramdisk (/boot/initrd.gz) for the \
-installed kernel." 8 70
+'geninitrd' which will produce an initial ramdisk \
+(/boot/initrd-${KERNEL_VERSION}.img) for the installed kernel." 0 0
 fi
-chroot . /usr/share/mkinitrd/mkinitrd_command_generator.sh -k $KERNEL_VERSION -a "$LVM_OPTION -o /boot/initrd-${KERNEL_VERSION}.img" | chroot . bash 1> /dev/null 2> /dev/null
+if [ "$GENERATOR" = "mkinitrd_command_generator.sh" ]; then
+  chroot . /usr/share/mkinitrd/mkinitrd_command_generator.sh -k $KERNEL_VERSION -a "$LVM_OPTION $RAID_OPTION -o /boot/initrd-${KERNEL_VERSION}.img" | chroot . bash 1> /dev/null 2> /dev/null
+elif [ "$GENERATOR" = "mkinitrd" ]; then
+  chroot . /sbin/mkinitrd -F /etc/mkinitrd.conf -k $KERNEL_VERSION -o /boot/initrd-${KERNEL_VERSION}.img 1> /dev/null 2> /dev/null
+elif [ "$GENERATOR" = "dracut" ]; then
+  # If no options were set, set basic ones:
+  if [ -z "$DRACUT_OPTS" ]; then
+    DRACUT_OPTS="--force --hostonly"
+  fi
+  chroot . /usr/bin/dracut $DRACUT_OPTS /boot/initrd-${KERNEL_VERSION}.img $KERNEL_VERSION 1> /dev/null 2> /dev/null
+else
+  echo "error: no handler for GENERATOR=$GENERATOR"
+  echo "Unable to generate /boot/initrd-${KERNEL_VERSION}.img."
+  exit 1
+fi
 
 if [ "$GENINITRD_NAMED_SYMLINK" = "true" ]; then
   # Make initrd symlinks for all matching kernel symlinks:

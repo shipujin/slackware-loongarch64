@@ -1,3 +1,14 @@
+Sat Nov  2 21:18:48 UTC 2024
+a/mkinitrd-1.4.11-x86_64-43.txz:  Rebuilt.
+  geninitrd: allow specifying the kernel to use with $1.
+  This can now work with mkinitrd_command_generator.sh, or mkinitrd with a
+  /etc/mkinitrd.conf config file, or with dracut.
+a/pkgtools-15.1-noarch-17.txz:  Rebuilt.
+  make-kernel-backup: make the comments accurate.
+  Allow specifying the kernel to back up with $1.
+ap/mpg123-1.32.9-x86_64-1.txz:  Upgraded.
+l/python-flit-core-3.10.1-x86_64-1.txz:  Upgraded.
++--------------------------+
 Sat Nov  2 04:27:03 UTC 2024
 k/kernel-source-6.11.6-noarch-2.txz:  Rebuilt.
   When cleaning up, only remove non-executable ELF objects. Some binaries are

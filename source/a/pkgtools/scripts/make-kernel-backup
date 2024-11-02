@@ -22,18 +22,19 @@
 
 # This script creates a virtual installed package named
 # kernel-backup-${KERNEL_VERSION}-${ARCH}-${BUILD}, which
-# consists of a backup of /boot/vmlinuz-${KERNEL_VERSION}-generic
-# to /boot/vmlinuz-${KERNEL_VERSION}-backup, and the modules that
-# go with this kernel. If there's a matching initrd already created,
-# we'll include that too. Otherwise, we'll assume you don't want one
-# or that you'll manage it yourself outside of the installed backup
-# package.
+# consists of a backup of /boot/vmlinuz-${KERNEL_VERSION} and the modules
+# that go with that kernel. 
+# Also included will be one or two symlinks:
+# /boot/vmlinuz-backup pointing to /boot/vmlinuz-${KERNEL_VERSION},
+# and, if /boot/initrd-${KERNEL_VERSION}.img exists, we will have
+# /boot/initrd-backup.img pointing to that.
 #
-# By default, it makes a backup of the kernel pointed to by
-# /boot/vmlinuz-generic. Once backed up, this kernel can be added to
-# your bootloader as a fallback kernel, and removing or upgrading the
-# original kernel-generic package will not remove it. But, you can
-# remove the kernel-backup package later with removepkg if you wish.
+# If $1 is a kernel, we'll use that. Otherwise, we'll use $KERNEL_FILE,
+# which defaults to /boot/vmlinuz-generic. We will include the kernel
+# as well as the related tree of kernel modules. Once backed up, this
+# kernel can be added to your bootloader as a fallback kernel, and removing
+# or upgrading the original kernel-generic package will not remove it. But,
+# you can remove the kernel-backup package later with removepkg if you wish.
 #
 # The $KERNEL_FILE doesn't need to have any particular naming scheme.
 # You could point at /usr/src/linux/arch/x86/boot/bzImage for all this
@@ -47,6 +48,12 @@ if [ -r /etc/default/make-kernel-backup ]; then
 fi
 
 BUILD=${BUILD:-1}
+
+# If we don't have KERNEL_FILE set already, and we have $1, let's
+# assume that $1 is the kernel that we want to use:
+if [ -z "$KERNEL_FILE" -a ! -z "$1" ]; then
+  KERNEL_FILE=$1
+fi
 
 # This is the kernel to use (may be a symlink):
 KERNEL_FILE=${KERNEL_FILE:-/boot/vmlinuz-generic}

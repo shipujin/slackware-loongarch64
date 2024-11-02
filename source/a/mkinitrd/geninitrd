@@ -26,8 +26,16 @@
 # example, vmlinuz-generic), it will also make a matching initrd-generic.img
 # symlink. Finally, it also supports a plain initrd.gz symlink to the initrd,
 # which might still be needed by some old setups.
-#
-# If you use an encrypted root, you'll need to make your initrd manually.
+
+# If KERNEL_SYMLINK is defined and points to a kernel, we'll use that.
+# Otherwise, if KERNEL is defined and points to a kernel, we'll use that.
+# Otherwise, if $1 is defined and points to a kernel, we'll use that.
+# Example: geninitrd /boot/vmlinuz-6.11.6
+# If none of these are true, we'll use the newest kernel we find in /boot.
+
+# If you use an encrypted root, you may need an appropriate /etc/mkinitrd.conf
+# (if you will be setting GENERATOR=mkinitrd in /etc/default/geninitrd), or you
+# could try using GENERATOR=dracut.
 
 cd $(dirname $0)/../..
-chroot . /var/lib/pkgtools/setup/setup.01.mkinitrd
+chroot . /var/lib/pkgtools/setup/setup.01.mkinitrd $*
