@@ -11,9 +11,21 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Mon,  4 Nov 2024 00:20:46 GMT</pubDate>
-      <lastBuildDate>Mon,  4 Nov 2024 01:13:25 GMT</lastBuildDate>
+      <pubDate>Mon,  4 Nov 2024 01:20:05 GMT</pubDate>
+      <lastBuildDate>Mon,  4 Nov 2024 01:56:42 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Mon,  4 Nov 2024 01:20:05 GMT</title>
+         <pubDate>Mon,  4 Nov 2024 01:20:05 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241104012005</link>
+         <guid isPermaLink="false">20241104012005</guid>
+         <description>
+           <![CDATA[<pre>
+l/boost-1.86.0-x86_64-4.txz:  Rebuilt.
+  Added --with-icu. Thanks to Willy Sudiarto Raharjo.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Mon,  4 Nov 2024 00:20:46 GMT</title>
          <pubDate>Mon,  4 Nov 2024 00:20:46 GMT</pubDate>

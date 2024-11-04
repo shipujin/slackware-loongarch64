@@ -1,3 +1,7 @@
+Mon Nov  4 01:20:05 UTC 2024
+l/boost-1.86.0-x86_64-4.txz:  Rebuilt.
+  Added --with-icu. Thanks to Willy Sudiarto Raharjo.
++--------------------------+
 Mon Nov  4 00:20:46 UTC 2024
 d/cargo-vendor-filterer-0.5.16-x86_64-1.txz:  Upgraded.
 kde/calligra-3.2.1-x86_64-46.txz:  Rebuilt.
