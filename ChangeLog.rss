@@ -11,9 +11,26 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Mon,  4 Nov 2024 01:20:05 GMT</pubDate>
-      <lastBuildDate>Mon,  4 Nov 2024 01:56:42 GMT</lastBuildDate>
+      <pubDate>Mon,  4 Nov 2024 19:08:43 GMT</pubDate>
+      <lastBuildDate>Mon,  4 Nov 2024 19:29:47 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Mon,  4 Nov 2024 19:08:43 GMT</title>
+         <pubDate>Mon,  4 Nov 2024 19:08:43 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241104190843</link>
+         <guid isPermaLink="false">20241104190843</guid>
+         <description>
+           <![CDATA[<pre>
+ap/mariadb-10.11.10-x86_64-1.txz:  Upgraded.
+  This is a bugfix release.
+  For more information, see:
+    https://mariadb.com/kb/en/mariadb-10-11-10-release-notes/
+n/netatalk-4.0.4-x86_64-1.txz:  Upgraded.
+xap/audacious-4.4.2-x86_64-1.txz:  Upgraded.
+xap/audacious-plugins-4.4.2-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Mon,  4 Nov 2024 01:20:05 GMT</title>
          <pubDate>Mon,  4 Nov 2024 01:20:05 GMT</pubDate>

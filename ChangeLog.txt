@@ -1,3 +1,12 @@
+Mon Nov  4 19:08:43 UTC 2024
+ap/mariadb-10.11.10-x86_64-1.txz:  Upgraded.
+  This is a bugfix release.
+  For more information, see:
+    https://mariadb.com/kb/en/mariadb-10-11-10-release-notes/
+n/netatalk-4.0.4-x86_64-1.txz:  Upgraded.
+xap/audacious-4.4.2-x86_64-1.txz:  Upgraded.
+xap/audacious-plugins-4.4.2-x86_64-1.txz:  Upgraded.
++--------------------------+
 Mon Nov  4 01:20:05 UTC 2024
 l/boost-1.86.0-x86_64-4.txz:  Rebuilt.
   Added --with-icu. Thanks to Willy Sudiarto Raharjo.
