@@ -1,3 +1,25 @@
+Mon Nov  4 00:20:46 UTC 2024
+d/cargo-vendor-filterer-0.5.16-x86_64-1.txz:  Upgraded.
+kde/calligra-3.2.1-x86_64-46.txz:  Rebuilt.
+  Recompiled against poppler-24.11.0.
+kde/cantor-23.08.5-x86_64-12.txz:  Rebuilt.
+  Recompiled against poppler-24.11.0.
+kde/kfilemetadata-5.116.0-x86_64-9.txz:  Rebuilt.
+  Recompiled against poppler-24.11.0.
+kde/kile-2.9.93-x86_64-39.txz:  Rebuilt.
+  Recompiled against poppler-24.11.0.
+kde/kitinerary-23.08.5-x86_64-10.txz:  Rebuilt.
+  Recompiled against poppler-24.11.0.
+kde/krita-5.2.6-x86_64-3.txz:  Rebuilt.
+  Recompiled against poppler-24.11.0.
+kde/labplot-2.11.1-x86_64-5.txz:  Rebuilt.
+  Recompiled against poppler-24.11.0.
+kde/okular-23.08.5-x86_64-10.txz:  Rebuilt.
+  Recompiled against poppler-24.11.0.
+kde/wcslib-8.4-x86_64-1.txz:  Upgraded.
+l/poppler-24.11.0-x86_64-1.txz:  Upgraded.
+  Shared library .so-version bump.
++--------------------------+
 Sat Nov  2 21:18:48 UTC 2024
 a/mkinitrd-1.4.11-x86_64-43.txz:  Rebuilt.
   geninitrd: allow specifying the kernel to use with $1.

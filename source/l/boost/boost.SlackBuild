@@ -94,6 +94,7 @@ zcat $CWD/boost.bootstrap.python3.diff.gz | patch -p1 --verbose || exit 1
 # First build bjam, the boost build system:
 ./bootstrap.sh \
   --with-toolset=gcc \
+  --with-icu \
   --with-python=/usr/bin/python3 || exit 1
 
 # Next, we build boost using bjam:
