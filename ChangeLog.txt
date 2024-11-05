@@ -1,3 +1,16 @@
+Tue Nov  5 19:22:31 UTC 2024
+Remember, remember, the fifth of November
+a/hwdata-0.389-noarch-1.txz:  Upgraded.
+a/lvm2-2.03.28-x86_64-1.txz:  Upgraded.
+d/ruby-3.3.6-x86_64-1.txz:  Upgraded.
+l/gegl-0.4.50-x86_64-1.txz:  Upgraded.
+l/harfbuzz-10.1.0-x86_64-1.txz:  Upgraded.
+n/gnutls-3.8.8-x86_64-1.txz:  Upgraded.
+xap/mozilla-thunderbird-128.4.1esr-x86_64-1.txz:  Upgraded.
+  This is a bugfix release.
+  For more information, see:
+    https://www.mozilla.org/en-US/thunderbird/128.4.1/releasenotes/
++--------------------------+
 Mon Nov  4 19:08:43 UTC 2024
 ap/mariadb-10.11.10-x86_64-1.txz:  Upgraded.
   This is a bugfix release.
