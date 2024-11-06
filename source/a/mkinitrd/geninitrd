@@ -37,5 +37,17 @@
 # (if you will be setting GENERATOR=mkinitrd in /etc/default/geninitrd), or you
 # could try using GENERATOR=dracut.
 
+# If you have requirements that we have not covered here, you can always make
+# your own script and call it /usr/local/bin/geninitrd-custom, and we will
+# use that instead.
+
 cd $(dirname $0)/../..
-chroot . /var/lib/pkgtools/setup/setup.01.mkinitrd $*
+
+# In case you cannot make this script do exactly what you require, you're
+# welcome to create /usr/local/bin/geninitrd-custom and it will be run
+# instead of the usual setup script:
+if [ -x /usr/local/bin/geninitrd-custom ]; then
+  chroot . /usr/local/bin/geninitrd-custom $*
+else # we will run the default handler from the setup scripts:
+  chroot . /var/lib/pkgtools/setup/setup.01.mkinitrd $*
+fi

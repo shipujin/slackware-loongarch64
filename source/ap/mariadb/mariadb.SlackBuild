@@ -84,7 +84,8 @@ rm -rf $PKG
 mkdir -p $TMP $PKG
 cd $TMP
 rm -rf ${PKGNAM}-$VERSION
-tar xvf $CWD/${PKGNAM}-$VERSION.tar.?z || exit 1
+echo "Extracting $CWD/${PKGNAM}-$VERSION.tar.?z..."
+tar xf $CWD/${PKGNAM}-$VERSION.tar.?z || exit 1
 cd ${PKGNAM}-$VERSION || exit 1
 
 chown -R root:root .

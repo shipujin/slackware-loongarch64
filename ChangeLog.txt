@@ -1,3 +1,17 @@
+Wed Nov  6 20:54:05 UTC 2024
+a/mkinitrd-1.4.11-x86_64-44.txz:  Rebuilt.
+  geninitrd: run /usr/local/bin/geninitrd-custom instead, if it exists.
+  setup.01.mkinitrd: exit with an error if the GENERATOR doesn't exist.
+ap/mariadb-11.4.4-x86_64-1.txz:  Upgraded.
+  Upgraded to the latest stable long-term series.
+  For release information, see:
+    https://mariadb.com/kb/en/mariadb-11-4-4-release-notes/
+  For upgrade information, see:
+    https://mariadb.com/kb/en/upgrading-from-mariadb-10-11-to-mariadb-11-4/
+n/curl-8.11.0-x86_64-1.txz:  Upgraded.
+x/libXcursor-1.2.3-x86_64-1.txz:  Upgraded.
+x/pixman-0.44.0-x86_64-1.txz:  Upgraded.
++--------------------------+
 Tue Nov  5 19:22:31 UTC 2024
 Remember, remember, the fifth of November
 a/hwdata-0.389-noarch-1.txz:  Upgraded.
