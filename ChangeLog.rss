@@ -11,9 +11,47 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Wed,  6 Nov 2024 20:54:05 GMT</pubDate>
-      <lastBuildDate>Wed,  6 Nov 2024 21:47:23 GMT</lastBuildDate>
+      <pubDate>Thu,  7 Nov 2024 21:46:13 GMT</pubDate>
+      <lastBuildDate>Thu,  7 Nov 2024 22:42:30 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Thu,  7 Nov 2024 21:46:13 GMT</title>
+         <pubDate>Thu,  7 Nov 2024 21:46:13 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241107214613</link>
+         <guid isPermaLink="false">20241107214613</guid>
+         <description>
+           <![CDATA[<pre>
+a/libblockdev-3.2.1-x86_64-1.txz:  Upgraded.
+a/mkinitrd-1.4.11-x86_64-45.txz:  Rebuilt.
+  /etc/default/geninitrd: Add AUTOGENERATE_INITRD variable for disabling
+  automatically generating the initrd when the kernel package is upgraded.
+  The hook to trigger this will be in the next kernel-generic package.
+  setup.01.mkinitrd: skip generating an initrd if we're called from the
+  kernel doinst.sh and AUTOGENERATE_INITRD=false.
+  geninitrd: Look for an override script called /usr/local/sbin/geninitrd,
+  not /usr/local/bin/geninitrd-custom. Thanks to GazL.
+ap/mariadb-11.4.4-x86_64-2.txz:  Rebuilt.
+  rc.mysqld: use mariadbd-safe, not mysqld_safe. Thanks to teoberi.
+d/cmake-3.31.0-x86_64-1.txz:  Upgraded.
+l/expat-2.6.4-x86_64-1.txz:  Upgraded.
+  This update fixes bugs and a security issue:
+  Fix crash within function XML_ResumeParser from a NULL pointer dereference
+  by disallowing function XML_StopParser to (stop or) suspend an unstarted
+  parser. A new error code XML_ERROR_NOT_STARTED was introduced to properly
+  communicate this situation.
+  For more information, see:
+    https://www.cve.org/CVERecord?id=CVE-2024-50602
+  (* Security fix *)
+n/gpgme-1.24.0-x86_64-1.txz:  Upgraded.
+  Added libqgpgmeqt6.
+xap/ffmpegthumbnailer-2.2.3-x86_64-1.txz:  Upgraded.
+xap/mozilla-thunderbird-128.4.2esr-x86_64-1.txz:  Upgraded.
+  This is a bugfix release.
+  For more information, see:
+    https://www.mozilla.org/en-US/thunderbird/128.4.2esr/releasenotes/
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Wed,  6 Nov 2024 20:54:05 GMT</title>
          <pubDate>Wed,  6 Nov 2024 20:54:05 GMT</pubDate>

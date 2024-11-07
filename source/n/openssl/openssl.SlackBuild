@@ -120,7 +120,6 @@ fi
  no-ec2m \
  no-sm2 \
  no-sm4 \
- no-sse2 \
  shared
 
 make $NUMJOBS depend || make depend || exit 1

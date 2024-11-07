@@ -30,7 +30,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=mariadb
 VERSION=${VERSION:-$(echo ${PKGNAM}-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 
 # To reduce the package size, the embedded server may be omitted.  Currently
 # only amarok uses this.  To build without embedded support, set this to NO.
@@ -200,8 +200,8 @@ chmod 0755 $PKG/var/run/mysql
 # Add init script:
 mkdir -p $PKG/etc/rc.d
 # This is installed chmod 644 so that the server does not run by default.
-zcat $CWD/rc.mysqld.gz > $PKG/etc/rc.d/rc.mysqld.new
-touch -r $CWD/rc.mysqld.gz $PKG/etc/rc.d/rc.mysqld.new
+cat $CWD/rc.mysqld > $PKG/etc/rc.d/rc.mysqld.new
+touch -r $CWD/rc.mysqld $PKG/etc/rc.d/rc.mysqld.new
 rm -rf $PKG/etc/init.d $PKG/usr/libexec/rcmysql
 
 # Install mysqlaccess.conf

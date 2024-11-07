@@ -33,7 +33,7 @@ SKIP="--skip-networking"
 
 # Start mysqld:
 mysqld_start() {
-  if [ -x /usr/bin/mysqld_safe ]; then
+  if [ -x /usr/bin/mariadbd-safe ]; then
     # If there is an old PID file (no mysqld running), clean it up:
     if [ -r /var/run/mysql/mysql.pid ]; then
       if ! ps axc | grep mysqld 1> /dev/null 2> /dev/null ; then
@@ -42,7 +42,7 @@ mysqld_start() {
       fi
     fi
 
-    /usr/bin/mysqld_safe --datadir=/var/lib/mysql --pid-file=/var/run/mysql/mysql.pid $SKIP &
+    /usr/bin/mariadbd-safe --datadir=/var/lib/mysql --pid-file=/var/run/mysql/mysql.pid $SKIP &
   fi
 }
 

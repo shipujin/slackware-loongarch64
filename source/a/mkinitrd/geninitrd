@@ -44,10 +44,10 @@
 cd $(dirname $0)/../..
 
 # In case you cannot make this script do exactly what you require, you're
-# welcome to create /usr/local/bin/geninitrd-custom and it will be run
-# instead of the usual setup script:
-if [ -x /usr/local/bin/geninitrd-custom ]; then
-  chroot . /usr/local/bin/geninitrd-custom $*
+# welcome to create /usr/local/sbin/geninitrd and it will be run instead of
+# the usual setup script:
+if [ -x /usr/local/sbin/geninitrd ]; then
+  chroot . /usr/local/sbin/geninitrd $*
 else # we will run the default handler from the setup scripts:
   chroot . /var/lib/pkgtools/setup/setup.01.mkinitrd $*
 fi

@@ -1,0 +1,44 @@
+--- ./configure.orig	2024-11-06 04:45:38.000000000 -0600
++++ ./configure	2024-11-07 12:57:38.595719916 -0600
+@@ -22165,13 +22165,13 @@
+ 
+         if test -n "$PYTHON"; then
+       # If the user set $PYTHON, use it and don't search something else.
+-      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether $PYTHON version is >= 2.7" >&5
+-printf %s "checking whether $PYTHON version is >= 2.7... " >&6; }
++      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether $PYTHON version is >= 2.8" >&5
++printf %s "checking whether $PYTHON version is >= 2.8... " >&6; }
+       prog="import sys
+ # split strings by '.' and convert to numeric.  Append some zeros
+ # because we need at least 4 digits for the hex conversion.
+ # map returns an iterator in Python 3.0 and a list in 2.x
+-minver = list(map(int, '2.7'.split('.'))) + [0, 0, 0]
++minver = list(map(int, '2.8'.split('.'))) + [0, 0, 0]
+ minverhex = 0
+ # xrange is not present in Python 3.0 and range returns an iterator
+ for i in list(range(0, 4)): minverhex = (minverhex << 8) + minver[i]
+@@ -22193,20 +22193,20 @@
+     else
+       # Otherwise, try each interpreter until we find one that satisfies
+       # VERSION.
+-      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for a Python interpreter with version >= 2.7" >&5
+-printf %s "checking for a Python interpreter with version >= 2.7... " >&6; }
++      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for a Python interpreter with version >= 2.8" >&5
++printf %s "checking for a Python interpreter with version >= 2.8... " >&6; }
+ if test ${am_cv_pathless_PYTHON+y}
+ then :
+   printf %s "(cached) " >&6
+ else $as_nop
+ 
+-	for am_cv_pathless_PYTHON           in python2.7 none; do
++	for am_cv_pathless_PYTHON           in python2.8 none; do
+ 	  test "$am_cv_pathless_PYTHON" = none && break
+ 	  prog="import sys
+ # split strings by '.' and convert to numeric.  Append some zeros
+ # because we need at least 4 digits for the hex conversion.
+ # map returns an iterator in Python 3.0 and a list in 2.x
+-minver = list(map(int, '2.7'.split('.'))) + [0, 0, 0]
++minver = list(map(int, '2.8'.split('.'))) + [0, 0, 0]
+ minverhex = 0
+ # xrange is not present in Python 3.0 and range returns an iterator
+ for i in list(range(0, 4)): minverhex = (minverhex << 8) + minver[i]

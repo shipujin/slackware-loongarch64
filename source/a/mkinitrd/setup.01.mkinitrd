@@ -13,6 +13,11 @@ if [ -r etc/default/geninitrd ]; then
   . etc/default/geninitrd
 fi
 
+# If this is disabled, exit:
+if [ "$KERNEL_DOINST" = "true" -a "$AUTOGENERATE_INITRD" = "false" ]; then
+  exit 0
+fi
+
 # This was the old name for $KERNEL, so allow it still:
 KERNEL=$KERNEL_SYMLINK
 

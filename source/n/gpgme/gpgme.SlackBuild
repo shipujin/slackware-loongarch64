@@ -25,12 +25,12 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=gpgme
 VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-BUILD=${BUILD:-3}
+BUILD=${BUILD:-1}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
-    i?86) export ARCH=i586 ;;
+    i?86) export ARCH=i686 ;;
     arm*) export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
        *) export ARCH=$( uname -m ) ;;
@@ -50,14 +50,11 @@ NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
 TMP=${TMP:-/tmp}
 PKG=$TMP/package-$PKGNAM
 
-if [ "$ARCH" = "i586" ]; then
-  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
-  LIBDIRSUFFIX=""
-elif [ "$ARCH" = "s390" ]; then
-  SLKCFLAGS="-O2"
+if [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=pentium4 -mtune=generic"
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
-  SLKCFLAGS="-O2 -fPIC"
+  SLKCFLAGS="-O2 -march=x86-64 -mtune=generic -fPIC"
   LIBDIRSUFFIX="64"
 else
   SLKCFLAGS="-O2"
@@ -77,6 +74,9 @@ find . \
   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \+
 
+# No python2.7:
+cat $CWD/gpgme.no.py2.7.hack.diff | patch -p1 --verbose || exit 1
+
 CFLAGS="$SLKCFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64" \
 CXXFLAGS="$SLKCFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64" \
 ./configure \
@@ -84,7 +84,8 @@ CXXFLAGS="$SLKCFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64" \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
   --infodir=/usr/info \
-  --enable-languages="cl cpp python qt" \
+  --mandir=/usr/man \
+  --enable-languages="cl cpp python qt5 qt6" \
   --disable-gpg-test \
   --docdir=/usr/doc/gpgme-$VERSION \
   --build=$ARCH-slackware-linux \
@@ -105,9 +106,16 @@ find $PKG | xargs file | grep -e "executable" -e "shared object" \
 rm $PKG/usr/info/dir
 gzip -9 $PKG/usr/info/*
 
+# Compress manual pages:
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do
+  ln -s $( readlink $i ).gz $i.gz
+  rm $i
+done
+
 mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
 cp -a \
-  AUTHORS COPYING* INSTALL NEWS README* THANKS TODO VERSION \
+  AUTHORS* COPYING* INSTALL* LICENSES* NEWS* README* THANKS* TODO* VERSION* \
   $PKG/usr/doc/$PKGNAM-$VERSION
 
 # If there's a ChangeLog, installing at least part of the recent history

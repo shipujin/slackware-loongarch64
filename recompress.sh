@@ -555,7 +555,6 @@ gzip ./source/xfce/xfce4-pulseaudio-plugin/xfce4-pulseaudio-plugin-0.2.4-gtk3_th
 gzip ./source/xfce/xfce4-pulseaudio-plugin/xfce4-pulseaudio-plugin-0.2.4-gtk3_theme.patch
 gzip ./source/xfce/xfce4-settings/xfce4-settings.theme.diff
 gzip ./source/xfce/xfce4-settings/xfce4-settings.xft.defaults.diff
-gzip ./source/ap/mariadb/rc.mysqld
 gzip ./source/ap/mariadb/doinst.sh
 gzip ./source/ap/dash/doinst.sh
 gzip ./source/ap/hplip/0023-Fix-handling-of-unicode-filenames-in-sixext.py.patch
@@ -943,8 +942,6 @@ gzip ./source/xap/gnuchess/eboard.png16.diff
 gzip ./source/xap/gnuchess/eboard.ldl.diff
 gzip ./source/xap/gnuchess/doinst.sh
 gzip ./source/xap/gnuchess/xboard.conf.diff
-gzip ./source/xap/ffmpegthumbnailer/198.patch
-gzip ./source/xap/ffmpegthumbnailer/efb5b618.patch
 gzip ./source/xap/easytag/easytag.revert.ogg.handle.patch
 gzip ./source/xap/easytag/easytag.no.freedb.musicbrainz.org.diff
 gzip ./source/xap/easytag/doinst.sh
