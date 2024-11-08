@@ -1,0 +1,3 @@
+if [ -x usr/sbin/geninitrd ]; then
+  usr/sbin/geninitrd
+fi

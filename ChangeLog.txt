@@ -1,3 +1,33 @@
+Fri Nov  8 22:17:50 UTC 2024
+a/kernel-firmware-20241108_ad74054-noarch-1.txz:  Upgraded.
+a/kernel-generic-6.11.7-x86_64-1.txz:  Upgraded.
+  Unless disabled in /etc/default/geninitrd, automatically generate an initial
+  ramdisk upon package installation or upgrade.
+a/mkinitrd-1.4.11-x86_64-46.txz:  Rebuilt.
+  geninitrd: also accept /opt/sbin/geninitrd as an override.
+  Suggested by regdub.
+  Since the installer sends different args to the setup scripts, we can't use
+  $1 as the kernel file with setup.01.mkinitrd, so convert it into a variable
+  in geninitrd instead (if needed).
+  mkinitrd_command_generator.sh: pvdisplay will complain if there are any file
+  descriptors besides stdin, stdout, and stderr, which will always be true when
+  called from a package install script due to file locking. So send stderr from
+  the two calls to pvdisplay to /dev/null.
+d/kernel-headers-6.11.7-x86-1.txz:  Upgraded.
+k/kernel-source-6.11.7-noarch-1.txz:  Upgraded.
+l/python-packaging-24.2-x86_64-1.txz:  Upgraded.
+n/iptables-1.8.11-x86_64-1.txz:  Upgraded.
+n/lftp-4.9.3-x86_64-1.txz:  Upgraded.
+x/ibus-m17n-1.4.34-x86_64-1.txz:  Upgraded.
+x/xbacklight-1.2.4-x86_64-1.txz:  Upgraded.
+x/xf86-video-nouveau-1.0.18-x86_64-1.txz:  Upgraded.
+x/xrandr-1.5.3-x86_64-1.txz:  Upgraded.
+xfce/xfce4-weather-plugin-0.11.3-x86_64-1.txz:  Upgraded.
+extra/xf86-video-fbdev/xf86-video-fbdev-0.5.1-x86_64-1.txz:  Upgraded.
+isolinux/initrd.img:  Rebuilt.
+kernels/*:  Upgraded.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
++--------------------------+
 Thu Nov  7 21:46:13 UTC 2024
 a/libblockdev-3.2.1-x86_64-1.txz:  Upgraded.
 a/mkinitrd-1.4.11-x86_64-45.txz:  Rebuilt.

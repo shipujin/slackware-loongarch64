@@ -432,7 +432,6 @@ gzip ./source/n/iptraf-ng/iptraf-ng.paths.diff
 gzip ./source/n/nss-pam-ldapd/doinst.sh
 gzip ./source/n/bootp/bootp_2.4.3-15.diff
 gzip ./source/n/bootp/bootptab
-gzip ./source/n/lftp/lftp.c99.patch
 gzip ./source/n/lftp/doinst.sh
 gzip ./source/n/postfix/postfix.script.starting.message.diff
 gzip ./source/n/postfix/0001-openssl-micro-mismatch-nowarn.patch

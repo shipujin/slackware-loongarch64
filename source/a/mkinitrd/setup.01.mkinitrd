@@ -1,11 +1,8 @@
 #!/bin/sh
 #BLURB="Generate an initrd for the kernel"
 
-# To generate an initrd automatically, just run "geninitrd".
 # If KERNEL_SYMLINK is defined and points to a kernel, we'll use that.
 # Otherwise, if KERNEL is defined and points to a kernel, we'll use that.
-# Otherwise, if $1 is defined and points to a kernel, we'll use that.
-# Example: geninitrd /boot/vmlinuz-6.11.6
 # If none of these are true, we'll use the newest kernel we find in /boot.
 
 # Load defaults:
@@ -22,13 +19,8 @@ fi
 KERNEL=$KERNEL_SYMLINK
 
 if [ -z "$KERNEL" ]; then
-  # If we were not passed $KERNEL, maybe we got the kernel as $1:
-  if [ ! -z "$1" ]; then
-    KERNEL=$1
-  else
-    # If we weren't told anything else, then use the newest kernel:
-    KERNEL="$(find /boot -name "vmlinuz-*" -type f | xargs ls -t | head -n 1)"
-  fi
+  # If we weren't told anything else, then use the newest kernel:
+  KERNEL="$(find /boot -name "vmlinuz-*" -type f | xargs ls -t | head -n 1)"
 fi
 
 # If we don't see $KERNEL, try looking in /boot:

@@ -59,6 +59,9 @@ fi
 # exact one used to build, and is sorted properly.
 REGEN_CONFIG=${REGEN_CONFIG:-false}
 
+# By default, have the kernel package(s) generate an initrd upon installation:
+AUTO_GENERATE_INITRD=${AUTO_GENERATE_INITRD:-YES}
+
 if [ ! -r "${KERNEL_CONFIG}" ]; then
   echo "Error: the KERNEL_CONFIG environment variable needs to be set to the"
   echo ".config file to be used to build this kernel. Example:"
@@ -201,6 +204,15 @@ else
   cat $CWD/slack-desc/slack-desc.kernel-template | sed "s/%PACKAGE_NAME%/kernel-${KERNEL_NAME}/g" > $PKG/install/slack-desc
 fi
 
+if [ "$AUTO_GENERATE_INITRD" = "YES" ]; then
+  echo "export KERNEL=/boot/vmlinuz-${VERSION}${LOCALVERSION}" > $PKG/install/doinst.sh
+  echo "export KERNEL_DOINST=true" >> $PKG/install/doinst.sh
+  echo "export GENINITRD_SILENT=true" >> $PKG/install/doinst.sh
+  cat $CWD/doinst.sh/doinst.sh-kernel >> $PKG/install/doinst.sh
+else
+  touch $PKG/install/doinst.sh
+fi
+
 # Make the package:
 cd $PKG
-/sbin/makepkg -l y -c n $TMP/kernel-$(echo ${KERNEL_NAME} | tr - _)-$(echo ${VERSION} | tr - _)$(echo ${LOCALVERSION} | tr - _)-${PACKAGE_ARCH}-$BUILD.txz
+/sbin/makepkg -l y -c n --prepend $TMP/kernel-$(echo ${KERNEL_NAME} | tr - _)-$(echo ${VERSION} | tr - _)$(echo ${LOCALVERSION} | tr - _)-${PACKAGE_ARCH}-$BUILD.txz

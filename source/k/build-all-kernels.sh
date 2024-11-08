@@ -64,8 +64,21 @@ KERNEL_CONFIGDIR=${KERNEL_CONFIGDIR:-./kernel-configs}
 KERNEL_CONFIGDIR=$(realpath $KERNEL_CONFIGDIR)
 export KERNEL_CONFIGDIR
 
-# By default, install the packages as we build them and update the initrd.
+# By default, install the packages as we build them.
 INSTALL_PACKAGES=${INSTALL_PACKAGES:-YES}
+
+# By default, have the kernel package(s) generate an initrd upon installation:
+AUTO_GENERATE_INITRD=${AUTO_GENERATE_INITRD:-YES}
+export AUTO_GENERATE_INITRD
+
+# By default, update the initrd. But if both INSTALL_PACKAGES and
+# AUTO_GENERATE_INITRD are YES, then installing the kernel-generic package
+# will generate the initrd, so no need to do this twice.
+if [ "$INSTALL_PACKAGES" = "YES" -a "$AUTO_GENERATE_INITRD" = "YES" ]; then
+  UPDATE_INITRD=${UPDATE_INITRD:-NO}
+else
+  UPDATE_INITRD=${UPDATE_INITRD:-YES}
+fi
 
 # Clean kernels before building them. Not doing so quit working some time
 # after 4.19.x.
@@ -214,32 +227,9 @@ for recipe in $RECIPES ; do
   fi
 
   # Update initrd:
-  if [ "${INSTALL_PACKAGES}" = "YES" ]; then
-    if [ -r /etc/mkinitrd.conf ]; then
-      mkinitrd -F /etc/mkinitrd.conf -k ${VERSION}${LOCALVERSION} -o /boot/initrd-${VERSION}${LOCALVERSION}.img
-    else # try this?
-      sh /usr/share/mkinitrd/mkinitrd_command_generator.sh -k ${VERSION}${LOCALVERSION} -a "-o /boot/initrd-${VERSION}${LOCALVERSION}.img" | sed "s/-c -k/-k/g" | bash
-    fi
-    if [ -r /boot/initrd-${VERSION}${LOCALVERSION}.img ]; then
-      # Make unversioned initrd symlink(s):
-      ( cd /boot
-        for kernelsymlink in vmlinuz-* ; do
-          # Skip if it isn't a symlink:
-          if [ ! -L $kernelsymlink ]; then
-            continue
-          fi
-          # If it matches the kernel version we used, then make a symlink for the initrd:
-          KERNEL_VERSION="$(strings $kernelsymlink | grep '([^ ]*@[^ ]*) #' | cut -f1 -d' ')"
-          if [ "$KERNEL_VERSION" = "${VERSION}${LOCALVERSION}" ];  then
-            # Make symlink for the initrd:
-            KERNEL_NAME="$(echo $kernelsymlink | cut -f 2- -d -)"
-            ln -sf initrd-${VERSION}${LOCALVERSION}.img initrd-${KERNEL_NAME}.img
-          fi
-        done
-      )
-      # Good old compat symlink :-)
-      ln -sf initrd-${VERSION}${LOCALVERSION}.img /boot/initrd.gz
-    fi
+  if [ "${UPDATE_INITRD}" = "YES" ]; then
+    echo "Updating initrd with geninitrd..."
+    GENINITRD_SILENT=true /usr/sbin/geninitrd
   fi
 
   echo

@@ -27,6 +27,7 @@
 # symlink. Finally, it also supports a plain initrd.gz symlink to the initrd,
 # which might still be needed by some old setups.
 
+# To generate an initrd automatically, just run "geninitrd".
 # If KERNEL_SYMLINK is defined and points to a kernel, we'll use that.
 # Otherwise, if KERNEL is defined and points to a kernel, we'll use that.
 # Otherwise, if $1 is defined and points to a kernel, we'll use that.
@@ -43,11 +44,18 @@
 
 cd $(dirname $0)/../..
 
+# If we don't have $KERNEL or $KERNEL_SYMLINK, maybe we got the kernel as $1:
+if [ -z "$KERNEL" -a -z "$KERNEL_SYMLINK" ]; then
+  export KERNEL=$1
+fi
+
 # In case you cannot make this script do exactly what you require, you're
-# welcome to create /usr/local/sbin/geninitrd and it will be run instead of
-# the usual setup script:
+# welcome to create /usr/local/sbin/geninitrd or /opt/sbin/geninitrd and it
+# will be run instead of the usual setup script:
 if [ -x /usr/local/sbin/geninitrd ]; then
   chroot . /usr/local/sbin/geninitrd $*
+elif [ -x /opt/sbin/geninitrd ]; then
+  chroot . /opt/sbin/geninitrd $*
 else # we will run the default handler from the setup scripts:
   chroot . /var/lib/pkgtools/setup/setup.01.mkinitrd $*
 fi

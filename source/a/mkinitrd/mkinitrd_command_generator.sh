@@ -255,7 +255,7 @@ check_luks_lvm_raid() {
     USING_LVM=1
     # Search the Physical Volume of our Logical Volume:
     MYVG=$( echo $(lvdisplay -c $ROOTDEV 2>/dev/null) | cut -d: -f2 )
-    for LINE in $(pvdisplay -c) ; do
+    for LINE in $(pvdisplay -c 2> /dev/null) ; do
       VG=$(echo $LINE | cut -d: -f2)
       [ "$VG" = "$MYVG" ] && break
     done 
@@ -288,7 +288,7 @@ check_luks_lvm_raid() {
       USING_LVM=1
       # Search the Physical Volume of our Logical Volume:
       MYVG=$( echo $(lvdisplay -c $REALDEV 2>/dev/null) | cut -d: -f2 )
-      for LINE in $(pvdisplay -c) ; do
+      for LINE in $(pvdisplay -c 2> /dev/null) ; do
         VG=$(echo $LINE | cut -d: -f2)
         [ "$VG" = "$MYVG" ] && break
       done 
