@@ -30,7 +30,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=mariadb
 VERSION=${VERSION:-$(echo ${PKGNAM}-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 
 # To reduce the package size, the embedded server may be omitted.  Currently
 # only amarok uses this.  To build without embedded support, set this to NO.
@@ -95,6 +95,10 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \+
 
+# Edit the instructions after installing a database to say that mariadbd should
+# be started with /etc/rc.d/rc.mysqld, not a systemd service file:
+cat $CWD/mariadb-install-db.no.systemd.instructions.diff | patch -p1 --verbose || exit 1
+
 mkdir build
 cd build
 cmake \
@@ -154,9 +158,9 @@ cd ..
 install -m755 debian/additions/innotop/innotop $PKG/usr/bin/
 install -m644 debian/additions/innotop/innotop.1 $PKG/usr/man/man1/
 
-# Install mysqlreport
-install -m755 debian/additions/mysqlreport $PKG/usr/bin/
-install -m644 debian/additions/mysqlreport.1 $PKG/usr/man/man1/
+# Install mariadb-report
+install -m755 debian/additions/mariadb-report $PKG/usr/bin/
+install -m644 debian/additions/mariadb-report.1 $PKG/usr/man/man1/
 
 if [ "$KEEPSTATIC" = "NO" ]; then
   # Remove large static libraries:
@@ -215,6 +219,12 @@ for i in client hashicorp_key_management mysql-clients s3 server spider ; do
   mv $PKG/etc/my.cnf.d/$i.cnf $PKG/etc/my.cnf.d/$i.cnf.new
 done
 
+# Install default options configuration file:
+mkdir -p $PKG/etc/default
+cp -a $CWD/mariadb.default $PKG/etc/default/mariadb.new
+chown root:root $PKG/etc/default/mariadb.new
+chmod 644 $PKG/etc/default/mariadb.new
+
 find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
 
@@ -227,4 +237,3 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 
 cd $PKG
 /sbin/makepkg -l y -c n $TMP/${PKGNAM}-$VERSION-$ARCH-${BUILD}${TAG}.txz
-

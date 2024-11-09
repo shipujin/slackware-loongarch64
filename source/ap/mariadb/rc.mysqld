@@ -1,9 +1,9 @@
 #!/bin/sh
-# Start/stop/restart mysqld.
+# Start/stop/restart mariadbd.
 #
 # Copyright 2003  Patrick J. Volkerding, Concord, CA
 # Copyright 2003  Slackware Linux, Inc., Concord, CA
-# Copyright 2008, 2013  Patrick J. Volkerding, Sebeka, MN, USA
+# Copyright 2008, 2013, 2024  Patrick J. Volkerding, Sebeka, MN, USA
 #
 # This program comes with NO WARRANTY, to the extent permitted by law.
 # You may redistribute copies of this program under the terms of the
@@ -15,24 +15,27 @@
 # Before you can run MariaDB, you must have a database.  To install an initial
 # database, do this as root:
 #
-#   mysql_install_db --user=mysql
+#   mariadb-install-db --user=mysql
 #
 # Note that the mysql user must exist in /etc/passwd, and the created files
-# will be owned by this dedicated user.  This is important, or else mysql
+# will be owned by this dedicated user.  This is important, or else mariadb
 # (which runs as user "mysql") will not be able to write to the database
 # later (this can be fixed with 'chown -R mysql.mysql /var/lib/mysql').
 #
-# To increase system security, consider using "mysql_secure_installation"
+# To increase system security, consider using "mariadb-secure-installation"
 # as well.  For more information on this tool, please read:
-#   man mysql_secure_installation
+#   man mariadb-secure-installation
 
-# To allow outside connections to the database comment out the next line.
-# If you don't need incoming network connections, then leave the line
-# uncommented to improve system security.
-SKIP="--skip-networking"
+# To set additional options (or see defaults), see:
+#   /etc/default/mariadb
 
-# Start mysqld:
-mysqld_start() {
+# Source /etc/default/mariadb to set $MARIADB_OPTIONS:
+if [ -r /etc/default/mariadb ]; then
+  . /etc/default/mariadb
+fi
+
+# Start mariadbd:
+mariadbd_start() {
   if [ -x /usr/bin/mariadbd-safe ]; then
     # If there is an old PID file (no mysqld running), clean it up:
     if [ -r /var/run/mysql/mysql.pid ]; then
@@ -42,12 +45,12 @@ mysqld_start() {
       fi
     fi
 
-    /usr/bin/mariadbd-safe --datadir=/var/lib/mysql --pid-file=/var/run/mysql/mysql.pid $SKIP &
+    /usr/bin/mariadbd-safe --datadir=/var/lib/mysql --pid-file=/var/run/mysql/mysql.pid $MARIADB_OPTIONS &
   fi
 }
 
-# Stop mysqld:
-mysqld_stop() {
+# Stop mariadbd:
+mariadbd_stop() {
   # If there is no PID file, ignore this request...
   if [ -r /var/run/mysql/mysql.pid ]; then
     PID=$(cat /var/run/mysql/mysql.pid)
@@ -60,27 +63,27 @@ mysqld_stop() {
       sleep 1
     done
     if [ "$second" = "60" ]; then
-      echo "WARNING:  Gave up waiting for mysqld to exit!"
+      echo "WARNING:  Gave up waiting for mariadbd to exit!"
       sleep 15
     fi
   fi
 }
 
-# Restart mysqld:
-mysqld_restart() {
-  mysqld_stop
-  mysqld_start
+# Restart mariadbd:
+mariadbd_restart() {
+  mariadbd_stop
+  mariadbd_start
 }
 
 case "$1" in
 'start')
-  mysqld_start
+  mariadbd_start
   ;;
 'stop')
-  mysqld_stop
+  mariadbd_stop
   ;;
 'restart')
-  mysqld_restart
+  mariadbd_restart
   ;;
 *)
   echo "usage $0 start|stop|restart"

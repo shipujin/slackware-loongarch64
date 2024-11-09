@@ -11,9 +11,31 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Fri,  8 Nov 2024 22:17:50 GMT</pubDate>
-      <lastBuildDate>Fri,  8 Nov 2024 23:52:43 GMT</lastBuildDate>
+      <pubDate>Sat,  9 Nov 2024 20:28:56 GMT</pubDate>
+      <lastBuildDate>Sat,  9 Nov 2024 20:59:53 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Sat,  9 Nov 2024 20:28:56 GMT</title>
+         <pubDate>Sat,  9 Nov 2024 20:28:56 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241109202856</link>
+         <guid isPermaLink="false">20241109202856</guid>
+         <description>
+           <![CDATA[<pre>
+ap/mariadb-11.4.4-x86_64-3.txz:  Rebuilt.
+  Moved default options (--skip-networking --disable-ssl) into
+  /etc/default/mariadb. Thanks to y0g1.
+ rc.mysqld: use options from /etc/default/mariadb.
+ Change db installation example from mysql_install_db to mariadb-install-db.
+ Change mysqld to mariadbd in various places.
+ Edit the text that's printed after mariadb-install-db to show how to start
+ at boot time with chmod +x /etc/rc.d/rc.mysqld.
+kde/kid3-3.9.6-x86_64-1.txz:  Upgraded.
+l/python-wheel-0.45.0-x86_64-1.txz:  Upgraded.
+l/sof-firmware-2024.09.1-noarch-1.txz:  Upgraded.
+x/ibus-1.5.31-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Fri,  8 Nov 2024 22:17:50 GMT</title>
          <pubDate>Fri,  8 Nov 2024 22:17:50 GMT</pubDate>

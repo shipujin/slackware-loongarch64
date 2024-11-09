@@ -29,10 +29,10 @@ config etc/my.cnf.d/s3.cnf.new
 config etc/my.cnf.d/server.cnf.new
 config etc/my.cnf.d/spider.cnf.new
 config etc/logrotate.d/mariadb.new
+config etc/default/mariadb.new
 
 # This one is only comments, so remove it if it's left behind:
 if [ -r etc/security/user_map.conf.new ]; then
   config etc/security/user_map.conf.new
 fi
 rm -f etc/security/user_map.conf.new
-
