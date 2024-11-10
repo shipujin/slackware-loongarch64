@@ -1,3 +1,15 @@
+Sun Nov 10 20:38:31 UTC 2024
+l/imagemagick-7.1.1_40-x86_64-1.txz:  Upgraded.
+l/python-hatchling-1.26.1-x86_64-1.txz:  Upgraded.
+l/python-zipp-3.21.0-x86_64-1.txz:  Upgraded.
+l/qt6-6.8.0_20241001_0c20a491-x86_64-1.txz:  Upgraded.
+n/c-ares-1.34.3-x86_64-1.txz:  Upgraded.
+n/netatalk-4.0.5-x86_64-1.txz:  Upgraded.
+x/xtrans-1.5.2-noarch-1.txz:  Upgraded.
+y/bsd-games-2.17-x86_64-6.txz:  Rebuilt.
+  /etc/profile.d/bsd-games-login-fortune.{csh,sh}: suppress fortune output if
+  $HOME/.hushlogin exists. Thanks to GazL.
++--------------------------+
 Sat Nov  9 20:28:56 UTC 2024
 ap/mariadb-11.4.4-x86_64-3.txz:  Rebuilt.
   Moved default options (--skip-networking --disable-ssl) into
