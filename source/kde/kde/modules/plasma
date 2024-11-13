@@ -23,8 +23,9 @@ oxygen
 oxygen-sounds
 plasma-workspace
 kde-cli-tools
-# Circular dependency between plasma-workspace and kde-cli-tools:
-plasma-workspace
+### This only matters when building from scratch, which seldom happens:
+## Circular dependency between plasma-workspace and kde-cli-tools:
+##plasma-workspace
 systemsettings
 plasma-desktop
 kdeplasma-addons

@@ -1,3 +1,19 @@
+Wed Nov 13 20:22:00 UTC 2024
+ap/alsa-utils-1.2.13-x86_64-2.txz:  Rebuilt.
+  Revert 90-alsa-restore.rules due to a missing label.
+  Thanks to elcore.
+ap/sudo-1.9.16p1-x86_64-1.txz:  Upgraded.
+d/python-setuptools-75.5.0-x86_64-1.txz:  Upgraded.
+kde/plasma-workspace-5.27.11.1-x86_64-4.txz:  Rebuilt.
+  [PATCH] lookandfeel: Explicitly set theme to Breeze in defaults.
+  Thanks to gmgf.
+l/libxml2-2.13.5-x86_64-1.txz:  Upgraded.
+l/python-hatchling-1.26.3-x86_64-1.txz:  Upgraded.
+l/python-sphinx_rtd_theme-3.0.2-x86_64-1.txz:  Upgraded.
+n/fetchmail-6.5.1-x86_64-1.txz:  Upgraded.
+n/npth-1.8-x86_64-1.txz:  Upgraded.
+x/xcompmgr-1.1.10-x86_64-1.txz:  Upgraded.
++--------------------------+
 Tue Nov 12 20:26:19 UTC 2024
 ap/alsa-utils-1.2.13-x86_64-1.txz:  Upgraded.
 ap/diffstat-1.67-x86_64-1.txz:  Upgraded.
