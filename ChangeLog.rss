@@ -11,9 +11,34 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Wed, 13 Nov 2024 20:22:00 GMT</pubDate>
-      <lastBuildDate>Wed, 13 Nov 2024 21:01:24 GMT</lastBuildDate>
+      <pubDate>Thu, 14 Nov 2024 20:00:55 GMT</pubDate>
+      <lastBuildDate>Thu, 14 Nov 2024 20:42:47 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Thu, 14 Nov 2024 20:00:55 GMT</title>
+         <pubDate>Thu, 14 Nov 2024 20:00:55 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241114200055</link>
+         <guid isPermaLink="false">20241114200055</guid>
+         <description>
+           <![CDATA[<pre>
+a/kernel-firmware-20241113_6e4e94b-noarch-1.txz:  Upgraded.
+a/kernel-generic-6.11.8-x86_64-1.txz:  Upgraded.
+ap/alsa-utils-1.2.13-x86_64-3.txz:  Rebuilt.
+  [PATCH] alsactl: 90-alsa-restore.rules - fix alsa_restore_go/std.
+d/kernel-headers-6.11.8-x86-1.txz:  Upgraded.
+d/luajit-2.1.1731601260-x86_64-1.txz:  Upgraded.
+k/kernel-source-6.11.8-noarch-1.txz:  Upgraded.
+kde/pulseaudio-qt-1.6.1-x86_64-1.txz:  Upgraded.
+x/mesa-24.2.7-x86_64-1.txz:  Upgraded.
+x/util-macros-1.20.2-noarch-1.txz:  Upgraded.
+x/xlogo-1.0.7-x86_64-1.txz:  Upgraded.
+x/xprop-1.2.8-x86_64-1.txz:  Upgraded.
+isolinux/initrd.img:  Rebuilt.
+kernels/*:  Upgraded.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Wed, 13 Nov 2024 20:22:00 GMT</title>
          <pubDate>Wed, 13 Nov 2024 20:22:00 GMT</pubDate>

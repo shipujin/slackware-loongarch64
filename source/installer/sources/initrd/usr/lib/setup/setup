@@ -42,6 +42,10 @@ echo "on" > $TMP/SeTcolor # turn on color menus
 PATH="$PATH:/usr/lib/setup"
 export PATH;
 export COLOR=on
+# We'll export this variable so that the doinst.sh scripts can tell if we're
+# running from the installer. We've used other tricks to determine this in the
+# past, which have worked, but this makes it more obvious what's going on.
+export INSIDE_INSTALLER=true
 dialog --backtitle "Slackware Linux Setup" --infobox "\n
 Scanning your system for partition information...\n
 \n" 5 55
