@@ -38,10 +38,6 @@
 # (if you will be setting GENERATOR=mkinitrd in /etc/default/geninitrd), or you
 # could try using GENERATOR=dracut.
 
-# If you have requirements that we have not covered here, you can always make
-# your own script and call it /usr/local/bin/geninitrd-custom, and we will
-# use that instead.
-
 cd $(dirname $0)/../..
 
 # If we don't have $KERNEL or $KERNEL_SYMLINK, maybe we got the kernel as $1:

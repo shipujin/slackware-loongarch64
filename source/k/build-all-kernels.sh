@@ -140,10 +140,10 @@ for recipe in $RECIPES ; do
     # If that doesn't match, we take the newest config with the proper $CONFIG_SUFFIX.
     if [ -r $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX} ]; then
       KERNEL_CONFIG="config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}"
-    elif [ -r "$(/bin/ls -t $KERNEL_CONFIGDIR/config-${VERSION}*${CONFIG_SUFFIX} | head -n 1 2> /dev/null)" ]; then
-      KERNEL_CONFIG="$(basename $(/bin/ls $KERNEL_CONFIGDIR/config-${VERSION}*${CONFIG_SUFFIX} | head -n 1 2> /dev/null))"
-    elif [ -r "$(/bin/ls -t $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} | head -n 1 2> /dev/null)" ]; then
-      KERNEL_CONFIG="$(basename $(/bin/ls $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} | head -n 1 2> /dev/null))"
+    elif [ -r "$(/bin/ls -t $KERNEL_CONFIGDIR/config-${VERSION}*${CONFIG_SUFFIX} 2> /dev/null | head -n 1)" ]; then
+      KERNEL_CONFIG="$(basename $(/bin/ls $KERNEL_CONFIGDIR/config-${VERSION}*${CONFIG_SUFFIX} 2> /dev/null | head -n 1))"
+    elif [ -r "$(/bin/ls -t $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} 2> /dev/null | head -n 1)" ]; then
+      KERNEL_CONFIG="$(basename $(/bin/ls $KERNEL_CONFIGDIR/config-*${CONFIG_SUFFIX} 2> /dev/null | head -n 1))"
     else
       echo "ERROR: no suitable config file found for ${CONFIG_SUFFIX}"
       exit 1
@@ -184,7 +184,7 @@ for recipe in $RECIPES ; do
  
     # Are we building this kernel?
     if [ ! "$BUILD_KERNEL_PACKAGE" = "yes" ]; then
-      if ! "$BUILD_KERNEL_PACKAGE" = "$KERNEL_NAME" ]; then
+      if [ ! "$BUILD_KERNEL_PACKAGE" = "$KERNEL_NAME" ]; then
         continue
       fi
     fi
