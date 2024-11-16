@@ -11,9 +11,22 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Fri, 15 Nov 2024 21:35:55 GMT</pubDate>
-      <lastBuildDate>Fri, 15 Nov 2024 21:59:23 GMT</lastBuildDate>
+      <pubDate>Sat, 16 Nov 2024 22:30:51 GMT</pubDate>
+      <lastBuildDate>Sat, 16 Nov 2024 23:01:06 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Sat, 16 Nov 2024 22:30:51 GMT</title>
+         <pubDate>Sat, 16 Nov 2024 22:30:51 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241116223051</link>
+         <guid isPermaLink="false">20241116223051</guid>
+         <description>
+           <![CDATA[<pre>
+kde/digikam-8.5.0-x86_64-1.txz:  Upgraded.
+l/openal-soft-1.24.0-x86_64-1.txz:  Upgraded.
+n/netatalk-4.0.6-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Fri, 15 Nov 2024 21:35:55 GMT</title>
          <pubDate>Fri, 15 Nov 2024 21:35:55 GMT</pubDate>
