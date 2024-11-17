@@ -48,10 +48,16 @@ fi
 # In case you cannot make this script do exactly what you require, you're
 # welcome to create /usr/local/sbin/geninitrd or /opt/sbin/geninitrd and it
 # will be run instead of the usual setup script:
-if [ -x /usr/local/sbin/geninitrd ]; then
+if [ -x usr/local/sbin/geninitrd ]; then
   chroot . /usr/local/sbin/geninitrd $*
-elif [ -x /opt/sbin/geninitrd ]; then
+elif [ -x opt/sbin/geninitrd ]; then
   chroot . /opt/sbin/geninitrd $*
 else # we will run the default handler from the setup scripts:
   chroot . /var/lib/pkgtools/setup/setup.01.mkinitrd $*
+fi
+
+# If enabled in /etc/default/geninitrd, remove any orphaned initrds
+# after generating the initrd:
+if grep -wq "^AUTO_REMOVE_ORPHANED_INITRDS=true$" etc/default/geninitrd ; then
+  chroot . /usr/sbin/remove-orphaned-initrds
 fi

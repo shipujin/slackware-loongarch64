@@ -50,9 +50,9 @@ for initrd in initrd-*.img ; do
   if [ ! -r vmlinuz-${IDENTIFIER} ]; then
     ORPHANS_FOUND=true
     if [ "$1" = "--dry-run" ]; then
-      echo "Would remove: $initrd"
+      echo "Would remove orphaned initrd: /boot/${initrd}"
     else
-      echo "Removing: $initrd"
+      echo "Removing orphaned initrd: /boot/${initrd}"
       rm -f $initrd
     fi
   fi
@@ -63,9 +63,9 @@ fi
 # Also handle initrd symlinks:
 for dangling_symlink in $(find . -name "initrd-*.img" -xtype l) $(find . -name "initrd.gz" -xtype l) ; do
   if [ "$1" = "--dry-run" ]; then
-    echo "Would remove: $dangling_symlink"
+    echo "Would remove dangling initrd symlink: /boot/${dangling_symlink}"
   else
-    echo "Removing: $dangling_symlink"
+    echo "Removing dangling initrd symlink: /boot/${dangling_symlink}"
     rm -f $dangling_symlink
   fi
 done
