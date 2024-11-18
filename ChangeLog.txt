@@ -1,3 +1,15 @@
+Mon Nov 18 22:26:36 UTC 2024
+ap/lsof-4.99.4-x86_64-1.txz:  Upgraded.
+n/dovecot-2.3.21.1-x86_64-4.txz:  Rebuilt.
+  Build with option --with-libwrap. Patch configure to add -lnsl to -lwrap.
+  Thanks to Jonathan Woithe.
+xap/xine-lib-1.2.13-x86_64-10.txz:  Rebuilt.
+  Recompiled since ImageMagick upstream fixed their mistake.
+  Thanks to Petri Kaukasoina.
+testing/packages/kernel-generic-6.12.0-x86_64-1.txz:  Added.
+testing/packages/kernel-headers-6.12.0-x86-1.txz:  Added.
+testing/packages/kernel-source-6.12.0-noarch-1.txz:  Added.
++--------------------------+
 Sun Nov 17 19:50:28 UTC 2024
 a/kernel-generic-6.11.9-x86_64-1.txz:  Upgraded.
 a/mcelog-201-x86_64-1.txz:  Upgraded.

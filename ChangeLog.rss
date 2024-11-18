@@ -11,9 +11,29 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Sun, 17 Nov 2024 19:50:28 GMT</pubDate>
-      <lastBuildDate>Sun, 17 Nov 2024 20:43:01 GMT</lastBuildDate>
+      <pubDate>Mon, 18 Nov 2024 22:26:36 GMT</pubDate>
+      <lastBuildDate>Mon, 18 Nov 2024 23:02:52 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Mon, 18 Nov 2024 22:26:36 GMT</title>
+         <pubDate>Mon, 18 Nov 2024 22:26:36 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241118222636</link>
+         <guid isPermaLink="false">20241118222636</guid>
+         <description>
+           <![CDATA[<pre>
+ap/lsof-4.99.4-x86_64-1.txz:  Upgraded.
+n/dovecot-2.3.21.1-x86_64-4.txz:  Rebuilt.
+  Build with option --with-libwrap. Patch configure to add -lnsl to -lwrap.
+  Thanks to Jonathan Woithe.
+xap/xine-lib-1.2.13-x86_64-10.txz:  Rebuilt.
+  Recompiled since ImageMagick upstream fixed their mistake.
+  Thanks to Petri Kaukasoina.
+testing/packages/kernel-generic-6.12.0-x86_64-1.txz:  Added.
+testing/packages/kernel-headers-6.12.0-x86-1.txz:  Added.
+testing/packages/kernel-source-6.12.0-noarch-1.txz:  Added.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Sun, 17 Nov 2024 19:50:28 GMT</title>
          <pubDate>Sun, 17 Nov 2024 19:50:28 GMT</pubDate>
