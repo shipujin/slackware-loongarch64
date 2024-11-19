@@ -11,9 +11,23 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Mon, 18 Nov 2024 22:26:36 GMT</pubDate>
-      <lastBuildDate>Mon, 18 Nov 2024 23:02:52 GMT</lastBuildDate>
+      <pubDate>Tue, 19 Nov 2024 22:26:05 GMT</pubDate>
+      <lastBuildDate>Tue, 19 Nov 2024 23:08:46 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Tue, 19 Nov 2024 22:26:05 GMT</title>
+         <pubDate>Tue, 19 Nov 2024 22:26:05 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241119222605</link>
+         <guid isPermaLink="false">20241119222605</guid>
+         <description>
+           <![CDATA[<pre>
+d/llvm-19.1.4-x86_64-1.txz:  Upgraded.
+d/strace-6.12-x86_64-1.txz:  Upgraded.
+l/libclc-19.1.4-x86_64-1.txz:  Upgraded.
+x/libinput-1.27.0-x86_64-1.txz:  Upgraded.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Mon, 18 Nov 2024 22:26:36 GMT</title>
          <pubDate>Mon, 18 Nov 2024 22:26:36 GMT</pubDate>

@@ -223,7 +223,13 @@ echo "Untarring $CWD/linux-${VERSION}.tar.?z in $PKG/usr/src..."
 ( cd $PKG/usr/src/linux-*
   echo "Making oldconfig..."
   make oldconfig
-  if [ ! -r $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX} ]; then
+
+  # Use the version number found in the Makefile in the package name. This is not
+  # always the same as the version in the source tarball's filename. For example,
+  # linux-4.14.tar.xz will have 4.14.0 as the version in the Makefile:
+  PACKAGE_VERSION=$(grep "^VERSION = " Makefile | rev | cut -f 1 -d ' ' | rev).$(grep "^PATCHLEVEL = " Makefile | rev | cut -f 1 -d ' ' | rev).$(grep "^SUBLEVEL = " Makefile | rev | cut -f 1 -d ' ' | rev)$(grep "^EXTRAVERSION = " Makefile | rev | cut -f 1 -d ' ' | rev)
+
+  if [ ! -r $KERNEL_CONFIGDIR/config-${PACKAGE_VERSION}${LOCALVERSION}${CONFIG_SUFFIX} ]; then
     # If you care about saving the original unregenerated unrenamed config
     # file, set SAVE_ORIGINAL_KERNEL_CONFIG to something. This might cause
     # your kernels to be built twice...
@@ -231,8 +237,8 @@ echo "Untarring $CWD/linux-${VERSION}.tar.?z in $PKG/usr/src..."
       echo "Removing original .config $KERNEL_CONFIGDIR/${KERNEL_CONFIG}"
       rm -v -f $KERNEL_CONFIGDIR/${KERNEL_CONFIG}
     fi
-    echo "Saving new .config as: $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}"
-    cp -a .config $KERNEL_CONFIGDIR/config-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}
+    echo "Saving new .config as: $KERNEL_CONFIGDIR/config-${PACKAGE_VERSION}${LOCALVERSION}${CONFIG_SUFFIX}"
+    cp -a .config $KERNEL_CONFIGDIR/config-${PACKAGE_VERSION}${LOCALVERSION}${CONFIG_SUFFIX}
   fi
 
   # If we see ONLY_STAGE_KERNEL_SOURCE=yes, then we don't want to build this.
