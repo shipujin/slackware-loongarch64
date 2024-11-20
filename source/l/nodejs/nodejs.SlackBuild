@@ -22,7 +22,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 PKGNAM=nodejs
 SRCNAM=node
 VERSION=${VERSION:-$(echo $SRCNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev | tr -d v)}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-1}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -64,7 +64,8 @@ mkdir -p $TMP $PKG
 
 cd $TMP
 rm -rf $SRCNAM-v${VERSION}
-tar xvf $CWD/$SRCNAM-v${VERSION}.tar.?z || exit 1
+echo "Extracting $CWD/$SRCNAM-v${VERSION}.tar.?z..."
+tar xf $CWD/$SRCNAM-v${VERSION}.tar.?z || exit 1
 cd $SRCNAM-v${VERSION} || exit 1
 
 chown -R root:root .
