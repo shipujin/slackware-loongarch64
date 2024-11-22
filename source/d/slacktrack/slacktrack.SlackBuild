@@ -6,12 +6,10 @@ if [ "$TMP" = "" ]; then
 fi
 
 PKGNAM=slacktrack
-export VERSION=2.23
+export VERSION=2.24
 # Automatically determine the architecture we're building on:
 case "$( uname -m )" in
-  i?86)    export ARCH=i586
-           PKGEXT=txz ;;
-  arm*)    export ARCH=arm
+  i?86)    export ARCH=i686
            PKGEXT=txz ;;
   # Unless $ARCH is already set, use uname -m for all other archs:
      *)    export ARCH=$( uname -m )

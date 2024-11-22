@@ -1,3 +1,330 @@
+Fri Nov 22 22:08:18 UTC 2024
+a/kernel-firmware-20241122_3ed524d-noarch-1.txz:  Upgraded.
+a/kernel-generic-6.12.1-x86_64-1.txz:  Upgraded.
+a/libblockdev-3.2.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+a/libbytesize-2.11-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+a/libpwquality-1.4.5-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+a/mkinitrd-1.4.11-x86_64-48.txz:  Rebuilt.
+  remove-orphaned-initrds:  fixed output path when removing dangling symlinks.
+  Thanks to Mechanikx.
+a/nut-2.8.2-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+a/util-linux-2.40.2-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+a/volume_key-0.3.12-x86_64-9.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+ap/hplip-3.24.4-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+ap/linuxdoc-tools-0.9.83-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+ap/rpm-4.20.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+ap/undervolt-0.4.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+d/Cython-3.0.11-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+d/cmake-3.31.1-x86_64-1.txz:  Upgraded.
+d/distcc-3.4-x86_64-6.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+d/gdb-15.2-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+d/gyp-20210831_d6c5dd51-x86_64-4.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+d/kernel-headers-6.12.1-x86-1.txz:  Upgraded.
+d/libtool-2.5.4-x86_64-1.txz:  Upgraded.
+d/llvm-19.1.4-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+d/mercurial-6.9-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+d/meson-1.6.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+d/python-pip-24.3.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+d/python-setuptools-75.6.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+d/python3-3.12.7-x86_64-1.txz:  Upgraded.
+  Python 3.12 has been aging for more than a year, so it's time to take it.
+  Shared library .so-version bump.
+d/scons-4.8.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+d/slacktrack-2.24-x86_64-1.txz:  Upgraded.
+  When touching the filesystem, use xargs -P $(nproc) for a nice speedup.
+k/kernel-source-6.12.1-noarch-1.txz:  Upgraded.
+kde/cantor-23.08.5-x86_64-13.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+kde/kapidox-5.116.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+kde/kdev-python-23.08.5-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+kde/kig-23.08.5-x86_64-6.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+kde/kmymoney-5.1.3-x86_64-5.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+kde/kopeninghours-23.08.5-x86_64-6.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+kde/krita-5.2.6-x86_64-4.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/Mako-1.3.5-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/PyQt-builder-1.16.4-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/PyQt5-5.15.11-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/PyQt5_sip-12.15.0-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/QScintilla-2.14.1-x86_64-4.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/avahi-20240306_709e60f-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/boost-1.86.0-x86_64-5.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/brotli-1.1.0-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/dbus-python-1.3.2-x86_64-4.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/gexiv2-0.14.3-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/gi-docgen-2024.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/glade-3.40.0-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/gobject-introspection-1.82.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/gtk4-4.16.6-x86_64-1.txz:  Upgraded.
+l/lensfun-0.3.4-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/libcaca-0.99.beta20-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/libcap-ng-0.8.5-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/libmtp-1.1.22-x86_64-1.txz:  Upgraded.
+l/libnvme-1.11.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/libplist-2.6.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/libwebp-1.4.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/libxml2-2.13.5-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/libxslt-1.1.42-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/mozilla-nss-3.107-x86_64-1.txz:  Upgraded.
+l/newt-0.52.24-x86_64-4.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/protobuf-28.3-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/pycairo-1.27.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/pycups-2.0.4-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/pycurl-7.45.3-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/pygobject3-3.50.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/pyparsing-3.1.2-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-Jinja2-3.1.4-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-MarkupSafe-3.0.2-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-PyYAML-6.0.2-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-alabaster-1.0.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-appdirs-1.4.4-x86_64-8.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-babel-2.16.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-build-1.2.2.post1-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-calver-2022.6.26-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-certifi-2024.8.30-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-cffi-1.17.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-chardet-5.2.0-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-charset-normalizer-3.4.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-distro-1.9.0-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-dnspython-2.7.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-docutils-0.21.2-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-doxypypy-0.8.8.7-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-doxyqml-0.5.3-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-editables-0.5-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-flit-core-3.10.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-future-1.0.0-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-glad2-2.0.8-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-hatch-vcs-0.4.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-hatchling-1.26.3-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-html5lib-1.1-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-idna-3.10-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-imagesize-1.4.1-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-importlib_metadata-8.5.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-installer-0.7.0-x86_64-4.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-lxml-5.3.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-markdown-3.7-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-notify2-0.3.1-x86_64-12.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-packaging-24.2-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-pathspec-0.12.1-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-pbr-6.1.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-pillow-11.0.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-pluggy-1.5.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-ply-3.11-x86_64-10.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-psutil-6.1.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-pycparser-2.22-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-pygments-2.18.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-pyproject-hooks-1.2.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-pysol_cards-0.18.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-random2-1.0.2-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-requests-2.32.3-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-sane-2.9.1-x86_64-7.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-setuptools_scm-8.1.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-six-1.16.0-x86_64-5.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-smartypants-2.0.1-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-snowballstemmer-2.2.0-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-sphinx-8.1.3-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-sphinx_rtd_theme-3.0.2-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-tomli-w-1.1.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-trove-classifiers-2024.10.21.16-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-typogrify-2.0.7-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-urllib3-2.2.3-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-webencodings-0.5.1-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-wheel-0.45.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/python-zipp-3.21.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/sip-6.8.6-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/speech-dispatcher-0.11.5-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/system-config-printer-1.5.18-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/talloc-2.4.2-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/tdb-1.4.12-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+l/tevent-0.16.1-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+n/epic5-3.0.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+n/fetchmail-6.5.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+n/getmail-6.19.05-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+n/gpgme-1.24.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+n/iptraf-ng-1.2.2-x86_64-1.txz:  Upgraded.
+n/net-snmp-5.9.4-x86_64-6.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+n/nftables-1.1.1-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+n/nmap-7.95-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+n/nss-pam-ldapd-0.9.12-x86_64-5.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+n/obexftp-0.24.2-x86_64-14.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+n/php-8.3.14-x86_64-1.txz:  Upgraded.
+  This update fixes security issues:
+  LDAP: Fixed bug GHSA-g665-fm4p-vhff (OOB access in ldap_escape).
+  (CVE-2024-8932)
+  MySQLnd: Fixed bug GHSA-h35g-vwh6-m678 (Leak partial content of the heap
+  through heap buffer over-read). (CVE-2024-8929)
+  PDO DBLIB: Fixed bug GHSA-5hqh-c84r-qjcv (Integer overflow in the dblib
+  quoter causing OOB writes). (CVE-2024-11236)
+  PDO Firebird: Fixed bug GHSA-5hqh-c84r-qjcv (Integer overflow in the
+  firebird quoter causing OOB writes). (CVE-2024-11236)
+  Streams: Fixed bug GHSA-c5f2-jwm7-mmq2 (Configuring a proxy in a stream
+  context might allow for CRLF injection in URIs). (CVE-2024-11234)
+  Fixed bug GHSA-r977-prxv-hc43 (Single byte overread with
+  convert.quoted-printable-decode filter). (CVE-2024-11233)
+  For more information, see:
+    https://www.php.net/ChangeLog-8.php#8.3.14
+    https://www.cve.org/CVERecord?id=CVE-2024-8932
+    https://www.cve.org/CVERecord?id=CVE-2024-8929
+    https://www.cve.org/CVERecord?id=CVE-2024-11236
+    https://www.cve.org/CVERecord?id=CVE-2024-11234
+    https://www.cve.org/CVERecord?id=CVE-2024-11233
+  (* Security fix *)
+n/pssh-2.3.5-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+n/samba-4.21.1-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+x/ibus-1.5.31-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+x/ibus-anthy-1.5.16-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+x/ibus-hangul-1.5.5-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+x/ibus-libpinyin-1.15.8-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+x/ibus-table-1.17.8-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+x/marisa-0.2.6-x86_64-12.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+x/pyxdg-0.28-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+x/xcb-proto-1.17.0-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+xap/blueman-2.4.3-x86_64-2.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+xap/hexchat-2.16.2-x86_64-4.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+extra/brltty/brltty-6.7-x86_64-3.txz:  Rebuilt.
+  Recompiled against python3-3.12.7.
+isolinux/initrd.img:  Rebuilt.
+kernels/*:  Upgraded.
+usb-and-pxe-installers/usbboot.img:  Rebuilt.
++--------------------------+
 Wed Nov 20 22:05:15 UTC 2024
 a/exfatprogs-1.2.6-x86_64-1.txz:  Upgraded.
 d/mercurial-6.9-x86_64-1.txz:  Upgraded.

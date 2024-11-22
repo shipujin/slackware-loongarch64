@@ -1,9 +1,0 @@
-# Only run this if we aren't in the installer.
-# We'll do these things after the install.
-if [ -z "$INSIDE_INSTALLER" ]; then
-  # Generate the initrd and remove orphaned initrds.
-  # Options (including disabling this) may be found in /etc/default/geninitrd.
-  if [ -x usr/sbin/geninitrd ]; then
-    usr/sbin/geninitrd
-  fi
-fi

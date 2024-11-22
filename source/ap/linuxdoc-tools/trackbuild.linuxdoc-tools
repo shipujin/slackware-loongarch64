@@ -22,13 +22,13 @@
 PKGNAM=linuxdoc-tools
 
 export PKGVERSION=0.9.83 # use the version of linuxdoc-tools as the package version.
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 PKGEXT=${PKGEXT:-txz}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
-      i?86) export ARCH=i586 ;;
+      i?86) export ARCH=i686 ;;
       arm*) export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
          *) export ARCH=$( uname -m ) ;;

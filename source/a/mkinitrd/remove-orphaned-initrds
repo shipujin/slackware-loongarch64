@@ -61,7 +61,7 @@ if [ "$ORPHANS_FOUND" = "false" ]; then
   echo "No orphaned initrds found in /boot."
 fi
 # Also handle initrd symlinks:
-for dangling_symlink in $(find . -name "initrd-*.img" -xtype l) $(find . -name "initrd.gz" -xtype l) ; do
+for dangling_symlink in $(find . -name "initrd-*.img" -xtype l -printf '%P') $(find . -name "initrd.gz" -xtype l -printf '%P') ; do
   if [ "$1" = "--dry-run" ]; then
     echo "Would remove dangling initrd symlink: /boot/${dangling_symlink}"
   else

@@ -26,12 +26,12 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=pssh
 VERSION=${VERSION:-$(echo pssh*.tar.?z | cut -d - -f 2  | rev | cut -f 3- -d . | rev)}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
-    i?86) export ARCH=i586 ;;
+    i?86) export ARCH=i686 ;;
     arm*) export ARCH=arm ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
        *) export ARCH=$( uname -m ) ;;

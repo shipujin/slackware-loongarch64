@@ -1,3 +1,12 @@
+Thu Nov 21 21:53:25 UTC 2024
+ linuxdoc-tools 0.9.83, build 2.
+ Patrick J. Volkerding <volkerdi@slackware.com>
+ Maintenance:
+ * Upgraded to newer opensp SRPM and applied c99 patch.
+ * Add -Wno-error=implicit-int to CFLAGS
+ * Compiled against python-3.12.7.
+ * Moved from i586 to i686 target on Intel 32bit
+
 Thu Apr 11 08:08:08 UTC 2024
  linuxdoc-tools 0.9.83, build 1.
  Stuart Winter <mozes@slackware.com>
