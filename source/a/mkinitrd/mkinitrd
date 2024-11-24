@@ -220,7 +220,6 @@ build_initrd_image() {
     mv ${OUTPUT_IMAGE}.2 ${OUTPUT_IMAGE}
   fi
   echo "$OUTPUT_IMAGE created."
-  echo "Be sure to run lilo again if you use it."
 }
 
 badconf_file() {

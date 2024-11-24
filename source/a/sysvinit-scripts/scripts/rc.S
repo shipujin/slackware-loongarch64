@@ -53,7 +53,12 @@ fi
 # initrd has already done so):
 if [ -d /run -a -z "$container" ]; then
   if ! grep -wq "tmpfs /run tmpfs" /proc/mounts ; then
-    /sbin/mount -v -t tmpfs tmpfs /run -o mode=0755,size=32M,nodev,nosuid,noexec
+    # Other Linux systems seem to cap the size of /run to half the system memory.
+    # We'll go with 25% which should be much larger than the previous default of
+    # 32M :-)
+    RUNSIZE="$(expr $(grep MemTotal: /proc/meminfo | rev | cut -f 2 -d ' ' | rev) / 1024 / 4)M"
+    /sbin/mount -v -t tmpfs tmpfs /run -o mode=0755,size=$RUNSIZE,nodev,nosuid,noexec
+    unset RUNSIZE
   fi
 fi
 

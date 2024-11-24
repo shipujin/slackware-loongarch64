@@ -1,22 +1,47 @@
 #!/bin/sh
 #BLURB="Generate an initrd for the kernel"
 
-# If KERNEL_SYMLINK is defined and points to a kernel, we'll use that.
-# Otherwise, if KERNEL is defined and points to a kernel, we'll use that.
-# If none of these are true, we'll use the newest kernel we find in /boot.
+# If KERNEL is defined and points to a kernel, we'll use that.
+# Otherwise we'll use the newest kernel we find in /boot.
 
 # Load defaults:
 if [ -r etc/default/geninitrd ]; then
   . etc/default/geninitrd
 fi
 
+# Populate any unset options (when not called from the installer):
+if [ -z "$INSIDE_INSTALLER" ]; then
+  KERNEL=${KERNEL:-/boot/vmlinuz-generic}
+  GENINITRD_NAMED_SYMLINK=${GENINITRD_NAMED_SYMLINK:-true}
+  GENINITRD_INITRD_GZ_SYMLINK=${GENINITRD_INITRD_GZ_SYMLINK:-true}
+  GENERATOR=${GENERATOR:-mkinitrd}
+  DRACUT_OPTS=${DRACUT_OPTS:-"--force --hostonly"}
+  AUTOGENERATE_INITRD=${AUTOGENERATE_INITRD:-true}
+  AUTO_REMOVE_ORPHANED_INITRDS=${AUTO_REMOVE_ORPHANED_INITRDS:-true}
+  GENINITRD_DIALOG=${GENINITRD_DIALOG:-false}
+  GENINITRD_COMMAND_OUTPUT=${GENINITRD_COMMAND_OUTPUT:-true}
+else # these are the defaults when called from the installer:
+  KERNEL=/boot/vmlinuz-generic
+  GENINITRD_NAMED_SYMLINK=true
+  GENINITRD_INITRD_GZ_SYMLINK=true
+  GENERATOR=mkinitrd
+  DRACUT_OPTS="--force --hostonly"
+  AUTOGENERATE_INITRD=true
+  AUTO_REMOVE_ORPHANED_INITRDS=true
+  GENINITRD_DIALOG=true
+  GENINITRD_COMMAND_OUTPUT=false
+fi
+
+# If a kernel was provided to geninitrd on the command line, this always
+# overrides any previous choice:
+if [ ! -z "$KERNEL_OVERRIDE" ]; then
+  KERNEL=$KERNEL_OVERRIDE
+fi
+
 # If this is disabled, exit:
 if [ "$KERNEL_DOINST" = "true" -a "$AUTOGENERATE_INITRD" = "false" ]; then
   exit 0
 fi
-
-# This was the old name for $KERNEL, so allow it still:
-KERNEL=$KERNEL_SYMLINK
 
 if [ -z "$KERNEL" ]; then
   # If we weren't told anything else, then use the newest kernel:
@@ -51,9 +76,6 @@ LVM_OPTION="-L"
 # Ditto on RAID:
 RAID_OPTION="-R"
 
-# This could be set to dracut in /etc/default/geninitrd:
-GENERATOR=${GENERATOR:-mkinitrd}
-
 # If we asked for mkinitrd, but do not have /etc/mkinitrd.conf, then fall
 # back on mkinitrd_command_generator.sh instead:
 if [ "$GENERATOR" = "mkinitrd" -a ! -r etc/mkinitrd.conf ]; then
@@ -73,7 +95,7 @@ elif [ "$GENERATOR" = "dracut" -a ! -x /usr/bin/dracut ]; then
 fi
 
 # Generate the initrd:
-if [ -z "$GENINITRD_SILENT" ]; then
+if [ "$GENINITRD_DIALOG" = "true" ]; then
   dialog --title "GENERATING INITIAL RAMDISK" --infobox \
   "Generating an initial ramdisk for use with the $KERNEL_VERSION kernel (using $GENERATOR). \
 The initial ramdisk contains kernel modules needed to mount the \
@@ -81,17 +103,29 @@ root partition, and must be regenerated whenever the kernel is updated. To \
 regenerate the initrd, select this setup script from within pkgtool, or run \
 'geninitrd' which will produce an initial ramdisk \
 (/boot/initrd-${KERNEL_VERSION}.img) for the installed kernel." 0 0
+elif [ "$GENINITRD_COMMAND_OUTPUT" = "true" ]; then
+  echo "Generating /boot/initrd-${KERNEL_VERSION}.img for use with"
+  echo "the $KERNEL_VERSION kernel (using $GENERATOR):"
 fi
+
 if [ "$GENERATOR" = "mkinitrd_command_generator.sh" ]; then
-  chroot . /usr/share/mkinitrd/mkinitrd_command_generator.sh -k $KERNEL_VERSION -a "$LVM_OPTION $RAID_OPTION -o /boot/initrd-${KERNEL_VERSION}.img" | chroot . bash 1> /dev/null 2> /dev/null
-elif [ "$GENERATOR" = "mkinitrd" ]; then
-  chroot . /sbin/mkinitrd -F /etc/mkinitrd.conf -k $KERNEL_VERSION -o /boot/initrd-${KERNEL_VERSION}.img 1> /dev/null 2> /dev/null
-elif [ "$GENERATOR" = "dracut" ]; then
-  # If no options were set, set basic ones:
-  if [ -z "$DRACUT_OPTS" ]; then
-    DRACUT_OPTS="--force --hostonly"
+  if [ "$GENINITRD_COMMAND_OUTPUT" = "true" ]; then
+    chroot . /usr/share/mkinitrd/mkinitrd_command_generator.sh -k $KERNEL_VERSION -a "$LVM_OPTION $RAID_OPTION -o /boot/initrd-${KERNEL_VERSION}.img" | chroot . bash
+  else
+    chroot . /usr/share/mkinitrd/mkinitrd_command_generator.sh -k $KERNEL_VERSION -a "$LVM_OPTION $RAID_OPTION -o /boot/initrd-${KERNEL_VERSION}.img" | chroot . bash 1> /dev/null 2> /dev/null
   fi
-  chroot . /usr/bin/dracut $DRACUT_OPTS /boot/initrd-${KERNEL_VERSION}.img $KERNEL_VERSION 1> /dev/null 2> /dev/null
+elif [ "$GENERATOR" = "mkinitrd" ]; then
+  if [ "$GENINITRD_COMMAND_OUTPUT" = "true" ]; then
+    chroot . /sbin/mkinitrd -F /etc/mkinitrd.conf -k $KERNEL_VERSION -o /boot/initrd-${KERNEL_VERSION}.img
+  else
+    chroot . /sbin/mkinitrd -F /etc/mkinitrd.conf -k $KERNEL_VERSION -o /boot/initrd-${KERNEL_VERSION}.img 1> /dev/null 2> /dev/null
+  fi
+elif [ "$GENERATOR" = "dracut" ]; then
+  if [ "$GENINITRD_COMMAND_OUTPUT" = "true" ]; then
+    chroot . /usr/bin/dracut $DRACUT_OPTS /boot/initrd-${KERNEL_VERSION}.img $KERNEL_VERSION
+  else
+    chroot . /usr/bin/dracut $DRACUT_OPTS /boot/initrd-${KERNEL_VERSION}.img $KERNEL_VERSION 1> /dev/null 2> /dev/null
+  fi
 else
   echo "error: no handler for GENERATOR=$GENERATOR"
   echo "Unable to generate /boot/initrd-${KERNEL_VERSION}.img."

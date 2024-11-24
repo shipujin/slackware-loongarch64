@@ -11,9 +11,41 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Sun, 24 Nov 2024 02:53:05 GMT</pubDate>
-      <lastBuildDate>Sun, 24 Nov 2024 03:55:50 GMT</lastBuildDate>
+      <pubDate>Sun, 24 Nov 2024 23:09:54 GMT</pubDate>
+      <lastBuildDate>Sun, 24 Nov 2024 23:29:17 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Sun, 24 Nov 2024 23:09:54 GMT</title>
+         <pubDate>Sun, 24 Nov 2024 23:09:54 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241124230954</link>
+         <guid isPermaLink="false">20241124230954</guid>
+         <description>
+           <![CDATA[<pre>
+a/mkinitrd-1.4.11-x86_64-49.txz:  Rebuilt.
+  setup.01.mkinitrd: removed KERNEL_SYMLINK option.
+  If a kernel is provided to geninitrd on the command line ($1), this will
+  always be the kernel used.
+  Thanks to Mechanikx.
+  Removed GENINITRD_SILENT option.
+  init: cap the size of /run to 25% of the system RAM since the previous
+  default of 32M is way too small for many purposes. I have seen other Linux
+  systems cap this at half the system RAM, but that seems to me a bit much.
+  /etc/default/geninitrd:
+  Added GENINITRD_OVERRIDE_SCRIPT which can be set to anything you like.
+  Support for hardcoded {/usr/local/sbin,/opt/sbin}/geninitrd was removed.
+  Added GENINITRD_DIALOG (do we want the dialog --infobox output?)
+  Added GENINITRD_COMMAND_OUTPUT (do we want to see command output?)
+a/sysvinit-scripts-15.1-noarch-23.txz:  Rebuilt.
+  rc.S: cap the size of /run to 25% of the system RAM.
+l/gtk4-4.16.7-x86_64-1.txz:  Upgraded.
+l/vte-0.78.2-x86_64-2.txz:  Rebuilt.
+n/traceroute-2.1.6-x86_64-1.txz:  Upgraded.
+xfce/xfce4-xkb-plugin-0.8.3-x86_64-1.txz:  Added.
+  Thanks to vladimir_vist for the suggestion,
+  and Robby Workman for the build script.
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Sun, 24 Nov 2024 02:53:05 GMT</title>
          <pubDate>Sun, 24 Nov 2024 02:53:05 GMT</pubDate>
