@@ -28,10 +28,16 @@
 # which might still be needed by some old setups.
 
 # To generate an initrd automatically, just run "geninitrd".
-# if KERNEL is defined and points to a kernel, we'll use that.
-# Otherwise, if $1 is defined and points to a kernel, we'll use that.
-# Example: geninitrd /boot/vmlinuz-6.11.6
-# If none of these are true, we'll use the newest kernel we find in /boot.
+# Which kernel will be used follows this priority:
+# If a kernel was provided on the command line:
+# geninitrd /boot/vmlinuz-6.12.1
+# Then we will use that kernel.
+# Otherwise, if the KERNEL environment variable was provided:
+# KERNEL=/boot/vmlinuz-6.12.1 geninitrd
+# Then we will use that kernel.
+# Otherwise we will use the value for KERNEL defined in /etc/default/geninitrd.
+# If KERNEL remains undefined after loading /etc/default/geninitrd, then
+# we will fall back on using the newest kernel we find in /boot.
 
 # If you use an encrypted root, you may need an appropriate /etc/mkinitrd.conf
 # (if you will be setting GENERATOR=mkinitrd in /etc/default/geninitrd), or you
@@ -39,15 +45,30 @@
 
 cd $(dirname $0)/../..
 
+# Was KERNEL already defined? If so, save it as a possible override:
+if [ ! -z "$KERNEL" ]; then
+  KERNEL_OVERRIDE=$KERNEL
+fi
+
+# Was a kernel given on the command line? If so, this is the highest priority
+# for the kernel to use:
+if [ ! -z "$1" ]; then
+  KERNEL_OVERRIDE=$1
+fi
+
 # Load default options:
 if [ -r etc/default/geninitrd ]; then
   . etc/default/geninitrd
 fi
 
-# If a kernel was provided on the command line, this always overrides any
-# previous choice:
-if [ ! -z "$1" ]; then
-  export KERNEL_OVERRIDE=$1
+# If we have a KERNEL_OVERRIDE use it for the KERNEL:
+if [ ! -z "$KERNEL_OVERRIDE" ]; then
+  KERNEL=$KERNEL_OVERRIDE
+  unset KERNEL_OVERRIDE
+fi
+
+if [ ! -z "$KERNEL" ]; then
+  export KERNEL
 fi
 
 # In case you cannot make this script do exactly what you require, you're

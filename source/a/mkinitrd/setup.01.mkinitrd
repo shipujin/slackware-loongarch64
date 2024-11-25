@@ -1,8 +1,16 @@
 #!/bin/sh
 #BLURB="Generate an initrd for the kernel"
 
-# If KERNEL is defined and points to a kernel, we'll use that.
+# If KERNEL is defined already, we'll use that.
+# Otherwise we'll use the value for KERNEL in /etc/default/geninitrd, if it
+# is defined there.
 # Otherwise we'll use the newest kernel we find in /boot.
+
+# Do we already have a value defined for KERNEL? If so, make sure that we
+# use it:
+if [ ! -z "$KERNEL" ]; then
+  KERNEL_OVERRIDE=$KERNEL
+fi
 
 # Load defaults:
 if [ -r etc/default/geninitrd ]; then
@@ -32,8 +40,7 @@ else # these are the defaults when called from the installer:
   GENINITRD_COMMAND_OUTPUT=false
 fi
 
-# If a kernel was provided to geninitrd on the command line, this always
-# overrides any previous choice:
+# If we have a KERNEL_OVERRIDE, set KERNEL to this value:
 if [ ! -z "$KERNEL_OVERRIDE" ]; then
   KERNEL=$KERNEL_OVERRIDE
 fi
@@ -66,8 +73,13 @@ if [ -r $KERNEL ]; then
     echo "error: $KERNEL is not a Linux kernel."
   fi 
 else
-  echo "error: was not given a KERNEL to make an initrd."
-  exit 1
+  if [ -z "$KERNEL" ]; then
+    echo "error: was not given a KERNEL to make an initrd."
+    exit 1
+  else
+    echo "error: KERNEL=$KERNEL was not found."
+    exit 1
+  fi
 fi
 
 # Sometimes mkinitrd_command_generator.sh does not detect LVM properly. Until I

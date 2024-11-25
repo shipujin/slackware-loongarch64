@@ -1,3 +1,18 @@
+Mon Nov 25 21:19:23 UTC 2024
+a/mkinitrd-1.4.11-x86_64-50.txz:  Rebuilt.
+  geninitrd: If the kernel to use was provided on the command line or with
+  a predefined KERNEL variable, make sure that the KERNEL variable is set to
+  that value before handing off control to a custom script.
+  Thanks to LuckyCyborg for the bug report.
+d/git-2.47.1-x86_64-1.txz:  Upgraded.
+d/re2c-4.0.1-x86_64-1.txz:  Upgraded.
+l/libqalculate-5.4.0-x86_64-1.txz:  Upgraded.
+l/netpbm-11.08.02-x86_64-1.txz:  Upgraded.
+n/gnupg2-2.4.7-x86_64-1.txz:  Upgraded.
+n/wget2-2.2.0-x86_64-1.txz:  Upgraded.
+  Shared library .so-version bump.
+extra/bash-completion/bash-completion-2.15.0-noarch-1.txz:  Upgraded.
++--------------------------+
 Sun Nov 24 23:09:54 UTC 2024
 a/mkinitrd-1.4.11-x86_64-49.txz:  Rebuilt.
   setup.01.mkinitrd: removed KERNEL_SYMLINK option.

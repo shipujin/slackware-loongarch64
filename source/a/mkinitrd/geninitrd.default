@@ -5,8 +5,14 @@
 #GENINITRD_OVERRIDE_SCRIPT=/usr/local/sbin/geninitrd-custom
 
 # This variable defines the kernel that the initrd should be made for.
-# If it is not defined, then we use $1 that was given to geninitrd.
-# As a last resort, we'll use the newest kernel we find in /boot.
+# However, if a kernel is provided on the command line:
+# geninitrd /boot/vmlinuz-6.12.1
+# Then this will be used instead.
+# The value of KERNEL is also not replaced if it was already defined:
+# KERNEL=/boot/vmlinuz-6.12.1 geninitrd
+# If there's no kernel defined by the command line or by the KERNEL
+# variable, then as a last resort we'll use the newest kernel we find
+# in /boot.
 KERNEL=/boot/vmlinuz-generic
 
 # In addition to the initrd with a name like initrd-6.11.6.img,
