@@ -11,9 +11,61 @@
       <description>Tracking Slackware development in git.</description>
       <language>en-us</language>
       <id xmlns="http://www.w3.org/2005/Atom">urn:uuid:c964f45e-6732-11e8-bbe5-107b4450212f</id>
-      <pubDate>Mon, 25 Nov 2024 21:19:23 GMT</pubDate>
-      <lastBuildDate>Mon, 25 Nov 2024 22:02:32 GMT</lastBuildDate>
+      <pubDate>Tue, 26 Nov 2024 22:05:37 GMT</pubDate>
+      <lastBuildDate>Tue, 26 Nov 2024 23:34:01 GMT</lastBuildDate>
       <generator>maintain_current_git.sh v 1.17</generator>
+      <item>
+         <title>Tue, 26 Nov 2024 22:05:37 GMT</title>
+         <pubDate>Tue, 26 Nov 2024 22:05:37 GMT</pubDate>
+         <link>https://git.slackware.nl/current/tag/?h=20241126220537</link>
+         <guid isPermaLink="false">20241126220537</guid>
+         <description>
+           <![CDATA[<pre>
+a/mkinitrd-1.4.11-x86_64-51.txz:  Rebuilt.
+  remove-orphaned-initrds: fix report about dangling symlinks from --dry-run.
+  Thanks to Mechanikx.
+  setup.01.mkinitrd: report if symlinks are created.
+ap/mariadb-11.4.4-x86_64-4.txz:  Rebuilt.
+  /etc/default/mariadb: it appears that the correct option to skip SSL is
+  --skip-ssl as in mariadb(1), not the --disable-ssl that was mentioned on the
+  changes-improvements-in-mariadb-11-4 page.
+  Thanks to rocknrobin and Windu.
+l/mozjs128-128.5.0esr-x86_64-1.txz:  Upgraded.
+n/netatalk-4.0.7-x86_64-1.txz:  Upgraded.
+n/samba-4.21.2-x86_64-1.txz:  Upgraded.
+xap/mozilla-firefox-128.5.0esr-x86_64-1.txz:  Upgraded.
+  This update contains security fixes and improvements.
+  For more information, see:
+    https://www.mozilla.org/en-US/firefox/128.5.0/releasenotes/
+    https://www.mozilla.org/security/advisories/mfsa2024-64
+    https://www.cve.org/CVERecord?id=CVE-2024-11691
+    https://www.cve.org/CVERecord?id=CVE-2024-11692
+    https://www.cve.org/CVERecord?id=CVE-2024-11693
+    https://www.cve.org/CVERecord?id=CVE-2024-11694
+    https://www.cve.org/CVERecord?id=CVE-2024-11695
+    https://www.cve.org/CVERecord?id=CVE-2024-11696
+    https://www.cve.org/CVERecord?id=CVE-2024-11697
+    https://www.cve.org/CVERecord?id=CVE-2024-11698
+    https://www.cve.org/CVERecord?id=CVE-2024-11699
+  (* Security fix *)
+xap/mozilla-thunderbird-128.5.0esr-x86_64-1.txz:  Upgraded.
+  This release contains security fixes and improvements.
+  For more information, see:
+    https://www.mozilla.org/en-US/thunderbird/128.5.0esr/releasenotes/
+    https://www.mozilla.org/en-US/security/advisories/mfsa2024-68/
+    https://www.cve.org/CVERecord?id=CVE-2024-11691
+    https://www.cve.org/CVERecord?id=CVE-2024-11692
+    https://www.cve.org/CVERecord?id=CVE-2024-11693
+    https://www.cve.org/CVERecord?id=CVE-2024-11694
+    https://www.cve.org/CVERecord?id=CVE-2024-11695
+    https://www.cve.org/CVERecord?id=CVE-2024-11696
+    https://www.cve.org/CVERecord?id=CVE-2024-11697
+    https://www.cve.org/CVERecord?id=CVE-2024-11698
+    https://www.cve.org/CVERecord?id=CVE-2024-11699
+  (* Security fix *)
+           </pre>]]>
+         </description>
+      </item>
       <item>
          <title>Mon, 25 Nov 2024 21:19:23 GMT</title>
          <pubDate>Mon, 25 Nov 2024 21:19:23 GMT</pubDate>

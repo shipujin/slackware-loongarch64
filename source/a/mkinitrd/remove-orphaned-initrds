@@ -61,11 +61,20 @@ if [ "$ORPHANS_FOUND" = "false" ]; then
   echo "No orphaned initrds found in /boot."
 fi
 # Also handle initrd symlinks:
-for dangling_symlink in $(find . -name "initrd-*.img" -xtype l -printf '%P') $(find . -name "initrd.gz" -xtype l -printf '%P') ; do
-  if [ "$1" = "--dry-run" ]; then
-    echo "Would remove dangling initrd symlink: /boot/${dangling_symlink}"
-  else
+if [ "$1" = "--dry-run" ]; then
+  for dangling_symlink in $(find . -name "initrd-*.img" -type l -printf '%P\n') $(find . -name "initrd.gz" -type l -printf '%P\n') ; do
+    if [ ! -r "$(readlink $dangling_symlink)" ]; then
+      echo "Would remove dangling initrd symlink: /boot/${dangling_symlink}"
+    else
+      IDENTIFIER="$(basename $(echo $(readlink $dangling_symlink) | cut -f 2- -d -) .img)"
+      if [ ! -r vmlinuz-${IDENTIFIER} ]; then
+        echo "Would remove dangling initrd symlink: /boot/${dangling_symlink}"
+      fi
+    fi
+  done
+else
+  for dangling_symlink in $(find . -name "initrd-*.img" -xtype l -printf '%P\n') $(find . -name "initrd.gz" -xtype l -printf '%P\n') ; do
     echo "Removing dangling initrd symlink: /boot/${dangling_symlink}"
     rm -f $dangling_symlink
-  fi
-done
+  done
+fi

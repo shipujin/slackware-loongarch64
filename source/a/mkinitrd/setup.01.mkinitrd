@@ -153,6 +153,9 @@ if [ "$GENINITRD_NAMED_SYMLINK" = "true" ]; then
         KERNEL_NAME="$(echo $symlink | cut -f 2- -d -)"
         rm -f initrd-${KERNEL_NAME}.img
         ln -sf initrd-${KERNEL_VERSION}.img initrd-${KERNEL_NAME}.img
+        if [ "$GENINITRD_COMMAND_OUTPUT" = "true" ]; then
+          echo "Created named symlink: /boot/initrd-${KERNEL_NAME}.img -> initrd-${KERNEL_VERSION}.img"
+        fi
       fi
     done
   )
@@ -162,5 +165,8 @@ if [ "$GENINITRD_INITRD_GZ_SYMLINK" = "true" ]; then
   ( cd boot
     rm -f initrd.gz
     ln -sf initrd-${KERNEL_VERSION}.img initrd.gz
+    if [ "$GENINITRD_COMMAND_OUTPUT" = "true" ]; then
+      echo "Created initrd.gz symlink: /boot/initrd.gz -> initrd-${KERNEL_VERSION}.img"
+    fi
   )
 fi

@@ -38,7 +38,7 @@ sshd_restart() {
     echo "         allow an admin logged in through sshd to use 'rc.sshd restart' without"
     echo "         being cut off.  If sshd has been upgraded, new connections will now"
     echo "         use the new version, which should be a safe enough approach."
-    kill `cat /var/run/sshd.pid`
+    kill $(cat /var/run/sshd.pid)
   else
     echo "WARNING: There does not appear to be a parent instance of sshd running."
     echo "         If you really want to kill all running instances of sshd (including"

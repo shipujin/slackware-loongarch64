@@ -4,8 +4,8 @@
 # This option rejects incoming network connections for increased security.
 # Remove this option if you require these connections.
 #
-# --disable-ssl
+# --skip-ssl
 # Disable SSL/TLS and automatic self-signed certificate generation.
 # Remove this option if you require SSL/TLS support.
 
-MARIADB_OPTIONS="--skip-networking --disable-ssl"
+MARIADB_OPTIONS="--skip-networking --skip-ssl"
