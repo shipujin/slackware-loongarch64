@@ -1,0 +1,27 @@
+diff --git a/dist/config.guess b/dist/config.guess
+index 3eda297..60d036c 100755
+--- a/dist/config.guess
++++ b/dist/config.guess
+@@ -873,6 +873,10 @@ EOF
+     ia64:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-gnu
+ 	exit ;;
++    loongarch32:Linux:*:* | loongarch64:Linux:*:*)
++	echo $UNAME_MACHINE-slackware-linux
++	exit ;;
++	;;
+     m32r*:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-gnu
+ 	exit ;;
+diff --git a/dist/config.sub b/dist/config.sub
+index d546a94..0325ed3 100755
+--- a/dist/config.sub
++++ b/dist/config.sub
+@@ -251,6 +251,7 @@ case $basic_machine in
+ 	| i370 | i860 | i960 | ia64 \
+ 	| ip2k | iq2000 \
+ 	| lm32 \
++	| loongarch32 | loongarch64 \
+ 	| m32c | m32r | m32rle | m68000 | m68k | m88k \
+ 	| maxq | mb | microblaze | mcore | mep | metag \
+ 	| mips | mipsbe | mipseb | mipsel | mipsle \
